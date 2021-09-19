@@ -1,7 +1,7 @@
 //File created (not original)
 
 
-configuration neighbor_discoveryC
+generic configuration neighbor_discoveryC()
     {
         provides interface neighbor_discovery;
     }
@@ -13,6 +13,7 @@ implementation
         components new ListC(uint16_t, size - 1);
         neighbor_discoveryP.List -> ListC;
 */
+
         components neighbor_discoveryP;
         neighbor_discovery = neighbor_discoveryP;
     }
