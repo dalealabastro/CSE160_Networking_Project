@@ -15,5 +15,5 @@ implementation
 */
 
         components neighbor_discoveryP();
-        neighbor_discovery = neighbor_discoveryP;
+        neighbor_discovery = neighbor_discoveryP.neighbor_discovery;
     }
