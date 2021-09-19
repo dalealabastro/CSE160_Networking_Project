@@ -35,7 +35,7 @@ implementation
             //          lineNumber++;
             //return neighbors;
         }*/
-        command void test()
+        command void TRIALFUCKTEST()
         {
             dbg(GENERAL_CHANNEL, "THIS IS A FUCKING TEST TWAT\n");
         }
