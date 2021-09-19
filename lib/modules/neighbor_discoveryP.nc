@@ -2,7 +2,7 @@
 
 #include "../../includes/sendInfo.h"
 
-generic module neighbor_discoveryP(uint16_t size)
+generic module neighbor_discoveryP()
     {
         provides interface neighbor_discovery;
         /*uses {
