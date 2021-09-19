@@ -13,7 +13,7 @@ generic module neighbor_discoveryP(uint16_t size)
 
 implementation
     {
-        uint16_t* nodeNeighbors[size];                        //2D container? Does it work like this?
+        /*uint16_t* nodeNeighbors[size];                        //2D container? Does it work like this?
         command void linkedListGenerator()                       //linkedListGenerator is our own variable. Calls command.
         {
             uint16_t i;
@@ -34,7 +34,7 @@ implementation
             //          neighbors[lineNumber] = pseudoMoteIds.destination;
             //          lineNumber++;
             //return neighbors;
-        }
+        }*/
         command void test()
         {
             dbg(GENERAL_CHANNEL, "THIS IS A FUCKING TEST TWAT\n");
