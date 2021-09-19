@@ -22,6 +22,8 @@ module Node{
    uses interface SimpleSend as Sender;
 
    uses interface CommandHandler;
+
+   uses interface neighbor_discovery as Neighbor_discovery  //=======================
 }
 
 implementation{
@@ -32,7 +34,7 @@ implementation{
 
    event void Boot.booted(){
       call AMControl.start();
-
+      call Neighbor_discovery.neighborSearch(1);      //=============================
       dbg(GENERAL_CHANNEL, "Booted\n");
    }
 
