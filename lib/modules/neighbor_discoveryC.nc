@@ -1,5 +1,5 @@
 //File created (not original)
-#include <vector.h>
+
 
 configuration neighbor_discoveryC
     {
@@ -8,11 +8,11 @@ configuration neighbor_discoveryC
 
 implementation
     {
-        components new QueueC (uint16_t*, 20);
+        /*components new QueueC (uint16_t*, 20);
         neighbor_discoveryP.Queue -> QueueC;
         components new ListC(uint16_t, size - 1);
         neighbor_discoveryP.List -> ListC;
-
+*/
         components neighbor_discoveryP;
         neighbor_discovery = neighbor_discoveryP;
     }
