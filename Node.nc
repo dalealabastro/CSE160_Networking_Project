@@ -23,7 +23,7 @@ module Node{
 
    uses interface CommandHandler;
 
-   uses interface neighbor_discovery as Neighbor_discovery  //=======================
+   uses interface neighbor_discovery as Neighbor_discovery;  //=======================
 }
 
 implementation{
