@@ -35,7 +35,7 @@ implementation
         command void neighbor_discovery.NodeQueue()
         {
             uint16_t i;
-            uint16_t j = ListC<uint16_t*, 20>;
+            uint16_t* j = List<uint16_t*>;
             for(i = 0; i < 20; i++)
             {
                 call j.pushback(i);
