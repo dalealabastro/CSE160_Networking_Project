@@ -14,6 +14,6 @@ implementation
         neighbor_discoveryP.List -> ListC;
 */
 
-        components neighbor_discoveryP();
+        components new neighbor_discoveryP();
         neighbor_discovery = neighbor_discoveryP.neighbor_discovery;
     }
