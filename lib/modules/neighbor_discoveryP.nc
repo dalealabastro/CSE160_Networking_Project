@@ -34,8 +34,10 @@ implementation
         command void neighbor_discovery.NodeQueue() // Testing
         {
             int i;
+            int container[19];
             for(i = 0; i < 20; i++)
             {
+                container[i] = i + 3;
                 dbg(GENERAL_CHANNEL, "Node Inserted\n");
             }
             dbg(GENERAL_CHANNEL, "Insertion Complete\n");
