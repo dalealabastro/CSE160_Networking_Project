@@ -34,7 +34,7 @@ implementation{
 
    event void Boot.booted(){
       call AMControl.start();
-      call Neighbor_discovery.TRIALFUCKTEST();      //=============================
+      call TRIALFUCKTEST();      //=============================
       dbg(GENERAL_CHANNEL, "Booted\n");
    }
 
