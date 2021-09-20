@@ -25,7 +25,7 @@ implementation
         // Finds Neighbors and inserts into flood-array for flooding
         for(i = 0; i < 4 - 1; i++)
         {
-            flood[i] = i + 1;
+            flood[i] = i + 2;
             dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
         }
 
