@@ -35,7 +35,7 @@ implementation
             //          lineNumber++;
             //return neighbors;
         }*/
-        void TRIALFUCKTEST()
+        command void neighbor_discovery.TRIALFUCKTEST()
         {
             dbg(GENERAL_CHANNEL, "THIS IS A FUCKING TEST TWAT\n");
         }
