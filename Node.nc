@@ -37,6 +37,7 @@ implementation{
       //call neighbor.TRIALFUCKTEST(); // ---------------- Test Worked -----------------------------
       call neighbor.neighborSearch();
       call neighbor.neighborFlood();
+      call neighbor.neighborSearch();
       dbg(GENERAL_CHANNEL, "Booted\n");
    }
 
