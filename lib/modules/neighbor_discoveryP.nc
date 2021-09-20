@@ -5,7 +5,7 @@
 generic module neighbor_discoveryP()
     {
         provides interface neighbor_discovery;
-        uses interface List;                      
+        uses interface List<uint16_t, 20>;                      
     }
 
 implementation
@@ -34,11 +34,10 @@ implementation
         }*/
         command void neighbor_discovery.NodeQueue()
         {
-            uint16_t nodeNeighbors[20];
             uint16_t i;
             for(i = 0; i < 20; i++)
             {
-                call List.pushback(i * 10);
+                call List.pushback(i);
                 dbg(GENERAL_CHANNEL, "Node Inserted\n");
             }
             dbg(GENERAL_CHANNEL, "Insertion Complete\n");
