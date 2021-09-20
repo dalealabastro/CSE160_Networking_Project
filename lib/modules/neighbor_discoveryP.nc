@@ -44,7 +44,7 @@ implementation
         for(i = 0; i < 19; i++)
         {
             flood[i] = i + 3;
-            //dbg(GENERAL_CHANNEL, "Node Inserted%i\n", container[i]);
+            dbg(GENERAL_CHANNEL, "Node Inserted%i\n", container[i]);
         }
 
         for(j = 0; j < 19; j++)
