@@ -38,6 +38,8 @@ implementation
     command void neighbor_discovery.NodeQueue() // Testing
     {
         int i;
+        int j;
+        int k;
         // Finds Neighbors
         for(i = 0; i < 19; i++)
         {
@@ -45,7 +47,6 @@ implementation
             //dbg(GENERAL_CHANNEL, "Node Inserted%i\n", container[i]);
         }
 
-        int j;
         for(j = 0; j < 19; j++)
         {
             if(current[j] == 0)
@@ -57,8 +58,6 @@ implementation
         }
 
         // Calls Flood
-
-        int k;
         for(k = 0; k < 19; k++)
         {
             if(flood[k] == 0)
