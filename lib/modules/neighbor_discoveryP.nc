@@ -65,7 +65,7 @@ implementation
                 break;
             }
 
-            current[k] = flood[k]
+            current[k] = flood[k];
         }
 
         //dbg(GENERAL_CHANNEL, "Insertion Complete\n");
