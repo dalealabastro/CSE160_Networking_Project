@@ -5,7 +5,7 @@
 generic module neighbor_discoveryP()
     {
         provides interface neighbor_discovery;
-        uses interface List<uint16_t, 20>;                      
+        uses interface List<sendInfo*, 20>;                      
     }
 
 implementation
@@ -34,7 +34,7 @@ implementation
         }*/
         command void neighbor_discovery.NodeQueue()
         {
-            uint16_t i;
+            sendInfo *i;
             for(i = 0; i < 20; i++)
             {
                 call List.pushback(i);
