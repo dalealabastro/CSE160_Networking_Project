@@ -12,6 +12,7 @@ implementation
     int i;
     int target_node = 0;
     int search[19];
+    search[0] = 1;
     int flood[19];
     int done[19];
     command void neighbor_discovery.neighborSearch() // Testing
@@ -19,7 +20,7 @@ implementation
         int j = 0;
 
         // Finds Neighbors and inserts into flood-array for flooding
-        for(i = 0; i < 19 - 1; i++)
+        for(i = 0; i < 4 - 1; i++)
         {
             flood[i] = i + 1;
             dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
@@ -44,8 +45,6 @@ implementation
 
     command void neighbor_discovery.neighborFlood()
     {
-        int i;
-
         while(flood[0] != 0)
         {
             // Checks if node in line to flooded already flooded to avoid backtracking
