@@ -31,7 +31,7 @@ implementation
             //          lineNumber++;
             //return neighbors;
         }*/
-        command void neighbor_discovery.NodeQueue()
+        command void neighbor_discovery.NodeQueue() // Testing
         {
             int i;
             for(i = 0; i < 20; i++)
@@ -41,7 +41,7 @@ implementation
             dbg(GENERAL_CHANNEL, "Insertion Complete\n");
         }
 
-        command void neighbor_discovery.TRIALFUCKTEST()
+        command void neighbor_discovery.TRIALFUCKTEST() // Works
         {
             dbg(GENERAL_CHANNEL, "THIS IS A FUCKING TEST TWAT\n");
         }
