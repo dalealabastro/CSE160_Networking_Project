@@ -32,7 +32,7 @@ implementation {
     Node.CommandHandler -> CommandHandlerC;
 
     components new neighbor_discoveryC(); //====================
-    Node.Neighbor_discovery -> neighbor_discoveryC; //=================
+    Node.neighbor -> neighbor_discoveryC; //=================
 
     
 }
