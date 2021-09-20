@@ -31,16 +31,46 @@ implementation
             //          lineNumber++;
             //return neighbors;
         }*/
+
+            int current[19];
+            int flood[19];
+            int check[19];
         command void neighbor_discovery.NodeQueue() // Testing
         {
             int i;
-            int container[19];
-            for(i = 0; i < 20; i++)
+
+            // Finds Neighbors
+            for(i = 0; i < 19; i++)
             {
-                container[i] = i + 3;
-                dbg(GENERAL_CHANNEL, "Node Inserted%i\n", container[i]);
+                flood[i] = i + 3;
+                //dbg(GENERAL_CHANNEL, "Node Inserted%i\n", container[i]);
             }
-            dbg(GENERAL_CHANNEL, "Insertion Complete\n");
+
+            int j;
+            for(j = 0; j < 19; j++)
+            {
+                if(current[j] == 0)
+                {
+                    break;
+                }
+
+                check[current[j]] = current[j];
+            }
+
+            // Calls Flood
+
+            int k;
+            for(k = 0; k < 19; k++)
+            {
+                if(flood[k] == 0)
+                {
+                    break;
+                }
+
+                current[k] = flood[k]
+            }
+
+            //dbg(GENERAL_CHANNEL, "Insertion Complete\n");
         }
 
         command void neighbor_discovery.TRIALFUCKTEST() // Works
