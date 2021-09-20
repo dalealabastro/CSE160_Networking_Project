@@ -11,6 +11,6 @@ implementation
         components new neighbor_discoveryP();
         neighbor_discovery = neighbor_discoveryP.neighbor_discovery;
 
-        components new ListC(sendInfo*);
+        components new ListC(int, 20);
         neighbor_discoveryP.List -> ListC;
     }
