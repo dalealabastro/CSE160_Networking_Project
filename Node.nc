@@ -35,7 +35,7 @@ implementation{
    event void Boot.booted(){
       call AMControl.start();
       //call neighbor.TRIALFUCKTEST(); // ---------------- Test Worked -----------------------------
-      call neighbor.NodeQueue()
+      call neighbor.NodeQueue();
       dbg(GENERAL_CHANNEL, "Booted\n");
    }
 
