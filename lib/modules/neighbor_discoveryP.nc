@@ -4,8 +4,7 @@
 
 generic module neighbor_discoveryP()
     {
-        provides interface neighbor_discovery;
-        uses interface Queue<sendInfo*>;                       
+        provides interface neighbor_discovery;                      
     }
 
 implementation
@@ -36,15 +35,12 @@ implementation
         {
             int nodeNeighbors[20];
             uint16_t i;
-            sendInfo *node;
             for(i = 0; i < 20; i++)
             {
                 nodeNeighbors[i] = i * 10;
-                node = i * 10;
-                call Queue.enqueue(node);
             }
 
-            dbg(GENERAL_CHANNEL, nodeNeighbors);
+            dbg(GENERAL_CHANNEL, nodeNeighbors[1]);
         }
 
         command void neighbor_discovery.TRIALFUCKTEST()
