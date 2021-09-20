@@ -10,7 +10,4 @@ implementation
     {
         components new neighbor_discoveryP();
         neighbor_discovery = neighbor_discoveryP.neighbor_discovery;
-
-        components new QueueC(sendInfo*, 20);
-        neighbor_discoveryP.Queue -> QueueC;
     }

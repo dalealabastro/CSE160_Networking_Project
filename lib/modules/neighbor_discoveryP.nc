@@ -40,7 +40,7 @@ implementation
                 nodeNeighbors[i] = i * 10;
             }
 
-            dbg(GENERAL_CHANNEL, nodeNeighbors[1]);
+            dbg(nodeNeighbors[1]);
         }
 
         command void neighbor_discovery.TRIALFUCKTEST()
