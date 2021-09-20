@@ -64,7 +64,7 @@ implementation
             // call Flood Function
             
             //Checks if there are anymore nodes to flood or target node has been reached
-            if(flood[1] == 0 || flood[0] == target_node)
+            if(flood[0] == 0 || flood[0] == target_node)
             {
                 break;
             }
@@ -83,6 +83,7 @@ implementation
                     break;
                 }
             }
+
             for(i = 0; i < 19-1; i++)
             {
                 //Moves flood line up by one for next node to be flooded
