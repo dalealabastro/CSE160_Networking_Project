@@ -9,20 +9,20 @@ generic module neighbor_discoveryP()
 
 implementation
 {
+    int i;
     int target_node = 0;
     int search[19];
     int flood[19];
     int done[19];
     command void neighbor_discovery.neighborSearch() // Testing
     {
-        int i;
         int j = 0;
 
         // Finds Neighbors and inserts into flood-array for flooding
         for(i = 0; i < 19 - 1; i++)
         {
-            flood[i] = i + 3;
-            dbg(GENERAL_CHANNEL, "Node Inserted%i\n", flood[i]);
+            flood[i] = i + 1;
+            dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
         }
 
         // Moves nodes that recived message and neighbors of node found into done-array
@@ -34,19 +34,18 @@ implementation
             }
 
             done[search[j] - 1] = search[j];
+            dbg(GENERAL_CHANNEL, "Node Done: %i\n", search[j]);
             for(i = 0; i < 19-1; i++)
             {
 				search[i] = search[i+1];
 			}
         }
-
-        //dbg(GENERAL_CHANNEL, "Insertion Complete\n");
     }
 
     command void neighbor_discovery.neighborFlood()
     {
         int i;
-        
+
         while(flood[0] != 0)
         {
             // Checks if node in line to flooded already flooded to avoid backtracking
@@ -77,6 +76,7 @@ implementation
                 else
                 {
                     search[i] = flood[0];
+                    dbg(GENERAL_CHANNEL, "Node FLooded%i\n", flood[i]);
                     break;
                 }
             }
