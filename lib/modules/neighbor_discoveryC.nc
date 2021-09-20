@@ -10,4 +10,7 @@ implementation
     {
         components new neighbor_discoveryP();
         neighbor_discovery = neighbor_discoveryP.neighbor_discovery;
+
+        components new ListC(uint16_t, 20);
+        neighbor_discoveryP.List -> ListC;
     }
