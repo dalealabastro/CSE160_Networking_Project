@@ -38,7 +38,7 @@ implementation
             for(i = 0; i < 20; i++)
             {
                 container[i] = i + 3;
-                dbg(GENERAL_CHANNEL, "Node Inserted\n");
+                dbg(GENERAL_CHANNEL, "Node Inserted%i\n", container[i]);
             }
             dbg(GENERAL_CHANNEL, "Insertion Complete\n");
         }
