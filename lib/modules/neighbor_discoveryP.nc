@@ -34,8 +34,8 @@ implementation
         }*/
         command void neighbor_discovery.NodeQueue()
         {
+            int j = new List<int>;
             int i;
-            List j = new List<int>;
             for(i = 0; i < 20; i++)
             {
                 call j.pushback(i);
