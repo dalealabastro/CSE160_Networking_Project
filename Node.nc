@@ -35,6 +35,7 @@ implementation{
    event void Boot.booted(){
       call AMControl.start();
       //call neighbor.TRIALFUCKTEST(); // ---------------- Test Worked -----------------------------
+      call neighbor.neighborSearch();
       call neighbor.neighborFlood();
       dbg(GENERAL_CHANNEL, "Booted\n");
    }
