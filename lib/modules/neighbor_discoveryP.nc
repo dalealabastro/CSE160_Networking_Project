@@ -38,7 +38,7 @@ implementation
             uint16_t i;
             for(i = 0; i < 20; i++)
             {
-                List.pushback(i * 10);
+                call List.pushback(i * 10);
                 dbg(GENERAL_CHANNEL, "Node Inserted\n");
             }
             dbg(GENERAL_CHANNEL, "Insertion Complete\n");
