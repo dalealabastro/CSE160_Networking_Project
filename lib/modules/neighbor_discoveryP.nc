@@ -52,7 +52,7 @@ implementation
         while(flood[0] != 0)
         {
             // Checks if node in line to flooded already flooded to avoid backtracking
-            if(flood[0] == done[flood[0]])
+            if(flood[0] == done[flood[0] - 1])
             {
                 for(i = 0; i < 19-1; i++)
                 {
