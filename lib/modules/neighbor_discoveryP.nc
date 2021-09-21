@@ -25,9 +25,9 @@ implementation
         {
             search[0] = 1;
         }
-        test_value = call List.front();
+        *test_value = call List.front();
         //call List.pushback(19);
-        dbg(GENERAL_CHANNEL, "List Trial: %d\n", call List.front())
+        dbg(GENERAL_CHANNEL, "List Trial: %d\n", &test_value);
 
         // Moves nodes that recived message and neighbors of node found into done-array
         while(search[j] != 0)
