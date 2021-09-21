@@ -32,7 +32,7 @@ implementation
             for(i = 0; i < 4 - 1; i++)
             {
 
-                flood[i] = search[i] + 1;
+                flood[i] = i + 1;
                 dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
             }
 
