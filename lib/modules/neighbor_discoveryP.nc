@@ -1,6 +1,7 @@
 //File created (not original)
 
 #include "../../includes/sendInfo.h"
+#include <stdio.h>
 
 generic module neighbor_discoveryP()
 {
@@ -10,12 +11,18 @@ generic module neighbor_discoveryP()
 implementation
 {
     int target_node = 0;
+    int num;
     int search[19];
     int flood[19];
     int done[19];
 
     command void neighbor_discovery.neighborSearch() // Testing
     {
+        File *ptr;
+        ptr = fopen("../../topo/long_line.topo", "r");
+        fscanf(ptr, "%d", &num);
+        dbg(GENERAL_CHANNEL, "WORKED: %i", num);
+        fclose(ptr);
         int i;
         int j = 0;
 
