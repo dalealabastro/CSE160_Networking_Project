@@ -5,7 +5,7 @@
 generic module neighbor_discoveryP()
 {
     provides interface neighbor_discovery;
-    uses interface List<uint16_t*>;                    
+    uses interface Queue<uint16_t*>;                    
 }
 
 implementation
@@ -25,7 +25,7 @@ implementation
             search[0] = 1;
         }
         //call List.pushback(19);
-        dbg(GENERAL_CHANNEL, "List Trial: %d\n", &(call List.front));
+        dbg(GENERAL_CHANNEL, "List Trial: %d\n", call Queue.front();
 
         // Moves nodes that recived message and neighbors of node found into done-array
         while(search[j] != 0)
