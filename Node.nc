@@ -28,7 +28,7 @@ module Node{
 
 implementation{
    pack sendPackage;
-
+   uint16_t *test_value = 17;
    // Prototypes
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 
@@ -89,7 +89,7 @@ implementation{
       Package->TTL = TTL;
       Package->seq = seq;
       Package->protocol = protocol;
-      call List.pushback(17);
+      call List.pushback(test_value);
       dbg(GENERAL_CHANNEL, "# of Nodes: %i\n", length);
       memcpy(Package->payload, payload, length);
    }
