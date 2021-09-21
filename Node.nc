@@ -22,7 +22,7 @@ module Node{
    uses interface SimpleSend as Sender;
 
    uses interface CommandHandler;
-   uses interface List<uint16_t*>;
+   uses interface Queue<uint16_t*>;
    uses interface neighbor_discovery as neighbor;  //=======================
 }
 
@@ -89,7 +89,7 @@ implementation{
       Package->TTL = TTL;
       Package->seq = seq;
       Package->protocol = protocol;
-      call List.pushback(test_value);
+      call Queue.enqueue(test_value);
       dbg(GENERAL_CHANNEL, "# of Nodes: %i\n", length);
       memcpy(Package->payload, payload, length);
    }
