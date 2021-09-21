@@ -25,6 +25,9 @@ implementation
             search[0] = 1;
         }
 
+        List.pushback(19);
+        List.front();
+
         // Moves nodes that recived message and neighbors of node found into done-array
         while(search[j] != 0)
         {
