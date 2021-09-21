@@ -31,7 +31,7 @@ implementation {
     components CommandHandlerC;
     Node.CommandHandler -> CommandHandlerC;
 
-    components new ListC(uint16_t, 20);
+    components new ListC(uint16_t*, 20);
     Node.List -> ListC;
 
     components new neighbor_discoveryC(); //====================

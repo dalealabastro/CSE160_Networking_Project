@@ -22,7 +22,7 @@ module Node{
    uses interface SimpleSend as Sender;
 
    uses interface CommandHandler;
-   uses interface List<uint16_t>;
+   uses interface List<uint16_t*>;
    uses interface neighbor_discovery as neighbor;  //=======================
 }
 
