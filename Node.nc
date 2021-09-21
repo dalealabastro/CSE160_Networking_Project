@@ -88,7 +88,7 @@ implementation{
       Package->TTL = TTL;
       Package->seq = seq;
       Package->protocol = protocol;
-      dbg(GENERAL_CHANNEL, "# of Nodes: %i", length);
+      dbg(GENERAL_CHANNEL, "# of Nodes: %i\n", length);
       memcpy(Package->payload, payload, length);
    }
 }
