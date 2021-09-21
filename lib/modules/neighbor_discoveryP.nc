@@ -5,11 +5,12 @@
 generic module neighbor_discoveryP()
 {
     provides interface neighbor_discovery;
-    uses interface List<uint16_t*>;                    
+    uses interface List<uint16_t>;                    
 }
 
 implementation
 {
+    uint16_t *test_value;
     int target_node = 0;
     int search[19];
     int flood[19];
@@ -24,8 +25,9 @@ implementation
         {
             search[0] = 1;
         }
-
-        dbg(GENERAL_CHANNEL, "List Trial: %i\n", call List.front());
+        test_value = call List.front();
+        //call List.pushback(19);
+        dbg(GENERAL_CHANNEL, "List Trial: %d\n", call List.front())
 
         // Moves nodes that recived message and neighbors of node found into done-array
         while(search[j] != 0)
