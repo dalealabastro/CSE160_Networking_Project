@@ -83,7 +83,7 @@ implementation
                 else
                 {
                     search[i] = flood[0];
-                    dbg(GENERAL_CHANNEL, "Node FLooded%i\n", flood[0]);
+                    dbg(GENERAL_CHANNEL, "Node Flooded: %i\n", flood[0]);
                     break;
                 }
             }
