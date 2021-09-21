@@ -5,7 +5,7 @@
 generic module neighbor_discoveryP()
 {
     provides interface neighbor_discovery;
-    uses interface List<uint16_t>;                    
+    uses interface List<uint16_t*>;                    
 }
 
 implementation
