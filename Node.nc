@@ -34,6 +34,7 @@ implementation{
 
    event void Boot.booted(){
       call AMControl.start();
+      neighbor.neighborSearch();
       dbg(GENERAL_CHANNEL, "Booted\n");
    }
 
