@@ -25,7 +25,6 @@ implementation
             search[0] = 1;
         }
 
-        call List.pushback(19);
         dbg(GENERAL_CHANNEL, "List Trial: %i\n", call List.front());
 
         // Moves nodes that recived message and neighbors of node found into done-array
