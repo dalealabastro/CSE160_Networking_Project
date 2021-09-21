@@ -34,10 +34,6 @@ implementation{
 
    event void Boot.booted(){
       call AMControl.start();
-      //call neighbor.TRIALFUCKTEST(); // ---------------- Test Worked -----------------------------
-      call neighbor.neighborSearch();
-      call neighbor.neighborFlood();
-      call neighbor.neighborSearch();
       dbg(GENERAL_CHANNEL, "Booted\n");
    }
 
@@ -92,6 +88,7 @@ implementation{
       Package->TTL = TTL;
       Package->seq = seq;
       Package->protocol = protocol;
+      dbg(GENERAL_CHANNEL, "# of Nodes: %i", length);
       memcpy(Package->payload, payload, length);
    }
 }
