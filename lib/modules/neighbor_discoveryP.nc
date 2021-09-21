@@ -24,16 +24,18 @@ implementation
             search[0] = 1;
         }
 
-        // Finds Neighbors and inserts into flood-array for flooding
-        for(i = 0; i < 4 - 1; i++)
-        {
-            flood[i] = search[0] + flood[i] + 1;
-            dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
-        }
-
         // Moves nodes that recived message and neighbors of node found into done-array
         while(search[j] != 0)
         {
+            dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", search[0]);
+            // Finds Neighbors and inserts into flood-array for flooding
+            for(i = 0; i < 4 - 1; i++)
+            {
+
+                flood[i] = search[0] + 1;
+                dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
+            }
+
             if(search[j] == 0)
             {
                 break;
