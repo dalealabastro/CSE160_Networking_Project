@@ -35,7 +35,7 @@ implementation{
 
    event void Boot.booted(){
       call AMControl.start();
-      call flood.Flood();
+      call flood.flood_prep();
       dbg(GENERAL_CHANNEL, "Booted\n");
    }
 
