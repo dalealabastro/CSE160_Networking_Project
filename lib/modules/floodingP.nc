@@ -32,7 +32,7 @@ implementation
                     break; //If flood array is zero, that means no more nodes to flood and loop can end
                 }
                 //Sends node to function to be flooded by package
-                call flooding.flood_exe(flood[i]);
+                //call flooding.flood_exe(flood[i]); --- Uncomment when coded
 
                 //Clears node from array
                 flood[i] = 0;
