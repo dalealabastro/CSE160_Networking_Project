@@ -9,8 +9,8 @@ generic module neighbor_discoveryP()
 
 implementation
 {
-    bool truth = true;
-    bool falsed = false;
+    int true = 1;
+    int false = 0;
     int target_node;
     int flood_node;
     int size = 19;
@@ -48,18 +48,18 @@ implementation
         }
     }
 
-    command bool neighbor_discovery.Flood_empty()
+    command int neighbor_discovery.Flood_empty()
     {
         dbg(GENERAL_CHANNEL, "Flood Check\n");
         for(i = 0; i < size; i++)
         {
             if(flood[i] != 0)
             {
-                return truth;
+                return true;
             }
         }
 
-        return falsed;
+        return false;
     }
 
     //Returns node that is viable for flooding
@@ -112,22 +112,22 @@ implementation
     }
 
     //Checks if the node that is inputted has already been flooded
-    command bool neighbor_discovery.checkFlood(int node)
+    command int neighbor_discovery.checkFlood(int node)
     {
         dbg(GENERAL_CHANNEL, "Checking Node Has Been Flooded\n")
         for(i = 0; i < size; i++)
         {
             if(search[i] == node)
             {
-                return falsed;
+                return false;
             }
             else if(done[i] == node)
             {
-                return falsed;
+                return false;
             }
         }
 
-        return truth;
+        return true;
     }
 
     // command void neighbor_discovery.neighborFlood()
