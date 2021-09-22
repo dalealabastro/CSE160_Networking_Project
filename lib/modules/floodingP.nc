@@ -18,7 +18,7 @@ implementation
             src_node = 1
             call neighbor_discovery.neighborSearch(src_node);
 
-            while(call neighbor_discovery.Flood_empty())
+            while(call neighbor_discovery.Flood_empty() == 1)
             {
                 flood[i] = call neighbor_discovery.get_Flood();
                 i++;
@@ -37,7 +37,7 @@ implementation
                 flood[i] = 0;
 
             }
-        }while(call neighbor_discovery.checkFlood(node_forCheck););
+        }while(call neighbor_discovery.checkFlood(node_forCheck) == 1);
     }
 
     command void flooding.flood()
