@@ -32,10 +32,10 @@ implementation
         while(search[0] != 0)
         {
             // Finds Neighbors and inserts into flood-array for flooding
-            for(i = 0; i < 4 - 1; i++)
+            for(i = 0; i < 4; i++)
             {
 
-                flood[0] = src_node + 1;
+                flood[i] = i + 1;
                 dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
             }
 
