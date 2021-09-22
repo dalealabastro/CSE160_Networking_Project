@@ -9,6 +9,8 @@ generic module neighbor_discoveryP()
 
 implementation
 {
+    bool truth = true;
+    bool falsed = false;
     int target_node;
     int flood_node;
     int size = 19;
@@ -52,11 +54,11 @@ implementation
         {
             if(flood[i] != 0)
             {
-                return true;
+                return truth;
             }
         }
 
-        return false;
+        return falsed;
     }
 
     //Returns node that is viable for flooding
@@ -116,15 +118,15 @@ implementation
         {
             if(search[i] == node)
             {
-                return false;
+                return falsed;
             }
             else if(done[i] == node)
             {
-                return false;
+                return falsed;
             }
         }
 
-        return true;
+        return truth;
     }
 
     // command void neighbor_discovery.neighborFlood()
