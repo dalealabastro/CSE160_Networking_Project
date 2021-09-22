@@ -14,7 +14,8 @@ implementation
     int target_node;
     int flood_node;
     int size = 19;
-    int i, j;
+    int i;
+    int j;
     int search[19];
     int flood[19];
     int done[19];
