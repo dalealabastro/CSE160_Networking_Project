@@ -13,11 +13,11 @@ implementation
     int flood_node;
     int size = 19;
     int i, j;
-    int search[size]];
-    int flood[size];
-    int done[size];
+    int search[19];
+    int flood[19];
+    int done[19];
 
-    command void neighbor_discovery.neighborSearch(uint16_t src_node) // Testing
+    command void neighbor_discovery.neighborSearch(int src_node) // Testing
     {
 
         if(search[0] == 0)
@@ -109,7 +109,7 @@ implementation
     }
 
     //Checks if the node that is inputted has already been flooded
-    command bool neighbor_discovery.checkFlood(uint16_t node)
+    command bool neighbor_discovery.checkFlood(int node)
     {
         dbg(GENERAL_CHANNEL, "Checking Node Has Been Flooded\n")
         for(i = 0; i < size; i++)
