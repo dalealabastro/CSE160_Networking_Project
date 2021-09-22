@@ -9,16 +9,16 @@ generic module neighbor_discoveryP()
 
 implementation
 {
-    int target_node = 0;
-    int flood_node = 0;
-    int search[19];
-    int flood[19];
-    int done[19];
+    int target_node;
+    int flood_node;
+    int size = 19;
+    int i, j;
+    int search[size]];
+    int flood[size];
+    int done[size];
 
     command void neighbor_discovery.neighborSearch(uint16_t src_node) // Testing
     {
-        int i;
-        int j = 0;
 
         if(search[0] == 0)
         {
@@ -26,18 +26,18 @@ implementation
         }
 
         // Moves nodes that recived message and neighbors of node found into done-array
-        while(search[j] != 0)
+        while(search[0] != 0)
         {
             // Finds Neighbors and inserts into flood-array for flooding
             for(i = 0; i < 4 - 1; i++)
             {
 
-                flood[i] = i + 1;
+                flood[0] = i + 1;
                 dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
             }
 
-            done[search[j] - 1] = search[j];
-            dbg(GENERAL_CHANNEL, "Node Done: %i\n", search[j]);
+            done[search[0] - 1] = search[0];
+            dbg(GENERAL_CHANNEL, "Node Done: %i\n", search[0]);
             for(i = 0; i < 19-1; i++)
             {
 				search[i] = search[i+1];
@@ -47,7 +47,7 @@ implementation
 
     command bool neighbor_discovery.Flood_empty()
     {
-        for(i = 0; i < 19; i++)
+        for(i = 0; i < size; i++)
         {
             if(flood[i] != 0)
             {
@@ -58,29 +58,39 @@ implementation
         return false;
     }
 
+    //Returns node that is viable for flooding
     command uint16_t neighbor_discovery.get_Flood()
     {
-        while(true)
+        //Checks for any node that is already flooded and remove from the queue
+        for(i = 0; i < size; i++)
         {
-            if(done[flood[i] - 1] == flood[i])
+            if(flood[i] == 0)
             {
-                for(i = 0; i < 19-1; i++)
-                {
-				    flood[i] = flood[i+1];
-			    }
-                continue;
+                break;
             }
-            break;
+
+            if(flood[i] == done[flood[i] - 1])
+            {
+                for(j = i; j < size - 1; j++)
+                {
+                    flood[j] = flood[j + 1]
+                }
+                i = 0;
+            }
         }
 
         flood_node = flood[0];
-        for(i = 0; i < 19-1; i++)
+
+        //Removes node that will be returned and move all other nodes up the queue
+        for(i = 0; i < size-1; i++)
         {
             flood[i] = flood[i+1];
         }
 
-        for(i = 0; i < 19-1; i++)
+        //Moves node that will be returned into queue for neighbor search
+        for(i = 0; i < size-1; i++)
         {
+            //If node exists at current location move to the next spot
             if(search[i] > 0)
             {
                 continue;
@@ -96,9 +106,10 @@ implementation
 
     }
 
+    //Checks if the node that is inputted has already been flooded
     command bool neighbor_discovery.checkFlood(uint16_t node)
     {
-        for(i = 0; i < 19; i++)
+        for(i = 0; i < size; i++)
         {
             if(search[i] == node)
             {
@@ -143,17 +154,3 @@ implementation
     //     }
     //}
 }
-
-}
-
-
-
-
-
-
-
-
-    //Create function that creates linked list (state variable that we can access)
-    //Said function ^ also calls another function that will search for neighbors for each node and returns a list
-    //Flood neighbor depending on which origin node we are searchly at.
-    //Call another function which will store neighbors that sent the message in another list to make sure no message is sent backwards up the pipeline.
