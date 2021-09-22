@@ -142,7 +142,7 @@ def main():
 
     s.runTime(20);
     s.neighborDMP(5); # List of neighbor for node 5. ADDED LINE
-    s.ping(1, 2, "Fuck, You");
+    s.ping(1, 2, "Hello, World");
     s.runTime(10);
     s.ping(1, 3, "Hi!");
     s.runTime(20);
