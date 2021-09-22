@@ -16,7 +16,7 @@ implementation
         do
         {
             // Take src node and sets it neighbors
-            src_node = 1
+            src_node = 1;
             call neighbor_discovery.neighborSearch(src_node);
 
             while(call neighbor_discovery.Flood_empty() == 1)
@@ -32,7 +32,7 @@ implementation
                     break; //If flood array is zero, that means no more nodes to flood and loop can end
                 }
                 //Sends node to function to be flooded by package
-                call flooding.flood(flood[i]);
+                call flooding.flood_exe(flood[i]);
 
                 //Clears node from array
                 flood[i] = 0;
