@@ -1,5 +1,5 @@
 interface flooding
 {
-    command void Flood();
-    command void flood();
+    command void flood_prep();
+    command void flood_exe();
 }
