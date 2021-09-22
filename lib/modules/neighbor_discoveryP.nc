@@ -20,7 +20,7 @@ implementation
     int flood[19];
     int done[19];
 
-    command void neighbor_discovery.neighborSearch(int src_node) // Testing
+    command int neighbor_discovery.neighborSearch(int src_node) // Testing
     {
 
         if(search[0] == 0)
@@ -78,7 +78,7 @@ implementation
             {
                 for(j = i; j < size - 1; j++)
                 {
-                    flood[j] = flood[j + 1]
+                    flood[j] = flood[j + 1];
                 }
                 i = 0;
             }
