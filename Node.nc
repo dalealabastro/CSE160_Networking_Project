@@ -22,18 +22,20 @@ module Node{
    uses interface SimpleSend as Sender;
 
    uses interface CommandHandler;
+
    uses interface neighbor_discovery as neighbor;  //=======================
+   uses interface flooding as flood;
 }
 
 implementation{
    pack sendPackage;
-   uint16_t *test_value = 17;
+
    // Prototypes
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 
    event void Boot.booted(){
       call AMControl.start();
-      call neighbor.neighborSearch();
+      call flood.Flood();
       dbg(GENERAL_CHANNEL, "Booted\n");
    }
 

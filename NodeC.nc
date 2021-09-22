@@ -34,5 +34,6 @@ implementation {
     components new neighbor_discoveryC(); //====================
     Node.neighbor -> neighbor_discoveryC; //=================
 
-    
+    components new floodingC();
+    Node.flood -> floodingC;
 }
