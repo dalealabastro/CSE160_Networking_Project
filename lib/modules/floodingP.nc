@@ -7,6 +7,7 @@ generic module floodingP()
 implementation
 {
     int i = 0;
+    uint16_t src_node;
     int flood[19];
 
     command void flooding.Flood()
@@ -14,6 +15,7 @@ implementation
         do
         {
             // Take src node and sets it neighbors
+            src_node = 1
             call neighbor_discovery.neighborSearch(src_node);
 
             while(call neighbor_discovery.Flood_empty())

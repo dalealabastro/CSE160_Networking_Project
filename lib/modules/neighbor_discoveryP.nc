@@ -32,7 +32,7 @@ implementation
             for(i = 0; i < 4 - 1; i++)
             {
 
-                flood[0] = i + 1;
+                flood[0] = src_node + 1;
                 dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
             }
 
@@ -47,6 +47,7 @@ implementation
 
     command bool neighbor_discovery.Flood_empty()
     {
+        dbg(GENERAL_CHANNEL, "Flood Check\n");
         for(i = 0; i < size; i++)
         {
             if(flood[i] != 0)
@@ -61,6 +62,7 @@ implementation
     //Returns node that is viable for flooding
     command uint16_t neighbor_discovery.get_Flood()
     {
+        dbg(GENERAL_CHANNEL, "Getting Node For Flooding\n")
         //Checks for any node that is already flooded and remove from the queue
         for(i = 0; i < size; i++)
         {
@@ -109,6 +111,7 @@ implementation
     //Checks if the node that is inputted has already been flooded
     command bool neighbor_discovery.checkFlood(uint16_t node)
     {
+        dbg(GENERAL_CHANNEL, "Checking Node Has Been Flooded\n")
         for(i = 0; i < size; i++)
         {
             if(search[i] == node)
