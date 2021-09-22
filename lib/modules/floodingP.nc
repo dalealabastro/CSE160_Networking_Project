@@ -8,9 +8,10 @@ implementation
 {
     int i = 0;
     uint16_t src_node;
+    uint16_t des_node;
     int flood[19];
 
-    command void flooding.Flood()
+    command void flooding.flood_prep()
     {
         do
         {
@@ -37,10 +38,10 @@ implementation
                 flood[i] = 0;
 
             }
-        }while(call neighbor_discovery.checkFlood(node_forCheck) == 1);
+        }while(call neighbor_discovery.checkFlood(3) == 1);
     }
 
-    command void flooding.flood()
+    command void flooding.flood_exe()
     {
         //write code block
     }
