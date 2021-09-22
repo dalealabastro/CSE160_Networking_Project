@@ -22,6 +22,7 @@ implementation
             while(call neighbor_discovery.Flood_empty() == 1)
             {
                 flood[i] = call neighbor_discovery.get_Flood();
+                dbg(GENERAL_CHANNEL, "FLOODING NODE: %i\n", flood[i]);
                 i++;
             }
             //Loops through all neighbor nodes in line for flooding
