@@ -65,7 +65,7 @@ implementation
     //Returns node that is viable for flooding
     command uint16_t neighbor_discovery.get_Flood()
     {
-        dbg(GENERAL_CHANNEL, "Getting Node For Flooding\n")
+        dbg(GENERAL_CHANNEL, "Getting Node For Flooding\n");
         //Checks for any node that is already flooded and remove from the queue
         for(i = 0; i < size; i++)
         {
@@ -114,7 +114,7 @@ implementation
     //Checks if the node that is inputted has already been flooded
     command int neighbor_discovery.checkFlood(int node)
     {
-        dbg(GENERAL_CHANNEL, "Checking Node Has Been Flooded\n")
+        dbg(GENERAL_CHANNEL, "Checking Node Has Been Flooded\n");
         for(i = 0; i < size; i++)
         {
             if(search[i] == node)
