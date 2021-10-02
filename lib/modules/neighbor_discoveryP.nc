@@ -4,7 +4,9 @@
 
 generic module neighbor_discoveryP()
 {
-    provides interface neighbor_discovery;                    
+    provides interface neighbor_discovery;
+    //List interface and declare it. INclude appropriate headers. 
+    //Timers                 
 }
 
 implementation
@@ -36,11 +38,11 @@ implementation
             {
 
                 flood[i] = i + 1;
-                dbg(GENERAL_CHANNEL, "Node Inserted: %i\n", flood[i]);
+                dbg(NEIGHBOR_CHANNEL, "Node Inserted: %i\n", flood[i]);
             }
 
             done[search[0] - 1] = search[0];
-            dbg(GENERAL_CHANNEL, "Node Done: %i\n", search[0]);
+            dbg(NEIGHBOR_CHANNEL, "Node Done: %i\n", search[0]);
             for(i = 0; i < 19-1; i++)
             {
 				search[i] = search[i+1];
@@ -50,7 +52,7 @@ implementation
 
     command int neighbor_discovery.Flood_empty()
     {
-        dbg(GENERAL_CHANNEL, "Flood Check\n");
+        dbg(NEIGHBOR_CHANNEL, "Flood Check\n");
         for(i = 0; i < size; i++)
         {
             if(flood[i] != 0)
@@ -65,7 +67,7 @@ implementation
     //Returns node that is viable for flooding
     command uint16_t neighbor_discovery.get_Flood()
     {
-        dbg(GENERAL_CHANNEL, "Getting Node For Flooding\n");
+        dbg(NEIGHBOR_CHANNEL, "Getting Node For Flooding\n");
         //Checks for any node that is already flooded and remove from the queue
         for(i = 0; i < size; i++)
         {
@@ -114,7 +116,7 @@ implementation
     //Checks if the node that is inputted has already been flooded
     command int neighbor_discovery.checkFlood(int node)
     {
-        dbg(GENERAL_CHANNEL, "Checking Node Has Been Flooded\n");
+        dbg(NEIGHBOR_CHANNEL, "Checking Node Has Been Flooded\n");
         for(i = 0; i < size; i++)
         {
             if(search[i] == node)
@@ -129,34 +131,4 @@ implementation
 
         return true;
     }
-
-    // command void neighbor_discovery.neighborFlood()
-    // {
-    //     while(flood[0] != 0)
-    //     {
-    //         // Checks if node in line to flooded already flooded to avoid backtracking
-    //         if(flood[0] == done[flood[0] - 1])
-    //         {
-    //             for(i = 0; i < 19-1; i++)
-    //             {
-	// 			    flood[i] = flood[i+1];
-	// 		    }
-    //             continue;
-    //         }
-
-    //         // call Flood Function
-            
-    //         //Checks if there are anymore nodes to flood or target node has been reached
-    //         if(flood[0] == 0 || flood[0] == target_node)
-    //         {
-    //             break;
-    //         }
-
-    //         for(i = 0; i < 19-1; i++)
-    //         {
-    //             //Moves flood line up by one for next node to be flooded
-	// 			flood[i] = flood[i+1];
-	// 		}
-    //     }
-    //}
 }

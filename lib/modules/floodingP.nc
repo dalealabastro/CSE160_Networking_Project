@@ -1,7 +1,10 @@
 generic module floodingP()
 {
     provides interface flooding;
-    uses interface neighbor_discovery;                
+    uses interface neighbor_discovery;
+    uses interface Queue;
+    uses interface Hashmap;
+    uses interface SimpleSend as Send;              
 }
 
 implementation
@@ -16,7 +19,6 @@ implementation
         do
         {
             // Take src node and sets it neighbors
-            src_node = 1;
             call neighbor_discovery.neighborSearch(src_node);
 
             while(call neighbor_discovery.Flood_empty() == 1)
