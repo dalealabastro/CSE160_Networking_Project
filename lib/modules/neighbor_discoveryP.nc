@@ -1,18 +1,44 @@
 //File created (not original)
 
 #include "../../includes/sendInfo.h"
+#include "../../includes/command.h"
+#include "../../includes/channels.h"
+#include "../../includes/commandmsg.h"
+#include "../../includes/packet.h"
+#include <Timer.h>
 
 generic module neighbor_discoveryP()
 {
     provides interface neighbor_discovery;
     //List interface and declare it. INclude appropriate headers. 
-    //Timers                 
+    uses interface Simplesend;
+    uses interface Receive;
+    uses interface Hashmap;
+    uses interface Timer;
 }
+
+//To access the packets stuff: In beginning of each module in implement, we need makepack 
+//void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
+
+//Use simplesend, recieve, packet, am_packet, list or hashmap, and Timer to send periodically pings to nodes.
+//Headers: for neighbor disc: use built in timer in tiny os: Timer.h. Use command.h, packet.h, commandmsg.h, send info .h, and channels.h
+
+//Use protocol ping and ping reply. Send ping to each node and get ping reply back
+//How to send ping to neighbor: Use list and save all the nodes into it. Use output from list to use for said purpose.
+
+//How to access topography: Access to topography through commandhandler and commandmsg automatically. List and hashmap do it automatically, inspect those codes and study it
+//line by line. Include them as interface or header at the beginning of code. Use them thru code.
+
+//We are just calling functions, wiring, and linking them together and print output. Read code and learn from it.
+
+//How is it automatically getting access: There are some functions (get from listC.nc, list.get,size,) through neighbor discovery.
+//Get the info and use that info in the code. commandhandler,commandmsg, handler. Wire in list (list.get)? Yes. Command handler declared in node.nc so don't need to change.
+//All you need to do is declare list or hashmap and call some function of it during module.
+
+//How to put size: Call it and during code and during debug, if topography is bigger than value do this, if not, do that.
 
 implementation
 {
-    int true = 1;
-    int false = 0;
     int target_node;
     int flood_node;
     int size = 19;
@@ -57,11 +83,11 @@ implementation
         {
             if(flood[i] != 0)
             {
-                return true;
+                return SUCCESS;
             }
         }
 
-        return false;
+        return FAIL;
     }
 
     //Returns node that is viable for flooding
@@ -121,14 +147,14 @@ implementation
         {
             if(search[i] == node)
             {
-                return false;
+                return FAIL;
             }
             else if(done[i] == node)
             {
-                return false;
+                return FAIL;
             }
         }
 
-        return true;
+        return SUCCESS;
     }
 }

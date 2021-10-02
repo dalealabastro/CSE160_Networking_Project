@@ -1,12 +1,20 @@
+#include "../../includes/sendInfo.h"
+#include "../../includes/command.h"
+#include "../../includes/channels.h"
+#include "../../includes/commandmsg.h"
+#include "../../includes/packet.h"
+
 generic module floodingP()
 {
     provides interface flooding;
     uses interface neighbor_discovery;
-    uses interface Queue;
+    //uses interface Queue; 
     uses interface Hashmap;
-    uses interface SimpleSend as Send;              
+    uses interface SimpleSend as Send;
+    uses interface Recieve;               
 }
-
+//we need recieve, packet, one of list or hashmap, nieghbor disc module in flooding as interface (call it during flooding process)
+//Headers: for neighbor disc: use built in timer in tiny os: Timer.h. Use command.h, packet.h, commandmsg.h, send info .h, and channels.h
 implementation
 {
     int i = 0;

@@ -16,8 +16,8 @@ implementation
     components new neighbor_discoveryC();
     floodingP.neighbor_discovery -> neighbor_discoveryC;
 
-    components new QueueC();
-    floodingP.Queue -> QueueC;
+    // components new QueueC();
+    // floodingP.Queue -> QueueC;
 
     components new HashmapC();
     floodingP.Hashmap -> HashmapC;
