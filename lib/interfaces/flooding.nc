@@ -1,5 +1,5 @@
-interface flooding
+interface Flooding
 {
-    command void flood_prep();
-    command void flood_exe();
+   // Events
+   command void flood(uint16_t src);
 }
