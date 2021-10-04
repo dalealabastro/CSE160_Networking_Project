@@ -18,6 +18,10 @@ implementation {
     components Node;
     components new AMReceiverC(AM_PACK) as GeneralReceive;
 
+    components new ListC(pack, 64) as neighborListC;
+    components new ListC(lspLink, 64) as lspLinkC;
+    components new HashmapC(int, 64) as NodeCacheC;
+
     Node -> MainC.Boot;
 
     Node.Receive -> GeneralReceive;
@@ -28,12 +32,26 @@ implementation {
     components new SimpleSendC(AM_PACK);
     Node.Sender -> SimpleSendC;
 
+    components NeighborDiscoveryC;
+    Node.NeighborDiscovery -> NeighborDiscoveryC;
+    NeighborDiscoveryC.neighborListC -> neighborListC;
+    LinkStateC.lspLinkC -> lspLinkC;
+
     components CommandHandlerC;
     Node.CommandHandler -> CommandHandlerC;
 
-    components new neighbor_discoveryC(); //====================
-    Node.neighbor -> neighbor_discoveryC; //=================
-
-    components new floodingC();
-    Node.flood -> floodingC;
+    components FloodingC;
+    Node.FloodSender -> FloodingC.FloodSender;
+    FloodingC.lspLinkC -> lspLinkC;
+    FloodingC.NodeCacheC -> NodeCacheC;
+    FloodingC.neighborListC -> neighborListC;
+    FloodingC.HashmapC -> HashmapC;
+    Node.RouteSender -> FloodingC.RouteSender;
+    
+    components LinkStateC;
+    Node.LinkState -> LinkStateC;
+    //Node.lspLinkList -> lspLinkC;
+    Node.routingTable ->HashmapC;
+    LinkStateC.neighborListC-> neighborListC;
+    LinkStateC.HashmapC -> HashmapC;
 }

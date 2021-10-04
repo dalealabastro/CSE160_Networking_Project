@@ -36,6 +36,8 @@ implementation{
    event void Boot.booted(){
       call AMControl.start();
       dbg(GENERAL_CHANNEL, "Booted\n");
+      call NeighborDiscovery.start();
+      call LinkState.start();
    }
 
    event void AMControl.startDone(error_t err){
@@ -66,11 +68,20 @@ implementation{
       call Sender.send(sendPackage, destination);
    }
 
-   event void CommandHandler.printNeighbors(){}
+   event void CommandHandler.printNeighbors()
+   {
+      call NeighborDiscovery.print();
+   }
 
-   event void CommandHandler.printRouteTable(){}
+   event void CommandHandler.printRouteTable()
+   {
+      call LinkState.printRoutingTable();
+   }
 
-   event void CommandHandler.printLinkState(){}
+   event void CommandHandler.printLinkState()
+   {
+      call LinkState.print();
+   }
 
    event void CommandHandler.printDistanceVector(){}
 
