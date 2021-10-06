@@ -6,7 +6,7 @@ configuration NeighborDiscoveryC
   provides interface NeighborDiscovery;
 
   //list for neighbor list
-  uses interface List<packet*> as neighborListC;
+  //uses interface List<pack> as neighborListC;
 
   ///uses interface Flooding;
 
@@ -18,6 +18,7 @@ implementation
   components NeighborDiscoveryP; //---------------------------------------------------------------------------
 
   //list of neighbors
+  components new ListC<pack, 64> as neighborListC
   NeighborDiscoveryP.neighborListC = neighborListC; //-----------------------------------------
 
   //timer for neighbor discovery component
