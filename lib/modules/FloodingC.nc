@@ -7,12 +7,12 @@ configuration FloodingC
   provides interface SimpleSend as FloodSender;
   uses interface List<pack> as neighborListC;
   uses interface Hashmap<int> as NodeCacheC;
-  //uses interface Hashmap<route> as HashmapC;???????????????????????????------------------------
 }
 
 implementation
 {
   components FloodingP;
+  Flooding = FloodingP.Flooding;
 
   //components to receive and send flooding header
   components new SimpleSendC(AM_FLOODING);
@@ -30,8 +30,6 @@ implementation
   FloodingP.NeighborDiscovery->NeighborDiscoveryC;
 
   FloodSender = FloodingP.FloodSender;
-
-  Flooding = FloodingP.Flooding;
   
   FloodingP.NodeCache = NodeCacheC;
 
