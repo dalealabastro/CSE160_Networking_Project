@@ -26,8 +26,6 @@ module Node{
    uses interface NeighborDiscovery;
 
    uses interface Flooding;
-
-   //uses interface SimpleSend as FloodSender; //Flooding output
 }
 
 implementation{
