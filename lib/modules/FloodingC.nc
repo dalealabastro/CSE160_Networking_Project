@@ -33,6 +33,6 @@ implementation
   
   FloodingP.NodeCache = NodeCacheC;
 
-  components new ListC(pack*, 64) as packetListC;
+  components new ListC(pack, 64) as packetListC;
   FloodingP.packetList->packetListC;
 }
