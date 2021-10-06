@@ -1,35 +1,31 @@
-#define AM_NEIGHBOR 62 
+//#define AM_NEIGHBOR 62 //Hard coded number for AM
 
 configuration NeighborDiscoveryC
 {
 
   provides interface NeighborDiscovery;
 
-  //list for neighbor list
   uses interface List<pack> as neighborListC;
-
-  ///uses interface Flooding;
-
 }
 
 implementation
 {
 
-  components NeighborDiscoveryP; //---------------------------------------------------------------------------
+  components NeighborDiscoveryP;
 
   //list of neighbors
-  NeighborDiscoveryP.neighborListC = neighborListC; //-----------------------------------------
+  NeighborDiscoveryP.neighborListC = neighborListC;
 
   //timer for neighbor discovery component
-  components new TimerMilliC() as NDTimerC; //-------------------------------
-  NeighborDiscoveryP.NDTimer->NDTimerC; //Wire the interface to the component
+  components new TimerMilliC() as NDTimerC;
+  NeighborDiscoveryP.NDTimer->NDTimerC;
 
   //connect negihbor dicovery to flooding
   components FloodingC;
   NeighborDiscoveryP.FloodSender->FloodingC.FloodSender;
-  NeighborDiscoveryP.Flooding -> FloodingC;//-------------------------------
+  NeighborDiscoveryP.Flooding -> FloodingC;
 
   // External Wiring
-  NeighborDiscovery = NeighborDiscoveryP.NeighborDiscovery;//-------------------------------------------------
+  NeighborDiscovery = NeighborDiscoveryP.NeighborDiscovery;
 
 }

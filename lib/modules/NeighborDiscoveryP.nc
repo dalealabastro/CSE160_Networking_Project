@@ -1,17 +1,5 @@
 #include "../../includes/channels.h"
 #include "../../includes/packet.h"
-// You need to send neighbor discovery packets
-// periodically
-// – Nodes could die at any time
-// – Use a timer and post a task to do this periodically
-// o What is a good timer to avoid overloading thenetwork?
-// • Upon reception of a neighbor discovery packet,
-// the receiving node must reply back
-// • The mechanism is very similar to Ping and Ping
-// Reply, you could copy or reuse the code (Skeleton
-// code!)
-// • When getting a reply back, the node should gather
-// statistics
 
 module NeighborDiscoveryP
 {
@@ -49,7 +37,7 @@ implementation
 
   command void NeighborDiscovery.neighborReceived(pack * inMsg)
   {
-    dbg(GENERAL_CHANNEL, "Package Received \n"); // DEBUG ================================
+    dbg(GENERAL_CHANNEL, "Packet Received \n");
     if (!findMyNeighbor(inMsg))
     {
       call neighborListC.pushback(*inMsg);
@@ -67,8 +55,7 @@ implementation
       dbg(NEIGHBOR_CHANNEL, "Printing out %d neighbours from node:%d\n", registerSize, TOS_NODE_ID);
       for (i = 0; i < registerSize; i++)
       {
-        //retrieve neighbor nodes
-        pack neighbor = call neighborListC.get(i);
+        pack neighbor = call neighborListC.get(i); //get neighbor nodes
 
         dbg(NEIGHBOR_CHANNEL, "%d - %d\n", TOS_NODE_ID, neighbor.src);
       }
@@ -85,12 +72,11 @@ implementation
   event void NDTimer.fired()
   {
     char *neighborPayload = "Neighbor Discovery";
-    //neighbor register size
-    uint16_t size = call neighborListC.size();
+    
+    uint16_t size = call neighborListC.size(); //Size of neighbor
 
     uint16_t i = 0;
 
-    //dbg(NEIGHBOR_CHANNEL,"Neighbor Discovery Timer Fired\n");
 
     if (neighborAge == 5)
     {
@@ -105,8 +91,6 @@ implementation
     makePack(&outPackage, TOS_NODE_ID, AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_PING, seqNumber, (uint8_t *)neighborPayload, PACKET_MAX_PAYLOAD_SIZE);
 
     neighborAge++;
-    //seqNumber++;
-    //dbg(FLOODING_CHANNEL, "AM_BROADCAST_ADDR: %d\n", AM_BROADCAST_ADDR);
 
     call FloodSender.send(outPackage, AM_BROADCAST_ADDR);
   }
@@ -139,7 +123,6 @@ implementation
 
   void makePack(pack * Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t * payload, uint8_t length)
   {
-    //dbg(NEIGHBOR_CHANNEL,"src: %d | dest: %d | TTL: %d | seq: %d | protocol: %d | payload: %d |\n",src ,dest,TTL,seq,protocol,payload);
     Package->src = src;
     Package->dest = dest;
     Package->TTL = TTL;
