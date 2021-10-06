@@ -56,22 +56,14 @@ implementation
          }
     }
 
-    //command to send new link state packet
-    command error_t LspSender.send(pack msg, uint16_t dest)
-    {
-        //dbg(COMMAND_CHANNEL, "Route Sender: %d", msg.src);
-
-        call InternalSender.send(msg, AM_BROADCAST_ADDR);
-    }
-
-    command error_t RouteSender.send(pack msg, uint16_t dest){
+    // command error_t RouteSender.send(pack msg, uint16_t dest){
         
-        msg.seq = sequenceN++;
+    //     msg.seq = sequenceN++;
 
-        //dbg(FLOODING_CHANNEL," \n src: %d | dest: %d | TTL: %d | seq: %d | protocol: %d | payload: %s |\n",TOS_NODE_ID ,msg.dest,msg.TTL,msg.seq,msg.protocol,msg.payload);
+    //     //dbg(FLOODING_CHANNEL," \n src: %d | dest: %d | TTL: %d | seq: %d | protocol: %d | payload: %s |\n",TOS_NODE_ID ,msg.dest,msg.TTL,msg.seq,msg.protocol,msg.payload);
 
-        call InternalSender.send(msg, dest);
-    }
+    //     call InternalSender.send(msg, dest);
+    // }
 
     command void Flooding.flood(uint16_t source){
         pack neighborFlood;

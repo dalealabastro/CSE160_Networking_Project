@@ -1,6 +1,5 @@
 #include "../../includes/channels.h"
 #include "../../includes/packet.h"
-
 // You need to send neighbor discovery packets
 // periodically
 // – Nodes could die at any time
@@ -43,14 +42,14 @@ implementation
     uint32_t startTimer;
     dbg(GENERAL_CHANNEL, "Run: Neighbor Discovery\n");
 
-    startTimer = (6000 + (uint16_t) ((call Random.rand16())%5000));;
+    startTimer = (6000);
 
     call NDTimer.startOneShot(startTimer);
   }
 
   command void NeighborDiscovery.neighborReceived(pack * inMsg)
   {
-    //dbg(GENERAL_CHANNEL, "Package Received \n"); // DEBUG ================================
+    dbg(GENERAL_CHANNEL, "Package Received \n"); // DEBUG ================================
     if (!findMyNeighbor(inMsg))
     {
       call neighborListC.pushback(*inMsg);
@@ -93,7 +92,7 @@ implementation
 
     //dbg(NEIGHBOR_CHANNEL,"Neighbor Discovery Timer Fired\n");
 
-    if (neighborAge == MAX_NEIGHBOR_AGE)
+    if (neighborAge == 5)
     {
       dbg(NEIGHBOR_CHANNEL, "removing neighbor of %d with Age %d \n", TOS_NODE_ID, neighborAge);
       neighborAge = 0;

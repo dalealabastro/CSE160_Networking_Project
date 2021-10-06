@@ -6,7 +6,7 @@ configuration NeighborDiscoveryC
   provides interface NeighborDiscovery;
 
   //list for neighbor list
-  uses interface List<packet> as neighborListC;
+  uses interface List<packet*> as neighborListC;
 
   ///uses interface Flooding;
 
