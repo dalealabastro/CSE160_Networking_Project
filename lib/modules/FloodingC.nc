@@ -14,18 +14,14 @@ implementation
   components FloodingP;
   Flooding = FloodingP.Flooding;
 
-  //components to receive and send flooding header
-  components new SimpleSendC(AM_FLOODING);
-  components new AMReceiverC(AM_FLOODING);
+  components new SimpleSendC(AM_FLOODING); //Flooding packets
+  FloodingP.insideSender->SimpleSendC;
 
-  // Wire Internal Components
-  FloodingP.InternalSender->SimpleSendC;
-  FloodingP.InternalReceiver->AMReceiverC;
+  components new AMReceiverC(AM_FLOODING); //Get notification of packet get
+  FloodingP.insideReciever->AMReceiverC;
   
   FloodingP.neighborList = neighborListC;
 
-
-  // Provide External Interfaces.
   components NeighborDiscoveryC;
   FloodingP.NeighborDiscovery->NeighborDiscoveryC;
 
