@@ -1,46 +1,13 @@
-#define AM_NEIGHBOR 62 
+//File created (not original)
 
-configuration NeighborDiscoveryC
+
+generic configuration neighbor_discoveryC()
 {
-
-  provides interface NeighborDiscovery;
-
-  //list for neighbor list
-  uses interface List<pack> as neighborListC;
-
-  ///uses interface Flooding;
-
+    provides interface neighbor_discovery;
 }
 
 implementation
 {
-
-  components NeighborDiscoveryP;
-
-  //AM Receiver, generic receiver implemented in tinyos to receive generic AM types
-  components new AMReceiverC(AM_NEIGHBOR);
-
-  //using simplesend to send package
-  components new SimpleSendC(AM_NEIGHBOR);
-
-  //list of neighbors
-  NeighborDiscoveryP.neighborListC = neighborListC;
-
-
-  //random # generator
-  components RandomC as Random;
-  NeighborDiscoveryP.Random->Random;
-  
-  //timer for neighbor discovery component
-  components new TimerMilliC() as NDTimerC;
-  NeighborDiscoveryP.NDTimer->NDTimerC; //Wire the interface to the component
-
-  //connect negihbor dicovery to flooding
-  components FloodingC;
-  NeighborDiscoveryP.FloodSender->FloodingC.FloodSender;
-  NeighborDiscoveryP.Flooding -> FloodingC;
-
-  // External Wiring
-  NeighborDiscovery = NeighborDiscoveryP.NeighborDiscovery;
-
+    components new neighbor_discoveryP();
+    neighbor_discovery = neighbor_discoveryP.neighbor_discovery;
 }

@@ -1,50 +1,29 @@
-#define AM_FLOODING 79
+#include "includes/packet.h"
 
-configuration FloodingC
+generic configuration floodingC()
 {
-  provides interface Flooding;
-  provides interface SimpleSend as LspSender;
-  provides interface SimpleSend as FloodSender;
-  provides interface SimpleSend as RouteSender;
-  uses interface List<pack> as neighborListC;
-  uses interface List<lspLink> as lspLinkC;
-  uses interface Hashmap<int> as NodeCacheC;
-  uses interface Hashmap<route> as HashmapC;
+    provides interface flooding;  
+    //SimpleSend
+    //Recieve             
 }
 
 implementation
 {
-  components FloodingP;
+    //Add
+    components new floodingP();
+    flooding = floodingP.flooding;
 
-  //components to receive and send flooding header
-  components new SimpleSendC(AM_FLOODING);
-  components new AMReceiverC(AM_FLOODING);
+    components new neighbor_discoveryC();
+    floodingP.neighbor_discovery -> neighbor_discoveryC;
 
-  // Wire Internal Components
-  FloodingP.InternalSender->SimpleSendC;
-  FloodingP.InternalReceiver->AMReceiverC;
-  //link state packet
-  FloodingP.lspLinkList = lspLinkC;
-  
-  FloodingP.routingTable = HashmapC;
-  
-  FloodingP.neighborList = neighborListC;
+    components new QueueC();
+    floodingP.Queue -> QueueC;
 
+    components new HashmapC();
+    floodingP.Hashmap -> HashmapC;
 
-  // Provide External Interfaces.
-  components NeighborDiscoveryC;
-  FloodingP.NeighborDiscovery->NeighborDiscoveryC;
-
-  FloodSender = FloodingP.FloodSender;
-  LspSender = FloodingP.LspSender;
-  RouteSender = FloodingP.RouteSender;
-
-  Flooding = FloodingP.Flooding;
-  
-  FloodingP.NodeCache = NodeCacheC;
-
-  components new ListC(pack, 64) as packetListC;
-  FloodingP.packetList->packetListC;
+    components new SimpleSendC(AM_PACK);
+    floodingP.Send -> SimpleSendC;
 }
 
 
