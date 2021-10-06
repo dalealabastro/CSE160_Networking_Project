@@ -42,5 +42,4 @@ implementation {
     //Node.FloodSender -> FloodingC.FloodSender;
     FloodingC.NodeCacheC -> NodeCacheC;
     FloodingC.neighborListC -> neighborListC;
-    FloodingC.HashmapC -> HashmapC;
 }
