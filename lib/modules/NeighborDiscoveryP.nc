@@ -37,7 +37,7 @@ implementation
 
   command void NeighborDiscovery.neighborReceived(pack * inMsg)
   {
-    dbg(GENERAL_CHANNEL, "Packet Received \n");
+    dbg(GENERAL_CHANNEL, "Ping Receive\n");
     if (!findMyNeighbor(inMsg))
     {
       call neighborListC.pushback(*inMsg);

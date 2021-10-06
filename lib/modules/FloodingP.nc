@@ -95,13 +95,12 @@ implementation
                 {
                     makePack(&sendPackage, TOS_NODE_ID, AM_BROADCAST_ADDR, myMsg->TTL - 1, PROTOCOL_PINGREPLY, sequenceN, (uint8_t*) myMsg->payload, PACKET_MAX_PAYLOAD_SIZE);
                     //Check TOS_NODE_ID and destination
+                    dbg(GENERAL_CHANNEL, "Ping sent\n");
                     call insideSender.send(sendPackage, myMsg->src);
                 }
                 //neighbor ping reply
                 if (myMsg->protocol == PROTOCOL_PINGREPLY)
                 {
-                    dbg(GENERAL_CHANNEL, "Packet recieved check\n");
-                    
                     call NeighborDiscovery.neighborReceived(myMsg);
                 }
                 if (myMsg->protocol == PROTOCOL_FLOODING)
@@ -133,7 +132,7 @@ implementation
                             
                         }
                     }else{
-                        dbg(FLOODING_CHANNEL,"In the Cache Already\n");
+                        //dbg(FLOODING_CHANNEL,"In the Cache Already\n");
                     }
                     
                 }
