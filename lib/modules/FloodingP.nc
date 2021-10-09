@@ -33,6 +33,7 @@ implementation
 
     command error_t FloodSender.send(pack msg, uint16_t dest)
     {
+        dbg(FLOODING_CHANNEL, "STARTING FLOOD NODE: %d\n", TOS_NODE_ID);
         msg.src = TOS_NODE_ID; //Src flood
         msg.protocol = PROTOCOL_PING;
         msg.seq = sequenceN + 1; //Inc of seq. #
