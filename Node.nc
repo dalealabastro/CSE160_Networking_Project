@@ -12,6 +12,8 @@
 #include "includes/CommandMsg.h"
 #include "includes/sendInfo.h"
 #include "includes/channels.h"
+#include "includes/lsp.h"
+#include "includes/route.h"
 
 module Node{
    uses interface Boot;
@@ -26,6 +28,11 @@ module Node{
    uses interface NeighborDiscovery;
 
    uses interface Flooding;
+
+   uses interface SimpleSend as RouteSender;
+   uses interface Hashmap<route> as routingTable;
+
+   uses interface LinkState;
 }
 
 implementation{
