@@ -79,7 +79,7 @@ implementation{
     
 
     //if the link state packet is age 5 then clea all its contents
-    if(lspAge==MAX_NEIGHBOR_AGE){
+    if(lspAge==5){
      
       lspAge = 0;
       for(i = 0; i < lspListSize; i++) {

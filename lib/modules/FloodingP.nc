@@ -161,7 +161,7 @@ implementation
             else if (myMsg->dest == AM_BROADCAST_ADDR)
             {
                 //Received updatted DVR from immediate neighbors
-                if (myMsg->protocol == PROTOCOL_LINKSTATE)
+                if (myMsg->protocol == 2)
                 {
                     uint16_t i, j = 0;
                     uint16_t k = 0;
