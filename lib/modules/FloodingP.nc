@@ -194,7 +194,7 @@ implementation
                             //dbg(COMMAND_CHANNEL, "PushBack LSP Link neighbor: %d src: %d\n", lspL.neighbor, myMsg->src);
                         }
                         //at the end relay new info to immediate neighbors
-                        makePack(&sendPackage, myMsg->src, AM_BROADCAST_ADDR, myMsg->TTL - 1, PROTOCOL_LINKSTATE, myMsg->seq, (uint8_t*) myMsg->payload, PACKET_MAX_PAYLOAD_SIZE);
+                        makePack(&sendPackage, myMsg->src, AM_BROADCAST_ADDR, myMsg->TTL - 1, 2, myMsg->seq, (uint8_t*) myMsg->payload, PACKET_MAX_PAYLOAD_SIZE);
                         //Check TOS_NODE_ID and destination
                         call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
                     }

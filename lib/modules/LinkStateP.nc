@@ -118,7 +118,7 @@ implementation{
         }
       }
       //send the link state packe back with the new neighbor list in the payload
-      makePack(&sendPackage, TOS_NODE_ID, AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKSTATE, neighborListSize, (uint8_t *) neighborArr, neighborListSize);
+      makePack(&sendPackage, TOS_NODE_ID, AM_BROADCAST_ADDR, MAX_TTL, 2, neighborListSize, (uint8_t *) neighborArr, neighborListSize);
       
 
       call LspSender.send(sendPackage, AM_BROADCAST_ADDR);
