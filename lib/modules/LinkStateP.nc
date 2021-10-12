@@ -32,7 +32,7 @@ implementation{
 
   command void LinkState.start(){
     // one shot timer and include random element to it.
-    //dbg(GENERAL_CHANNEL, "Booted\n");
+    dbg(ROUTING_CHANNEL, "Link-State Routing Booted\n");
     call lsrTimer.startPeriodic(80000 + (uint16_t)((call Random.rand16())%10000));
     call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
   }
@@ -45,7 +45,7 @@ implementation{
       PriRoute = call routingTable.get(i);
       dbg(GENERAL_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
     }
-    //call LinkState.print();
+    call LinkState.print();
   }
 
   command void LinkState.print()
