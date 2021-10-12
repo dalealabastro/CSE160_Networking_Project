@@ -43,7 +43,7 @@ implementation{
     int i = 0;
     for(i=1; i<=call routingTable.size(); i++){
       PriRoute = call routingTable.get(i);
-      dbg(GENERAL_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
+      dbg(ROUTING_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
     }
     call LinkState.print();
   }
