@@ -112,7 +112,7 @@ implementation{
       //if the neighbor is not in the list of neighbors then add it to it
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
         neighborArr[i] = neighborNode.src;
-        //dbg(ROUTING_CHANNEL,"**Adding %d in node %d\n",neighborNode.src,TOS_NODE_ID);
+        dbg(ROUTING_CHANNEL,"**Adding %d in node %d\n",neighborNode.src,TOS_NODE_ID);
         }else{
         dbg(ROUTING_CHANNEL,"**Node %d already in %d\n",neighborNode.src,TOS_NODE_ID);
         }
@@ -122,7 +122,7 @@ implementation{
       
 
       call LspSender.send(sendPackage, AM_BROADCAST_ADDR);
-      //dbg(ROUTING_CHANNEL, "Sending LSPs\n");
+      dbg(ROUTING_CHANNEL, "Sending LSPs\n");
     }
 
 
@@ -158,7 +158,7 @@ implementation{
         bool adjMatrix[maxNode][maxNode];
         
         
-        //dbg(ROUTING_CHANNEL,"\nSOURCE NODE %d\n",TOS_NODE_ID);
+        dbg(ROUTING_CHANNEL,"\nSOURCE NODE %d\n",TOS_NODE_ID);
 
 
         for(i=0;i<maxNode;i++)
