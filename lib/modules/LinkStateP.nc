@@ -40,6 +40,7 @@ implementation{
   {
     route PriRoute;
     int i = 0;
+    dbg(GENERAL_CHANNEL, "I AM HERE");
     for(i=1; i<=call routingTable.size(); i++){
       PriRoute = call routingTable.get(i);
       dbg(ROUTING_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
