@@ -130,10 +130,12 @@ def main():
     s.addChannel(s.FLOODING_CHANNEL); # Added for Proj. 1
     s.addChannel(s.ROUTING_CHANNEL);
     s.runTime(20);
+    s.routeDMP(2);
     s.ping(1, 2, "Hello, World");
     s.routeDMP(2);
     s.runTime(10);
     s.ping(1, 3, "Hi!");
+    s.routeDMP(3);
     s.runTime(20);
 
 if __name__ == '__main__':
