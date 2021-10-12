@@ -33,7 +33,7 @@ implementation{
     // one shot timer and include random element to it.
     dbg(ROUTING_CHANNEL, "Link-State Routing Booted\n");
     call lsrTimer.startPeriodic(80000);
-    call dijkstraTimer.startOneShot(90000);
+    //call dijkstraTimer.startOneShot(90000);
   }
 
   command void LinkState.printRoutingTable()
