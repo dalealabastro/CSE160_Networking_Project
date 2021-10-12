@@ -159,7 +159,7 @@ implementation{
         bool adjMatrix[maxNode][maxNode];
         
         
-        dbg(ROUTING_CHANNEL,"\nSOURCE NODE %d\n",TOS_NODE_ID);
+        //dbg(ROUTING_CHANNEL,"\nSOURCE NODE %d\n",TOS_NODE_ID);
 
 
         for(i=0;i<maxNode;i++)
