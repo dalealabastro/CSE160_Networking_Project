@@ -47,6 +47,8 @@ implementation{
       dbg(GENERAL_CHANNEL, "Booted\n");
 
       call NeighborDiscovery.start();
+
+      call LinkState.start();
    }
 
    event void AMControl.startDone(error_t err){
