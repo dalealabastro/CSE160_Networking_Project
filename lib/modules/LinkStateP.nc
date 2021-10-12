@@ -123,7 +123,7 @@ implementation{
 
       call LspSender.send(sendPackage, AM_BROADCAST_ADDR);
       dbg(ROUTING_CHANNEL, "Sending LSPs\n");
-      call LinkState.printRoutingTable();
+      //call LinkState.printRoutingTable();
     }
 
 
