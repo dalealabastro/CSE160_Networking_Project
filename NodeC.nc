@@ -45,7 +45,7 @@ implementation {
 
     //components FloodingC;
     components FloodingC;
-    Node.FloodSender -> FloodingC.FloodSender;
+    //Node.FloodSender -> FloodingC.FloodSender;
     FloodingC.lspLinkC -> lspLinkC;
     FloodingC.NodeCacheC -> NodeCacheC;
     FloodingC.neighborListC -> neighborListC;

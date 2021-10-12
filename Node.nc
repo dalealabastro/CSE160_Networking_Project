@@ -80,11 +80,17 @@ implementation{
       call Sender.send(sendPackage, destination);
    }
 
-   event void CommandHandler.printNeighbors(){}
+   event void CommandHandler.printNeighbors(){
+      call NeighborDiscovery.print();
+   }
 
-   event void CommandHandler.printRouteTable(){}
+   event void CommandHandler.printRouteTable(){
+      call LinkState.printRoutingTable();
+   }
 
-   event void CommandHandler.printLinkState(){}
+   event void CommandHandler.printLinkState(){
+      call LinkState.print();
+   }
 
    event void CommandHandler.printDistanceVector(){}
 

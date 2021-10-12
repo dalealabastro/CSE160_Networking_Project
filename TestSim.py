@@ -127,7 +127,7 @@ def main():
     s.addChannel(s.GENERAL_CHANNEL);
     s.addChannel(s.NEIGHBOR_CHANNEL); # Added for Proj. 1
     s.addChannel(s.FLOODING_CHANNEL); # Added for Proj. 1
-
+    s.routeDMP(2);
     s.runTime(20);
     s.ping(1, 2, "Hello, World");
     s.runTime(10);
