@@ -18,6 +18,7 @@ class TestSim:
     GENERAL_CHANNEL="general";
     NEIGHBOR_CHANNEL="neighbor";
     FLOODING_CHANNEL="flooding";
+    ROUTING_CHANNEL="routing";
 
     # Initialize Vars
     numMote=0
@@ -127,7 +128,7 @@ def main():
     s.addChannel(s.GENERAL_CHANNEL);
     s.addChannel(s.NEIGHBOR_CHANNEL); # Added for Proj. 1
     s.addChannel(s.FLOODING_CHANNEL); # Added for Proj. 1
-    s.routeDMP(2);
+    s.addChannel(s.ROUTING_CHANNEL);
     s.runTime(20);
     s.ping(1, 2, "Hello, World");
     s.runTime(10);
