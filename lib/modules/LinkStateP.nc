@@ -32,15 +32,14 @@ implementation{
   command void LinkState.start(){
     // one shot timer and include random element to it.
     dbg(ROUTING_CHANNEL, "Link-State Routing Booted\n");
-    call lsrTimer.startPeriodic(100000);
-    call dijkstraTimer.startOneShot(150000);
+    call lsrTimer.startPeriodic(80000);
+    call dijkstraTimer.startOneShot(90000);
   }
 
   command void LinkState.printRoutingTable()
   {
     route PriRoute;
     int i = 0;
-    dbg(GENERAL_CHANNEL, "I AM HERE\n");
     for(i=1; i<=call routingTable.size(); i++){
       PriRoute = call routingTable.get(i);
       dbg(ROUTING_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
@@ -107,7 +106,7 @@ implementation{
         //update lspl
         call lspLinkList.pushback(lspL);
         //update sshortest past 
-	      call dijkstraTimer.startOneShot(150000);
+	      call dijkstraTimer.startOneShot(90000);
       }
       //if the neighbor is not in the list of neighbors then add it to it
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
