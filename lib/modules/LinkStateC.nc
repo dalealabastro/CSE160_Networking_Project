@@ -25,9 +25,6 @@ implementation
 
   LinkStateP.neighborList = neighborListC;
 
-  components RandomC as Random;
-  LinkStateP.Random->Random;
-
   //LinkStateP.LspReceiver->AMReceiverC;
 
   // External Wiring
