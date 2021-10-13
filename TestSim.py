@@ -120,7 +120,7 @@ class TestSim:
 
 def main():
     s = TestSim();
-    s.runTime(200);
+    s.runTime(250);
     s.loadTopo("long_line.topo");
     s.loadNoise("no_noise.txt");
     s.bootAll();
