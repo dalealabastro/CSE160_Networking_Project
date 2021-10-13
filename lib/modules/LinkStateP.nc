@@ -30,8 +30,8 @@ implementation{
 
   command void LinkState.start(){
     dbg(ROUTING_CHANNEL, "Link-State Routing Booted\n");
-    call lsrTimer.startPeriodic(80000);
-    call dijkstraTimer.startOneShot(90000);
+    call lsrTimer.startPeriodic(20000);
+    call dijkstraTimer.startOneShot(30000);
   }
 
   command void LinkState.printRoutingTable()
@@ -104,7 +104,7 @@ implementation{
         //update lspl
         call lspLinkList.pushback(lspL);
         //update sshortest past 
-	call dijkstraTimer.startOneShot(90000);
+	      call dijkstraTimer.startOneShot(30000);
       }
       
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
