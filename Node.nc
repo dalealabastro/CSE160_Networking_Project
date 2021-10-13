@@ -91,7 +91,7 @@ implementation{
    }
 
    event void CommandHandler.printLinkState(){
-      //call LinkState.print();
+      call LinkState.print();
    }
 
    event void CommandHandler.printDistanceVector(){}
