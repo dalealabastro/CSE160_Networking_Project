@@ -53,7 +53,7 @@ implementation{
       uint16_t lspLinkListSize = call lspLinkList.size();
       uint16_t i = 0;
 
-      for(i = 0; i <= lspLinkListSize; i++)
+      for(i = 0; i < lspLinkListSize; i++)
       {
         lspLink lspackets =  call lspLinkList.get(i);
         dbg(ROUTING_CHANNEL,"Source:%d\tNeighbor:%d\tcost:%d\n",lspackets.src,lspackets.neighbor,lspackets.cost);
@@ -119,7 +119,7 @@ implementation{
       
 
       call LspSender.send(sendPackage, AM_BROADCAST_ADDR);
-      dbg(ROUTING_CHANNEL, "Sending LSPs\n");
+      //dbg(ROUTING_CHANNEL, "Sending LSPs\n");
     }
 
 
