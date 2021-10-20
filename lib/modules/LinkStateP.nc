@@ -55,6 +55,7 @@ implementation{
 
       for(i = 1; i <= lspLinkListSize; i++)
       {
+        dbg(ROUTING_CHANNEL, "I: %d\n", i);
         lspLink lspackets =  call lspLinkList.get(i);
         dbg(ROUTING_CHANNEL,"Source:%d\tNeighbor:%d\tcost:%d\n",lspackets.src,lspackets.neighbor,lspackets.cost);
       }
