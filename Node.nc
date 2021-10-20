@@ -19,6 +19,7 @@ module Node{
    uses interface Boot;
 
    uses interface SplitControl as AMControl;
+
    uses interface Receive;
 
    uses interface SimpleSend as Sender;
@@ -29,7 +30,10 @@ module Node{
 
    uses interface Flooding;
 
+   uses interface SimpleSend as FloodSender;
+
    uses interface SimpleSend as RouteSender;
+
    uses interface Hashmap<route> as routingTable;
 
    uses interface LinkState;
@@ -80,7 +84,7 @@ implementation{
       dbg(GENERAL_CHANNEL, "PING EVENT \n");
         if(call routingTable.contains(destination))
         {
-            routeDest = call routingTable.get(destination); // ---
+            routeDest = call routingTable.get(destination);
 
             makePack(&sendPackage, TOS_NODE_ID, destination, MAX_TTL, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
 
