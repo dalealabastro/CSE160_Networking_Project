@@ -75,7 +75,7 @@ implementation
     command error_t RouteSender.send(pack msg, uint16_t dest){
         
         msg.seq = sequenceN++;
-        dbg(COMMAND_CHANNEL, "LSP Network: %s\n", msg.payload);
+        //dbg(COMMAND_CHANNEL, "LSP Network: %s\n", msg.payload);
         call InternalSender.send(msg, dest);
     }
 
@@ -110,12 +110,12 @@ implementation
                     if(call routingTable.contains(myMsg -> src)){
 
                         routeDest = call routingTable.get(myMsg->dest); // ---
-                        dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", myMsg->dest, routeDest.nextHop); // ---
+                        //dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", myMsg->dest, routeDest.nextHop); // ---
                         makePack(&sendPackage, myMsg->dest, myMsg->src, MAX_TTL, PROTOCOL_PINGREPLY, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
                         call InternalSender.send(sendPackage, routeDest.nextHop);                    
                     }else{
                     
-                        dbg(NEIGHBOR_CHANNEL, "Couldn't find the routing table for: %d so flooding\n",TOS_NODE_ID);
+                        //dbg(NEIGHBOR_CHANNEL, "Couldn't find the routing table for: %d so flooding\n",TOS_NODE_ID);
                         makePack(&sendPackage, myMsg->dest, myMsg->src, myMsg->TTL-1, PROTOCOL_PINGREPLY, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
                         call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
                     
@@ -139,7 +139,7 @@ implementation
             }
             else if (myMsg->dest == AM_BROADCAST_ADDR)
             {
-                if (myMsg->protocol == 2)
+                if (myMsg->protocol == PROTOCOL_LINKSTATE)
                 {
                     uint16_t i, j = 0;
                     uint16_t k = 0;
@@ -164,35 +164,30 @@ implementation
                             lspL.cost = 1;
                             lspL.src = myMsg->src;
                             call lspLinkList.pushback(lspL);
-                            dbg(COMMAND_CHANNEL, "PushBack LSP Link neighbor: %d src: %d\n", lspL.neighbor, myMsg->src);
+                            //dbg(COMMAND_CHANNEL, "PushBack LSP Link neighbor: %d src: %d\n", lspL.neighbor, myMsg->src);
                         }
                         makePack(&sendPackage, myMsg->src, AM_BROADCAST_ADDR, myMsg->TTL - 1, 2, myMsg->seq, (uint8_t*) myMsg->payload, PACKET_MAX_PAYLOAD_SIZE);
                         call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
                     }
                     else
                     {
-                        dbg(COMMAND_CHANNEL, "LSP already exists for %d\n", TOS_NODE_ID);
+                        //dbg(COMMAND_CHANNEL, "LSP already exists for %d\n", TOS_NODE_ID);
                     }
                 }
                 //Handle neighbor discovery packets here
                 if (myMsg->protocol == PROTOCOL_PING)
                 {
-                    //dbg(GENERAL_CHANNEL, "Starting Neighbor Discover for %d\n", myMsg->src);
                     makePack(&sendPackage, TOS_NODE_ID, AM_BROADCAST_ADDR, myMsg->TTL - 1, PROTOCOL_PINGREPLY, sequenceN, (uint8_t*) myMsg->payload, PACKET_MAX_PAYLOAD_SIZE);
                     //Check TOS_NODE_ID and destination
                     call InternalSender.send(sendPackage, myMsg->src);
                 }
                 //neighbor ping reply
                 if (myMsg->protocol == PROTOCOL_PINGREPLY)
-                {
-                    //dbg(GENERAL_CHANNEL, "AT Neighbor PingReply\n");
-                    
+                {   
                     call NeighborDiscovery.neighborReceived(myMsg);
                 }
                 if (myMsg->protocol == PROTOCOL_FLOODING)
                 {
-                    //dbg(FLOODING_CHANNEL,"myMsg->seq %d != call NodeCache.get(myMsg->src %d) %d\n",myMsg->seq,myMsg->src, call NodeCache.get(myMsg->src));
-                    //if not seen before cache
                     if( myMsg->seq != call NodeCache.get(myMsg->src) || myMsg->seq >  call NodeCache.get(myMsg->src)){
                         uint16_t i = 0;
                         uint8_t llh[2];
@@ -209,10 +204,6 @@ implementation
                             //do not send to flood source
                             
                             if(myMsg->src !=  neighborFlood.src){
-                            //dbg(FLOODING_CHANNEL, "Flooded Node: %d | Forwarding to node: %d\n", TOS_NODE_ID ,neighborFlood.src);
-                            //dbg(FLOODING_CHANNEL,"this node: %d floodsrc: %d  neighborlist(%d) = %d\n" ,TOS_NODE_ID, myMsg->src, i , neighborFlood.src);
-                            //do not send back to FLOOD SOURCE NODE
-                            //dbg(FLOODING_CHANNEL,"src_flod: %d | src_add: %d | dest_addr: %d |\n",myMsg->src, myMsg->payload[0],myMsg->payload[1]);
                             
                             myMsg->payload[0] = TOS_NODE_ID;
                             myMsg->payload[1] = neighborFlood.src;
@@ -224,7 +215,6 @@ implementation
                             
                         }
                     }else{
-                        //do nothing
                         //dbg(FLOODING_CHANNEL,"In the Cache Already\n");
                     }
                     
@@ -236,7 +226,7 @@ implementation
             {
                 checkPackets(myMsg);
 
-                dbg(NEIGHBOR_CHANNEL, " Reject Couldn't find the routing table for:%d so flooding\n", TOS_NODE_ID);
+                //dbg(NEIGHBOR_CHANNEL, " Reject Couldn't find the routing table for:%d so flooding\n", TOS_NODE_ID);
 
                 makePack(&sendPackage, myMsg->src, myMsg->dest, myMsg->TTL - 1, PROTOCOL_PING, myMsg->seq, (uint8_t *)myMsg->payload, sizeof(myMsg->payload));
                 call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
@@ -267,12 +257,6 @@ implementation
 
     void checkPackets(pack * myMsg)
     {
-
-        //if(call packetList.isFull())
-        //{ //check for List size. If it has reached the limit. #popfront
-        //    call packetList.popfront();
-        //}
-        //Pushing Packet to PacketList
         call packetList.pushback(*myMsg);
     }
 
