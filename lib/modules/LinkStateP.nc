@@ -38,7 +38,7 @@ implementation{
   {
     route PriRoute;
     int i = 0;
-    for(i=1; i<=call routingTable.size(); i++){
+    for(i=1; i <= call routingTable.size(); i++){
       PriRoute = call routingTable.get(i);
       dbg(ROUTING_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
     }
@@ -53,7 +53,7 @@ implementation{
       uint16_t lspLinkListSize = call lspLinkList.size();
       uint16_t i = 0;
 
-      for(i = 0; i < lspLinkListSize; i++)
+      for(i = 0; i <= lspLinkListSize; i++)
       {
         lspLink lspackets =  call lspLinkList.get(i);
         dbg(ROUTING_CHANNEL,"Source:%d\tNeighbor:%d\tcost:%d\n",lspackets.src,lspackets.neighbor,lspackets.cost);
