@@ -30,8 +30,8 @@ implementation{
 
   command void LinkState.start(){
     dbg(ROUTING_CHANNEL, "Link-State Routing Booted\n");
-    call lsrTimer.startPeriodic(20000);
-    call dijkstraTimer.startOneShot(30000);
+    call lsrTimer.startPeriodic(80000);
+    call dijkstraTimer.startOneShot(90000);
   }
 
   command void LinkState.printRoutingTable()
@@ -104,14 +104,14 @@ implementation{
         //update lspl
         call lspLinkList.pushback(lspL);
         //update sshortest past 
-	      call dijkstraTimer.startOneShot(30000);
+	call dijkstraTimer.startOneShot(90000);
       }
       
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
         neighborArr[i] = neighborNode.src;
-        //dbg(ROUTING_CHANNEL,"**Adding %d in node %d\n",neighborNode.src,TOS_NODE_ID);
+        dbg(ROUTING_CHANNEL,"**Adding %d in node %d\n",neighborNode.src,TOS_NODE_ID);
         }else{
-        //dbg(ROUTING_CHANNEL,"**Node %d already in %d\n",neighborNode.src,TOS_NODE_ID);
+        dbg(ROUTING_CHANNEL,"**Node %d already in %d\n",neighborNode.src,TOS_NODE_ID);
         }
       }
       //send the link state packe back with the new neighbor list in the payload
@@ -119,7 +119,7 @@ implementation{
       
 
       call LspSender.send(sendPackage, AM_BROADCAST_ADDR);
-      //dbg(ROUTING_CHANNEL, "Sending LSPs\n");
+      dbg(ROUTING_CHANNEL, "Sending LSPs\n");
     }
 
 

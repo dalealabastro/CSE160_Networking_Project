@@ -49,7 +49,7 @@ implementation
         //flooding source
         msg.src = TOS_NODE_ID;
         //protocol
-        msg.protocol = PROTOCOL_PING;
+        msg.protocol = PROTOCOL_LINKSTATE;
         //increase sequence number
         msg.seq = sequenceN+1;
         //time ti live
@@ -69,26 +69,19 @@ implementation
     //command to send new link state packet
     command error_t LspSender.send(pack msg, uint16_t dest)
     {
-        //dbg(COMMAND_CHANNEL, "Route Sender: %d", msg.src);
-
         call InternalSender.send(msg, AM_BROADCAST_ADDR);
     }
 
     command error_t RouteSender.send(pack msg, uint16_t dest){
         
         msg.seq = sequenceN++;
-        
-        //dbg(COMMAND_CHANNEL, "LSP Network: %s\n", msg.payload);
-
-        //dbg(FLOODING_CHANNEL," \n src: %d | dest: %d | TTL: %d | seq: %d | protocol: %d | payload: %s |\n",TOS_NODE_ID ,msg.dest,msg.TTL,msg.seq,msg.protocol,msg.payload);
-
+        dbg(COMMAND_CHANNEL, "LSP Network: %s\n", msg.payload);
         call InternalSender.send(msg, dest);
     }
 
     command void Flooding.flood(uint16_t source){
         pack neighborFlood;
-        //uint16_t registerSize = call neighborList.size();
-        //uint16_t i = 0;
+
         uint8_t floodingPayload[2] = {TOS_NODE_ID,0};
 
         makePack(&neighborFlood, source, AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_FLOODING, sequenceN+1,  floodingPayload, PACKET_MAX_PAYLOAD_SIZE);
@@ -99,31 +92,18 @@ implementation
  
     event message_t *InternalReceiver.receive(message_t * msg, void *payload, uint8_t len)
     {
-        //dbg(FLOODING_CHANNEL, "%d, %d\n", len, sizeof(pack));
-
-        // Check to see if we have seen it before?
         if (len == sizeof(pack))
         {
             pack *myMsg = (pack *)payload;
-
-            //dbg(FLOODING_CHANNEL,"Internal Receiver \n src: %d | dest: %d | TTL: %d | seq: %d | protocol: %d | payload: %s |\n",myMsg->src ,myMsg->dest,myMsg->TTL,myMsg->seq,myMsg->protocol,myMsg->payload);
-            //if we've seen the package or TTL has reached 0 drop packet
             if (myMsg->TTL == 0 || findMyPacket(myMsg))
             {
-                //dbg(FLOODING_CHANNEL, "Dropping Packet seq %d from %d\n", myMsg->seq, TOS_NODE_ID);
                 return msg;
-                //case where this node is the message destination
             }
             else if (TOS_NODE_ID == myMsg->dest)
-            { //Destination found
-                //dbg(FLOODING_CHANNEL, "Reached dest from : %d to %d\n", myMsg->src, myMsg->dest);
-                //dbg(GENERAL_CHANNEL, "Package Payload: %s\n", myMsg->payload);
-                //The source must know the message was received so we reply back
-                
+            {   
                 if(myMsg->protocol == PROTOCOL_PING){
                     route routeDest;
                     dbg(GENERAL_CHANNEL, "PING-REPLY EVENT \n");
-                    //dbg(FLOODING_CHANNEL, "Going to ping from: %d to %d with seq %d\n", myMsg->dest,myMsg->src,myMsg->seq);
 
                     checkPackets(myMsg);
                 
@@ -156,21 +136,15 @@ implementation
                 }
 
                 return msg;
-                //if the destination is a boradcast address
             }
             else if (myMsg->dest == AM_BROADCAST_ADDR)
             {
-                //Received updatted DVR from immediate neighbors
                 if (myMsg->protocol == 2)
                 {
                     uint16_t i, j = 0;
                     uint16_t k = 0;
                     bool enterdata = TRUE;
 
-                    //dbg(FLOODING_CHANNEL, "NODE_ID: %d\n", TOS_NODE_ID);
-                    //dbg(FLOODING_CHANNEL,"src: %d | dest: %d | TTL: %d | seq: %d | protocol: %d | payload: %s |\n",myMsg->src ,myMsg->dest,myMsg->TTL,myMsg->seq,myMsg->protocol,myMsg->payload);
-                    
-                    //discard any data that is already in the 
                     for (i = 0; i < myMsg->seq; i++)
                     {
                         for (j = 0; j < call lspLinkList.size(); j++)
@@ -178,7 +152,6 @@ implementation
                             lspLink lspacket = call lspLinkList.get(j);
                             if (lspacket.src == myMsg->src && lspacket.neighbor == myMsg->payload[i])
                             {
-                                //dbg(FLOODING_CHANNEL, "lspacket.src[%d] == myMsg->src [%d] && lspacket.neighbor [%d] == myMsg->payload[%d] [%d] \n",lspacket.src, myMsg->src, lspacket.neighbor, i ,myMsg->payload[i]);
                                 enterdata = FALSE;
                             }
                         }
@@ -191,16 +164,14 @@ implementation
                             lspL.cost = 1;
                             lspL.src = myMsg->src;
                             call lspLinkList.pushback(lspL);
-                            //dbg(COMMAND_CHANNEL, "PushBack LSP Link neighbor: %d src: %d\n", lspL.neighbor, myMsg->src);
+                            dbg(COMMAND_CHANNEL, "PushBack LSP Link neighbor: %d src: %d\n", lspL.neighbor, myMsg->src);
                         }
-                        //at the end relay new info to immediate neighbors
                         makePack(&sendPackage, myMsg->src, AM_BROADCAST_ADDR, myMsg->TTL - 1, 2, myMsg->seq, (uint8_t*) myMsg->payload, PACKET_MAX_PAYLOAD_SIZE);
-                        //Check TOS_NODE_ID and destination
                         call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
                     }
                     else
                     {
-                        //dbg(COMMAND_CHANNEL, "LSP already exists for %d\n", TOS_NODE_ID);
+                        dbg(COMMAND_CHANNEL, "LSP already exists for %d\n", TOS_NODE_ID);
                     }
                 }
                 //Handle neighbor discovery packets here
@@ -247,9 +218,6 @@ implementation
                             myMsg->payload[1] = neighborFlood.src;
 
                             makePack(&sendPackage, myMsg->src, neighborFlood.src, myMsg->TTL - 1, PROTOCOL_FLOODING, myMsg->seq, (uint8_t *)llh, sizeof(llh));
-                            // //Check TOS_NODE_ID and destination
-                            //dbg(FLOODING_CHANNEL,"src_flod: %d | src_add: %d | dest_addr: %d |\n",myMsg->src, myMsg->payload[0],myMsg->payload[1]);
-                            //dbg(FLOODING_CHANNEL," \n src: %d | dest: %d | TTL: %d | seq: %d | protocol: %d | payload: %s |\n",TOS_NODE_ID ,myMsg->dest,myMsg->TTL,myMsg->seq,myMsg->protocol,myMsg->payload);
                              call InternalSender.send(sendPackage, neighborFlood.src);
                             
                             }
@@ -261,17 +229,14 @@ implementation
                     }
                     
                 }
-                //call lsrTimer.startPeriodic(60000 + (uint16_t)((call Random.rand16())%200));
+                call lsrTimer.startPeriodic(80000);
                 return msg;
-            } //case were message iss not broadcast and is not for this node
+            }
             else
             {
-                //dbg(FLOODING_CHANNEL,"Internal Receiver \n src: %d | dest: %d | TTL: %d | seq: %d | protocol: %d | payload: %s |\n",myMsg->src ,myMsg->dest,myMsg->TTL,myMsg->seq,myMsg->protocol,myMsg->payload);
-
-                //re route the message so it gets to other nodes
                 checkPackets(myMsg);
 
-                //dbg(NEIGHBOR_CHANNEL, " Reject Couldn't find the routing table for:%d so flooding\n", TOS_NODE_ID);
+                dbg(NEIGHBOR_CHANNEL, " Reject Couldn't find the routing table for:%d so flooding\n", TOS_NODE_ID);
 
                 makePack(&sendPackage, myMsg->src, myMsg->dest, myMsg->TTL - 1, PROTOCOL_PING, myMsg->seq, (uint8_t *)myMsg->payload, sizeof(myMsg->payload));
                 call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
