@@ -11,7 +11,6 @@ configuration FloodingC
   uses interface List<lspLink> as lspLinkC;
   uses interface Hashmap<int> as NodeCacheC;
   uses interface Hashmap<route> as HashmapC;
-  uses interface LinkStateC;
 }
 
 implementation
@@ -47,7 +46,4 @@ implementation
 
   components new ListC(pack, 64) as packetListC;
   FloodingP.packetList->packetListC;
-
-  components new LinkStateC;
-  FloodingP.LinkState->LinkStateC;
 }
