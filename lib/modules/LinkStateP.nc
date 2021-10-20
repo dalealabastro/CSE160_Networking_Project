@@ -60,7 +60,7 @@ implementation{
       }
     }
     else{
-      dbg(COMMAND_CHANNEL, "***0 LSP of node  %d!\n",TOS_NODE_ID);
+      //dbg(COMMAND_CHANNEL, "***0 LSP of node  %d!\n",TOS_NODE_ID);
     }
 
   }
@@ -109,9 +109,9 @@ implementation{
       
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
         neighborArr[i] = neighborNode.src;
-        dbg(ROUTING_CHANNEL,"**Adding %d in node %d\n",neighborNode.src,TOS_NODE_ID);
+        //dbg(ROUTING_CHANNEL,"**Adding %d in node %d\n",neighborNode.src,TOS_NODE_ID);
         }else{
-        dbg(ROUTING_CHANNEL,"**Node %d already in %d\n",neighborNode.src,TOS_NODE_ID);
+        //dbg(ROUTING_CHANNEL,"**Node %d already in %d\n",neighborNode.src,TOS_NODE_ID);
         }
       }
       //send the link state packe back with the new neighbor list in the payload
@@ -119,7 +119,7 @@ implementation{
       
 
       call LspSender.send(sendPackage, AM_BROADCAST_ADDR);
-      dbg(ROUTING_CHANNEL, "Sending LSPs\n");
+      //dbg(ROUTING_CHANNEL, "Sending LSPs\n");
     }
 
 
