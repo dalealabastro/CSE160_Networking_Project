@@ -81,6 +81,7 @@ implementation{
 
 
    event void CommandHandler.ping(uint16_t destination, uint8_t *payload){
+      route routeDest;
       dbg(GENERAL_CHANNEL, "PING EVENT \n");
         if(call routingTable.contains(destination))
         {
