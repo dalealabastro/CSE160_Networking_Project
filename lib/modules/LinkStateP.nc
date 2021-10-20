@@ -218,30 +218,38 @@ implementation{
           }
           node_count++;
         }
-      for (i = 0; i < maxNode; i++){
+      for (i = 0; i < maxNode; i++)
+      {
         next_hop = TOS_NODE_ID;
-        if (distance[i] != 9999){
-          if (i != start_node) {
+        if (distance[i] != 9999)
+        {
+          if (i != start_node) 
+          {
             j = i;
-            do {
-              if (j!=start_node){
+            do 
+            {
+              if (j!=start_node)
+              {
                 next_hop = j;
               }
+
               j = pred_list[j];
-              } while (j != start_node);
-            }
-            else{
-              next_hop = start_node;
-            }
-            if (next_hop != 0 )
-            {
-              newRoute.dest = i;
-              newRoute.nextHop = next_hop;
-              newRoute.cost = distance[i];
-              call routingTable.insert(i, newRoute);
-            }
+            } while (j != start_node);
+          }
+          else
+          {
+            next_hop = start_node;
+          }
+          
+          if (next_hop != 0 )
+          {
+            newRoute.dest = i;
+            newRoute.nextHop = next_hop;
+            newRoute.cost = distance[i];
+            call routingTable.insert(i, newRoute);
           }
         }
+      }
 
     }
   }
