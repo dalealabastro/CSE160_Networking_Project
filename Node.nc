@@ -96,7 +96,7 @@ implementation{
         else{
           makePack(&sendPackage, TOS_NODE_ID, destination, 0, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
           dbg(NEIGHBOR_CHANNEL, "Coudn't find the Routing Table for:%d so flooding\n", TOS_NODE_ID);
-          call FloodSender.send(sendPackage, destination);
+          call Sender.send(sendPackage, destination);
         }
    }
 
