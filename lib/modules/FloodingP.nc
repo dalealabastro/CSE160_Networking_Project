@@ -49,7 +49,7 @@ implementation
         //flooding source
         msg.src = TOS_NODE_ID;
         //protocol
-        msg.protocol = PROTOCOL_LINKSTATE;
+        msg.protocol = PROTOCOL_PING;
         //increase sequence number
         msg.seq = sequenceN+1;
         //time ti live
