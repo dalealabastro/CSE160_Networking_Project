@@ -70,7 +70,7 @@ implementation
   {
     uint16_t neighborListSize = call neighborList.size();
     uint16_t lspListSize = call lspLinkList.size();
-    dbg(GENERAL_CHANNEL, "Neighbor List Size: %d, LSP List Size: %d\n")
+    dbg(GENERAL_CHANNEL, "Neighbor List Size: %d, LSP List Size: %d\n");
 
     uint8_t neighborArr[neighborListSize];
     uint16_t i,j = 0;
