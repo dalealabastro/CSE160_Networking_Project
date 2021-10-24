@@ -220,7 +220,7 @@ implementation
                     }
                     
                 }
-                call lsrTimer.startPeriodic(80000);
+                //call lsrTimer.startPeriodic(80000);
                 return msg;
             }
             else
