@@ -21,6 +21,7 @@ module FloodingP
     uses interface List<pack> as neighborList;
     uses interface Hashmap<int> as NodeCache;
     uses interface Hashmap<route> as routingTable;
+    uses interface LinkState;
 }
 
 implementation
