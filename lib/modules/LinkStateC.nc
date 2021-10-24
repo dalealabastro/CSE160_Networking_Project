@@ -1,3 +1,11 @@
+// Link Layer
+// module with source and destination addresses
+// – This changes hop by hop as the packet get flooded
+// over the network
+
+// need Source Address Destination Address
+//Configuration
+// Configuration
 #define AM_LinkState 62
 
  
@@ -24,6 +32,9 @@ implementation
   LinkStateP.dijkstraTimer -> dijkstra;
 
   LinkStateP.neighborList = neighborListC;
+
+  components RandomC as Random;
+  LinkStateP.Random->Random;
 
   //LinkStateP.LspReceiver->AMReceiverC;
 

@@ -1,7 +1,8 @@
+// Module
 #include "../../includes/channels.h"
 #include "../../includes/packet.h"
 #include "../../includes/route.h"
-#define INFINITY 9999
+//#define INFINITY 9999
 #define MAXNODES 20
 
 module LinkStateP{
@@ -17,6 +18,8 @@ module LinkStateP{
   uses interface List<pack> as neighborList;
 
   uses interface Hashmap<route> as routingTable;
+  uses interface Random as Random;
+
 }
 
 implementation{
@@ -31,8 +34,8 @@ implementation{
   command void LinkState.start(){
     // one shot timer and include random element to it.
     //dbg(GENERAL_CHANNEL, "Booted\n");
-    call lsrTimer.startPeriodic(80000);
-    call dijkstraTimer.startOneShot(90000);
+    call lsrTimer.startPeriodic(80000 + (uint16_t)((call Random.rand16())%10000));
+    call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
   }
 
   command void LinkState.printRoutingTable()
@@ -77,7 +80,7 @@ implementation{
     
 
     //if the link state packet is age 5 then clea all its contents
-    if(lspAge==5){
+    if(lspAge==MAX_NEIGHBOR_AGE){
      
       lspAge = 0;
       for(i = 0; i < lspListSize; i++) {
@@ -105,7 +108,7 @@ implementation{
         //update lspl
         call lspLinkList.pushback(lspL);
         //update sshortest past 
-	      call dijkstraTimer.startOneShot(90000);
+	      call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
       }
       //if the neighbor is not in the list of neighbors then add it to it
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
@@ -267,3 +270,4 @@ implementation{
 
     }
   }
+}
