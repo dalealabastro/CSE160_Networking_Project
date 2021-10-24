@@ -19,7 +19,8 @@ module LinkStateP{
 
 }
 
-implementation{
+implementation
+{
   pack sendPackage;
   lspLink lspL;
   uint16_t lspAge = 0;
@@ -69,6 +70,7 @@ implementation{
   {
     uint16_t neighborListSize = call neighborList.size();
     uint16_t lspListSize = call lspLinkList.size();
+    dbg(GENERAL_CHANNEL, "Neighbor List Size: %d, LSP List Size: %d\n")
 
     uint8_t neighborArr[neighborListSize];
     uint16_t i,j = 0;
@@ -76,10 +78,11 @@ implementation{
     
 
     //if the link state packet is age 5 then clea all its contents
-    if(lspAge==5){
-     
+    if(lspAge==5)
+    {
       lspAge = 0;
-      for(i = 0; i < lspListSize; i++) {
+      for(i = 0; i < lspListSize; i++)
+      {
         call lspLinkList.popfront();
       }
     }
@@ -103,14 +106,16 @@ implementation{
         lspL.src = TOS_NODE_ID;
         //update lspl
         call lspLinkList.pushback(lspL);
-        //update sshortest past 
-	call dijkstraTimer.startOneShot(90000);
+        //update shortest past 
+	      call dijkstraTimer.startOneShot(90000);
       }
       
-      if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
+      if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize))
+      {
         neighborArr[i] = neighborNode.src;
         //dbg(ROUTING_CHANNEL,"**Adding %d in node %d\n",neighborNode.src,TOS_NODE_ID);
-        }else{
+        }
+        else{
         //dbg(ROUTING_CHANNEL,"**Node %d already in %d\n",neighborNode.src,TOS_NODE_ID);
         }
       }
@@ -121,135 +126,141 @@ implementation{
       call LspSender.send(sendPackage, AM_BROADCAST_ADDR);
       //dbg(ROUTING_CHANNEL, "Sending LSPs\n");
     }
+  }
+
+  bool isvalueinarray(uint8_t val, uint8_t *arr, uint8_t size)
+  {
+    int i;
+    for (i=0; i < size; i++) {
+      if (arr[i] == val)
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length)
+  {
+    Package->src = src;
+    Package->dest = dest;
+    Package->TTL = TTL;
+    Package->seq = seq;
+    Package->protocol = protocol;
+    memcpy(Package->payload, payload, length);
+  }
+
+  event void dijkstraTimer.fired()
+  {
+      route newRoute;
+      int nodesize[MAXNODES];
+      int size = call lspLinkList.size();
+      int maxNode = MAXNODES;
+      int i,j,next_hop, cost[maxNode][maxNode], distance[maxNode], pred_list[maxNode];
+      int visited[maxNode], node_count, mindistance, nextnode;
+    
+      int start_node = TOS_NODE_ID;
+      bool adjMatrix[maxNode][maxNode];
 
 
-    bool isvalueinarray(uint8_t val, uint8_t *arr, uint8_t size){
-      int i;
-      for (i=0; i < size; i++) {
-        if (arr[i] == val)
-        return TRUE;
+      for(i=0;i<maxNode;i++)
+      {
+        for(j=0;j<maxNode;j++){
+          adjMatrix[i][j] = FALSE;
+        }
       }
-      return FALSE;
-    }
 
-    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length){
-      Package->src = src;
-      Package->dest = dest;
-      Package->TTL = TTL;
-      Package->seq = seq;
-      Package->protocol = protocol;
-      memcpy(Package->payload, payload, length);
-    }
+      for(i=0; i<size;i++){
+        lspLink stuff = call lspLinkList.get(i);
+        adjMatrix[stuff.src][stuff.neighbor] = TRUE;
+      }
 
-    event void dijkstraTimer.fired()
+      for(i=0;i<maxNode;i++)
       {
-        route newRoute;
-        int nodesize[MAXNODES];
-        int size = call lspLinkList.size();
-        int maxNode = MAXNODES;
-        int i,j,next_hop, cost[maxNode][maxNode], distance[maxNode], pred_list[maxNode];
-        int visited[maxNode], node_count, mindistance, nextnode;
-     
-        int start_node = TOS_NODE_ID;
-        bool adjMatrix[maxNode][maxNode];
-
-
-        for(i=0;i<maxNode;i++)
+        for(j=0;j<maxNode;j++)
         {
-          for(j=0;j<maxNode;j++){
-            adjMatrix[i][j] = FALSE;
-          }
-        }
-
-        for(i=0; i<size;i++){
-          lspLink stuff = call lspLinkList.get(i);
-          adjMatrix[stuff.src][stuff.neighbor] = TRUE;
-        }
-
-        for(i=0;i<maxNode;i++)
-        {
-          for(j=0;j<maxNode;j++)
+          if (adjMatrix[i][j] == 0)
           {
-            if (adjMatrix[i][j] == 0)
-           	cost[i][j] = 9999;
-            else
-            	cost[i][j] = adjMatrix[i][j];
-          }
-        }
-
-        //initialize pred[],distance[] and visited[]
-        for(i = 0; i < maxNode; i++)
-        {
-          distance[i] = cost[start_node][i];
-          pred_list[i] = start_node;
-          visited[i] = 0;
-        }
-
-
-        distance[start_node] = 0;
-        visited[start_node] = 1;
-        node_count = 1;
-
-        while (node_count < maxNode - 1)
-        {
-          mindistance = 9999;
-          //nextnode gives the node at minimum distance
-          for (i = 0; i < maxNode; i++){
-            if (distance[i] <= mindistance && !visited[i])
-            {
-              mindistance = distance[i];
-              nextnode = i;
-            }
-
-          }
-
-          visited[nextnode] = 1;
-          //Checks to see if a better path through next node exists
-          for (i = 0; i < maxNode; i++)
-          {
-
-            if (!visited[i]){
-              if (mindistance + cost[nextnode][i] < distance[i])
-              {
-                distance[i] = mindistance + cost[nextnode][i];
-                pred_list[i] = nextnode;
-              }
-            }
-          }
-          node_count++;
-        }
-      for (i = 0; i < maxNode; i++)
-      {
-        next_hop = TOS_NODE_ID;
-        if (distance[i] != 9999)
-        {
-          if (i != start_node) 
-          {
-            j = i;
-            do 
-            {
-              if (j!=start_node)
-              {
-                next_hop = j;
-              }
-
-              j = pred_list[j];
-            } while (j != start_node);
+            cost[i][j] = 9999;
           }
           else
           {
-            next_hop = start_node;
-          }
-          
-          if (next_hop != 0 )
-          {
-            newRoute.dest = i;
-            newRoute.nextHop = next_hop;
-            newRoute.cost = distance[i];
-            call routingTable.insert(i, newRoute);
+            cost[i][j] = adjMatrix[i][j];
           }
         }
       }
 
+      //initialize pred[],distance[] and visited[]
+      for(i = 0; i < maxNode; i++)
+      {
+        distance[i] = cost[start_node][i];
+        pred_list[i] = start_node;
+        visited[i] = 0;
+      }
+
+
+      distance[start_node] = 0;
+      visited[start_node] = 1;
+      node_count = 1;
+
+      while (node_count < maxNode - 1)
+      {
+        mindistance = 9999;
+        //nextnode gives the node at minimum distance
+        for (i = 0; i < maxNode; i++)
+        {
+          if (distance[i] <= mindistance && !visited[i])
+          {
+            mindistance = distance[i];
+            nextnode = i;
+          }
+
+        }
+
+        visited[nextnode] = 1;
+        //Checks to see if a better path through next node exists
+        for (i = 0; i < maxNode; i++)
+        {
+          if (!visited[i])
+          {
+            if (mindistance + cost[nextnode][i] < distance[i])
+            {
+              distance[i] = mindistance + cost[nextnode][i];
+              pred_list[i] = nextnode;
+            }
+          }
+        }
+        node_count++;
+      }
+    for (i = 0; i < maxNode; i++)
+    {
+      next_hop = TOS_NODE_ID;
+      if (distance[i] != 9999)
+      {
+        if (i != start_node) 
+        {
+          j = i;
+          do 
+          {
+            if (j!=start_node)
+            {
+              next_hop = j;
+            }
+
+            j = pred_list[j];
+          } while (j != start_node);
+        }
+        else
+        {
+          next_hop = start_node;
+        }
+        
+        if (next_hop != 0 )
+        {
+          newRoute.dest = i;
+          newRoute.nextHop = next_hop;
+          newRoute.cost = distance[i];
+          call routingTable.insert(i, newRoute);
+        }
+      }
     }
   }
+}
