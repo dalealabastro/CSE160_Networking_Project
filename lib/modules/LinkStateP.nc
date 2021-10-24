@@ -17,8 +17,6 @@ module LinkStateP{
   uses interface List<pack> as neighborList;
 
   uses interface Hashmap<route> as routingTable;
-  uses interface Random as Random;
-
 }
 
 implementation{
@@ -33,8 +31,8 @@ implementation{
   command void LinkState.start(){
     // one shot timer and include random element to it.
     //dbg(GENERAL_CHANNEL, "Booted\n");
-    call lsrTimer.startPeriodic(80000 + (uint16_t)((call Random.rand16())%10000));
-    call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
+    call lsrTimer.startPeriodic(80000);
+    call dijkstraTimer.startOneShot(90000);
   }
 
   command void LinkState.printRoutingTable()
@@ -107,7 +105,7 @@ implementation{
         //update lspl
         call lspLinkList.pushback(lspL);
         //update sshortest past 
-	      call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
+	      call dijkstraTimer.startOneShot(90000);
       }
       //if the neighbor is not in the list of neighbors then add it to it
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
