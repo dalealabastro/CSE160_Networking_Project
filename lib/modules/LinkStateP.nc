@@ -68,13 +68,14 @@ implementation{
   event void lsrTimer.fired()
   {
     uint16_t neighborListSize = call neighborList.size();
-    dbg(GENERAL_CHANNEL, "NEIGHBOR LIST SIZE: %hu\n", neighborListSize);
     uint16_t lspListSize = call lspLinkList.size();
 
     uint8_t neighborArr[neighborListSize];
     uint16_t i,j = 0;
     bool enterdata = TRUE;
     
+
+    dbg(GENERAL_CHANNEL, "NEIGHBOR LIST SIZE: %hu\n", neighborListSize);
 
     //if the link state packet is age 5 then clea all its contents
     if(lspAge==10){
