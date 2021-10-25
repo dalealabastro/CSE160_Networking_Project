@@ -68,7 +68,7 @@ implementation{
   event void lsrTimer.fired()
   {
     uint16_t neighborListSize = call neighborList.size();
-    dbg(GENERAL_CHANNEL, "NEIGHBOR LIST SIZE: %d\n", neighborListSize);
+    dbg(GENERAL_CHANNEL, "NEIGHBOR LIST SIZE: %hu\n", neighborListSize);
     uint16_t lspListSize = call lspLinkList.size();
 
     uint8_t neighborArr[neighborListSize];
