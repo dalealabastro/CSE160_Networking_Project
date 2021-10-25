@@ -16,7 +16,7 @@ module LinkStateP{
   uses interface List<lspLink> as lspLinkList;
   uses interface List<pack> as neighborList;
   uses interface Hashmap<route> as routingTable;
-
+  uses interface Random as Random
 }
 
 implementation{
@@ -30,8 +30,8 @@ implementation{
 
   command void LinkState.start(){
     dbg(ROUTING_CHANNEL, "Link-State Routing Booted\n");
-    call lsrTimer.startPeriodic(80000);
-    call dijkstraTimer.startOneShot(90000);
+    call lsrTimer.startPeriodic(80000 + (uint16_t)((call Random.rand16())%10000));
+    call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
   }
 
   command void LinkState.printRoutingTable()
@@ -104,7 +104,7 @@ implementation{
         //update lspl
         call lspLinkList.pushback(lspL);
         //update sshortest past 
-	call dijkstraTimer.startOneShot(90000);
+	      call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
       }
       
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
