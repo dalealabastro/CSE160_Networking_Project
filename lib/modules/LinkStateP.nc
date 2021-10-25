@@ -68,6 +68,7 @@ implementation{
   event void lsrTimer.fired()
   {
     uint16_t neighborListSize = call neighborList.size();
+    dbg(GENERAL_CHANNEL, "NEIGHBOR LIST SIZE: %d\n", neighborListSize);
     uint16_t lspListSize = call lspLinkList.size();
 
     uint8_t neighborArr[neighborListSize];
@@ -76,7 +77,7 @@ implementation{
     
 
     //if the link state packet is age 5 then clea all its contents
-    if(lspAge==5){
+    if(lspAge==10){
      
       lspAge = 0;
       for(i = 0; i < lspListSize; i++) {
@@ -190,7 +191,7 @@ implementation{
         visited[start_node] = 1;
         node_count = 1;
 
-        while (node_count < maxNode - 1)
+        while (node_count <= maxNode - 1)
         {
           mindistance = 9999;
           //nextnode gives the node at minimum distance
