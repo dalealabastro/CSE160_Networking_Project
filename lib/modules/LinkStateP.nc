@@ -1,8 +1,7 @@
-// Module
 #include "../../includes/channels.h"
 #include "../../includes/packet.h"
 #include "../../includes/route.h"
-//#define INFINITY 9999
+
 #define MAXNODES 20
 
 module LinkStateP{
@@ -16,9 +15,7 @@ module LinkStateP{
   uses interface SimpleSend as LspSender;
   uses interface List<lspLink> as lspLinkList;
   uses interface List<pack> as neighborList;
-
   uses interface Hashmap<route> as routingTable;
-  uses interface Random as Random;
 
 }
 
@@ -32,21 +29,20 @@ implementation{
   void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 
   command void LinkState.start(){
-    // one shot timer and include random element to it.
-    //dbg(GENERAL_CHANNEL, "Booted\n");
-    call lsrTimer.startPeriodic(80000 + (uint16_t)((call Random.rand16())%10000));
-    call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
+    dbg(ROUTING_CHANNEL, "Link-State Routing Booted\n");
+    call lsrTimer.startPeriodic(80000);
+    call dijkstraTimer.startOneShot(90000);
   }
 
   command void LinkState.printRoutingTable()
   {
     route PriRoute;
     int i = 0;
-    for(i=1; i<=call routingTable.size(); i++){
+    for(i=1; i <= call routingTable.size(); i++){
       PriRoute = call routingTable.get(i);
-      dbg(GENERAL_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
+      dbg(ROUTING_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
     }
-    //call LinkState.print();
+    call LinkState.print();
   }
 
   command void LinkState.print()
@@ -64,7 +60,7 @@ implementation{
       }
     }
     else{
-      dbg(COMMAND_CHANNEL, "***0 LSP of node  %d!\n",TOS_NODE_ID);
+      //dbg(COMMAND_CHANNEL, "***0 LSP of node  %d!\n",TOS_NODE_ID);
     }
 
   }
@@ -108,18 +104,18 @@ implementation{
         //update lspl
         call lspLinkList.pushback(lspL);
         //update sshortest past 
-	      call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
+	call dijkstraTimer.startOneShot(90000);
       }
-      //if the neighbor is not in the list of neighbors then add it to it
+      
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
         neighborArr[i] = neighborNode.src;
         //dbg(ROUTING_CHANNEL,"**Adding %d in node %d\n",neighborNode.src,TOS_NODE_ID);
         }else{
-        dbg(ROUTING_CHANNEL,"**Node %d already in %d\n",neighborNode.src,TOS_NODE_ID);
+        //dbg(ROUTING_CHANNEL,"**Node %d already in %d\n",neighborNode.src,TOS_NODE_ID);
         }
       }
       //send the link state packe back with the new neighbor list in the payload
-      makePack(&sendPackage, TOS_NODE_ID, AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKSTATE, neighborListSize, (uint8_t *) neighborArr, neighborListSize);
+      makePack(&sendPackage, TOS_NODE_ID, AM_BROADCAST_ADDR, MAX_TTL, 2, neighborListSize, (uint8_t *) neighborArr, neighborListSize);
       
 
       call LspSender.send(sendPackage, AM_BROADCAST_ADDR);
@@ -154,12 +150,8 @@ implementation{
         int i,j,next_hop, cost[maxNode][maxNode], distance[maxNode], pred_list[maxNode];
         int visited[maxNode], node_count, mindistance, nextnode;
      
-        //cost matrix
         int start_node = TOS_NODE_ID;
         bool adjMatrix[maxNode][maxNode];
-        
-        
-        //dbg(ROUTING_CHANNEL,"\nSOURCE NODE %d\n",TOS_NODE_ID);
 
 
         for(i=0;i<maxNode;i++)
@@ -179,9 +171,9 @@ implementation{
           for(j=0;j<maxNode;j++)
           {
             if (adjMatrix[i][j] == 0)
-            cost[i][j] = INFINITY;
+           	cost[i][j] = 9999;
             else
-            cost[i][j] = adjMatrix[i][j];
+            	cost[i][j] = adjMatrix[i][j];
           }
         }
 
@@ -200,7 +192,7 @@ implementation{
 
         while (node_count < maxNode - 1)
         {
-          mindistance = INFINITY;
+          mindistance = 9999;
           //nextnode gives the node at minimum distance
           for (i = 0; i < maxNode; i++){
             if (distance[i] <= mindistance && !visited[i])
@@ -212,7 +204,7 @@ implementation{
           }
 
           visited[nextnode] = 1;
-          //check if a better path exists through nextnode
+          //Checks to see if a better path through next node exists
           for (i = 0; i < maxNode; i++)
           {
 
@@ -226,47 +218,38 @@ implementation{
           }
           node_count++;
         }
-
-                //print the path and distance of each node
-        /*
-        for(i=1;i<maxNode;i++)
-        if(i!=start_node)
-        {
-        printf("\nDistance of node %d=%d",i,distance[i]);
-        printf("\nPath=%d",i);
-        j=i;
-        do
-        {
-        j=pred_list[j];
-        printf("<-%d",j);
-        }while(j!=start_node);
-      }
-      */
-
-      for (i = 0; i < maxNode; i++){
+      for (i = 0; i < maxNode; i++)
+      {
         next_hop = TOS_NODE_ID;
-        if (distance[i] != INFINITY){
-          if (i != start_node) {
+        if (distance[i] != 9999)
+        {
+          if (i != start_node) 
+          {
             j = i;
-            do {
-              if (j!=start_node){
+            do 
+            {
+              if (j!=start_node)
+              {
                 next_hop = j;
               }
+
               j = pred_list[j];
-              } while (j != start_node);
-            }
-            else{
-              next_hop = start_node;
-            }
-            if (next_hop != 0 )
-            {
-              newRoute.dest = i;
-              newRoute.nextHop = next_hop;
-              newRoute.cost = distance[i];
-              call routingTable.insert(i, newRoute);
-            }
+            } while (j != start_node);
+          }
+          else
+          {
+            next_hop = start_node;
+          }
+          
+          if (next_hop != 0 )
+          {
+            newRoute.dest = i;
+            newRoute.nextHop = next_hop;
+            newRoute.cost = distance[i];
+            call routingTable.insert(i, newRoute);
           }
         }
+      }
 
     }
-  }s
+  }
