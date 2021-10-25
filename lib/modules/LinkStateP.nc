@@ -16,7 +16,7 @@ module LinkStateP{
   uses interface List<lspLink> as lspLinkList;
   uses interface List<pack> as neighborList;
   uses interface Hashmap<route> as routingTable;
-  uses interface Random as Random
+  uses interface Random as Random;
 }
 
 implementation{
