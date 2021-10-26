@@ -1,3 +1,5 @@
+// Link Layer module
+// define interface
 interface LinkState
 {
 	//command void LspReceiver();
