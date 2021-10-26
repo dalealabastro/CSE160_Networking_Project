@@ -1,10 +1,12 @@
 #include "../../includes/am_types.h"
 
-generic configuration SimpleSendC(int channel){
+generic configuration SimpleSendC(int channel)
+{
    provides interface SimpleSend;
 }
 
-implementation{
+implementation
+{
    components new SimpleSendP();
    SimpleSend = SimpleSendP.SimpleSend;
 
@@ -13,17 +15,17 @@ implementation{
    components new AMSenderC(channel);
 
    //Timers
-   SimpleSendP.sendTimer -> sendTimer;
-   SimpleSendP.Random -> Random;
+   SimpleSendP.sendTimer->sendTimer;
+   SimpleSendP.Random->Random;
 
-   SimpleSendP.Packet -> AMSenderC;
-   SimpleSendP.AMPacket -> AMSenderC;
-   SimpleSendP.AMSend -> AMSenderC;
+   SimpleSendP.Packet->AMSenderC;
+   SimpleSendP.AMPacket->AMSenderC;
+   SimpleSendP.AMSend->AMSenderC;
 
    //Lists
    components new PoolC(sendInfo, 20);
-   components new QueueC(sendInfo*, 20);
+   components new QueueC(sendInfo *, 20);
 
-   SimpleSendP.Pool -> PoolC;
-   SimpleSendP.Queue -> QueueC;
+   SimpleSendP.Pool->PoolC;
+   SimpleSendP.Queue->QueueC;
 }
