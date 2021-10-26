@@ -105,7 +105,7 @@ implementation
     //dbg(NEIGHBOR_CHANNEL,"Neighbor Discovery Timer Fired\n");
 
     //if the age of the neighbor node is the max age of 5 we remove all neighbors from register
-    if (neighborAge == MAX_NEIGHBOR_AGE)
+    if (neighborAge == 5)
     {
       dbg(NEIGHBOR_CHANNEL, "removing neighbor of %d with Age %d \n", TOS_NODE_ID, neighborAge);
       neighborAge = 0;
