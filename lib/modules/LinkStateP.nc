@@ -261,7 +261,7 @@ implementation{
           
           if (next_hop != 0 )
           {
-            dbg(GENERAL_CHANNEL, "NODE: %d\n", i);
+            //dbg(GENERAL_CHANNEL, "NODE: %d\n", i);
             newRoute.dest = i;
             newRoute.nextHop = next_hop;
             newRoute.cost = distance[i];
