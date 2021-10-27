@@ -200,12 +200,11 @@ implementation{
           for (i = 0; i < maxNode; i++)
           {
             dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
-            if (distance[i] <= mindistance && !visited[i])
+            if (distance[i] < mindistance && !visited[i])
             {
               dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
               mindistance = distance[i];
               nextnode = i;
-              break;
             }
           }
           visited[nextnode] = 1;
