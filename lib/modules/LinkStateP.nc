@@ -198,22 +198,26 @@ implementation{
           //dbg(GENERAL_CHANNEL, "Node Count: %d\n", node_count); //==========================================
           mindistance = 9999;
           //nextnode gives the node at minimum distance
-          for (i = 0; i < maxNode; i++){
+          for (i = 0; i < maxNode; i++)
+          {
             dbg(GENERAL_CHANNEL, "I: %d Check Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
             if (distance[i] <= mindistance && !visited[i])
             {
               mindistance = distance[i];
               nextnode = i;
             }
-
           }
-
           visited[nextnode] = 1;
+
+          for(i = 0; i < maxNode; i++)
+          {
+            dbg(GENERAL_CHANNEL, "NODE: %d NODE VISITED: %d\n", node_count, visited[i]);
+          }
           //Checks to see if a better path through next node exists
           for (i = 0; i < maxNode; i++)
           {
-
-            if (!visited[i]){
+            if (!visited[i])
+            {
               if (mindistance + cost[nextnode][i] < distance[i])
               {
                 distance[i] = mindistance + cost[nextnode][i];
