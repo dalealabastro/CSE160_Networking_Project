@@ -70,7 +70,7 @@ implementation
     //command to send new link state packet
     command error_t LspSender.send(pack msg, uint16_t dest)
     {
-        dbg(COMMAND_CHANNEL, "OVER HERE\n");
+        dbg(COMMAND_CHANNEL, "OVER HERE: %lu\n", dest);
         call InternalSender.send(msg, AM_BROADCAST_ADDR);
     }
 
