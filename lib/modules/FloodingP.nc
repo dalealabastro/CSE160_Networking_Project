@@ -50,7 +50,7 @@ implementation
         //flooding source
         msg.src = TOS_NODE_ID;
         //protocol
-        msg.protocol = PROTOCOL_PING;
+        msg.protocol = PROTOCOL_LINKSTATE;
         //increase sequence number
         msg.seq = sequenceN+1;
         //time ti live
@@ -110,9 +110,9 @@ implementation
                 
                     if(call routingTable.contains(myMsg -> src)){
 
-                        routeDest = call routingTable.get(myMsg->src); // ---
+                        routeDest = call routingTable.get(myMsg->dest); // ---
                         dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", myMsg->dest, routeDest.nextHop); // ---
-                        makePack(&sendPackage, routeDest.nextHop, myMsg->dest, MAX_TTL, PROTOCOL_PINGREPLY, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
+                        makePack(&sendPackage, myMsg->dest, myMsg->src, MAX_TTL, PROTOCOL_PINGREPLY, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
                         call InternalSender.send(sendPackage, routeDest.nextHop);                    
                     }else{
                     
