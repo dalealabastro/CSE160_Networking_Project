@@ -235,13 +235,13 @@ implementation{
       for (i = 0; i < maxNode; i++) 
       {
         next_hop = TOS_NODE_ID;
-        dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
+        //dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
         if (distance[i] != 9999) 
         {
-          dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
+          //dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
           if (i != start_node) 
           {
-            dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
+            //dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
             j = i;
             do 
             {
@@ -255,13 +255,13 @@ implementation{
           }
           else
           {
-            dbg(GENERAL_CHANNEL, "Check Three.1-Node %d\n", i);
+            //dbg(GENERAL_CHANNEL, "Check Three.1-Node %d\n", i);
             next_hop = start_node;
           }
           
           if (next_hop != 0 )
           {
-            dbg(GENERAL_CHANNEL, "NODE: %d\n", i);
+            //dbg(GENERAL_CHANNEL, "NODE: %d\n", i);
             newRoute.dest = i;
             newRoute.nextHop = next_hop;
             newRoute.cost = distance[i];
