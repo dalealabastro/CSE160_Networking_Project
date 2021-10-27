@@ -87,7 +87,7 @@ implementation{
         {
             routeDest = call routingTable.get(destination);
 
-            makePack(&sendPackage, TOS_NODE_ID, destination, MAX_TTL, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
+            makePack(&sendPackage, TOS_NODE_ID, destination, MAX_TTL, PROTOCOL_LINKSTATE, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
 
             dbg(NEIGHBOR_CHANNEL, "To get to: %d, send through: %d\n", destination, routeDest.nextHop);
 
