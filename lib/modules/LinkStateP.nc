@@ -39,12 +39,9 @@ implementation{
     route PriRoute;
     int i, j;
     dbg(GENERAL_CHANNEL, "ROUTING TABLE SIZE: %d\n", call routingTable.size());
-    for(i = 1; i < maxNode; i++)
-    {
-      for(j = 1; j <= call routingTable.size(); i++){
-        PriRoute = call routingTable.get(j);
-        dbg(GENERAL_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
-      }
+    for(j = 1; j <= call routingTable.size(); i++){
+      PriRoute = call routingTable.get(j);
+      dbg(GENERAL_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
     }
     call LinkState.print();
   }
