@@ -38,7 +38,6 @@ implementation{
   {
     route PriRoute;
     int i;
-    dbg(GENERAL_CHANNEL, "ROUTING TABLE SIZE: %d\n", call routingTable.size());
     for(i=1; i <= call routingTable.size(); i++){
       PriRoute = call routingTable.get(i);
       dbg(GENERAL_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
@@ -218,7 +217,6 @@ implementation{
           {
             dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
           }
-          
           //Checks to see if a better path through next node exists
           for (i = 0; i < maxNode; i++)
           {
@@ -226,7 +224,7 @@ implementation{
             {
               if (mindistance + cost[nextnode][i] < distance[i])
               {
-                //dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
+                dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
                 distance[i] = mindistance + cost[nextnode][i];
                 pred_list[i] = nextnode;
               }
@@ -271,5 +269,6 @@ implementation{
           }
         }
       }
+
     }
   }
