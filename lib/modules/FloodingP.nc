@@ -102,7 +102,7 @@ implementation
             }
             else if (myMsg->src == myMsg->dest)
             {
-                dbg(GENERAL_CHANNEL, "Message: %s\n", msg);
+                dbg(GENERAL_CHANNEL, "Message: %s\n", myMsg->payload);
             }
             else if (TOS_NODE_ID == myMsg->src)
             {   
