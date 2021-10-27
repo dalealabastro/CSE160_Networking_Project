@@ -37,10 +37,10 @@ implementation{
   command void LinkState.printRoutingTable()
   {
     route PriRoute;
-    int i = 0;
+    int i;
     for(i=1; i <= call routingTable.size(); i++){
       PriRoute = call routingTable.get(i);
-      dbg(ROUTING_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
+      dbg(GENERAL_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
     }
     call LinkState.print();
   }
