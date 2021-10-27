@@ -87,15 +87,15 @@ implementation{
         {
             routeDest = call routingTable.get(destination);
 
-            makePack(&sendPackage, TOS_NODE_ID, destination, MAX_TTL, PROTOCOL_LINKSTATE, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
+            makePack(&sendPackage, TOS_NODE_ID, destination, MAX_TTL, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
 
-            dbg(NEIGHBOR_CHANNEL, "To get to: %d, send through: %d\n", destination, routeDest.nextHop);
+            dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", destination, routeDest.nextHop);
 
             call RouteSender.send(sendPackage, routeDest.nextHop);
         }
         else{
           makePack(&sendPackage, TOS_NODE_ID, destination, 0, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
-          dbg(NEIGHBOR_CHANNEL, "Coudn't find the Routing Table for: %d so flooding\n", TOS_NODE_ID);
+          dbg(NEIGHBOR_CHANNEL, "Coudn't find the Routing Table for:%d so flooding\n", TOS_NODE_ID);
           call Sender.send(sendPackage, destination);
         }
    }
