@@ -75,7 +75,7 @@ implementation{
     bool enterdata = TRUE;
     
 
-    dbg(GENERAL_CHANNEL, "NEIGHBOR LIST SIZE: %hu\n", neighborListSize);
+    //dbg(GENERAL_CHANNEL, "NEIGHBOR LIST SIZE: %hu\n", neighborListSize);
 
     //if the link state packet is age 5 then clea all its contents
     if(lspAge==10){
@@ -155,7 +155,7 @@ implementation{
         int start_node = TOS_NODE_ID;
         bool adjMatrix[maxNode][maxNode];
 
-
+        //dbg(GENERAL_CHANNEL, "Link list size: %d\n", size);
         for(i=0;i<maxNode;i++)
         {
           for(j=0;j<maxNode;j++){
@@ -183,6 +183,7 @@ implementation{
         for(i = 0; i < maxNode; i++)
         {
           distance[i] = cost[start_node][i];
+          dbg(GENERAL_CHANNEL, "Starting distance: %d\n", distance[i]); //=========================================
           pred_list[i] = start_node;
           visited[i] = 0;
         }
@@ -197,6 +198,7 @@ implementation{
           mindistance = 9999;
           //nextnode gives the node at minimum distance
           for (i = 0; i < maxNode; i++){
+            dbg(GENERAL_CHANNEL, "I: %d Check Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
             if (distance[i] <= mindistance && !visited[i])
             {
               mindistance = distance[i];
@@ -220,10 +222,10 @@ implementation{
           }
           node_count++;
         }
-      for (i = 0; i < maxNode; i++)
+      for (i = 0; i < maxNode; i++) //=================
       {
         next_hop = TOS_NODE_ID;
-        if (distance[i] != 9999)
+        if (distance[i] != 9999) //===============
         {
           if (i != start_node) 
           {
