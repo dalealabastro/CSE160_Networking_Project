@@ -219,7 +219,7 @@ implementation{
         //   dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
         // }
         //Checks to see if a better path through next node exists
-        for (i = 0; i < maxNode; i++)
+        for (i = 0; i < MAXNODES; i++)
         {
           if (!visited[i])
           {
