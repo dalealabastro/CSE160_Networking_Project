@@ -70,13 +70,14 @@ implementation
     //command to send new link state packet
     command error_t LspSender.send(pack msg, uint16_t dest)
     {
+        dbg(COMMAND_CHANNEL, "OVER HERE");
         call InternalSender.send(msg, AM_BROADCAST_ADDR);
     }
 
     command error_t RouteSender.send(pack msg, uint16_t dest){
         
         msg.seq = sequenceN++;
-        //dbg(COMMAND_CHANNEL, "LSP Network: %s\n", msg.payload);
+        dbg(COMMAND_CHANNEL, "LSP Network: %s\n", msg.payload);
         call InternalSender.send(msg, dest);
     }
 
@@ -116,7 +117,7 @@ implementation
                         call InternalSender.send(sendPackage, routeDest.nextHop);                    
                     }else{
                     
-                        //dbg(NEIGHBOR_CHANNEL, "Couldn't find the routing table for: %d so flooding\n",TOS_NODE_ID);
+                        dbg(NEIGHBOR_CHANNEL, "Couldn't find the routing table for: %d so flooding\n",TOS_NODE_ID);
                         makePack(&sendPackage, myMsg->dest, myMsg->src, myMsg->TTL-1, PROTOCOL_PINGREPLY, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
                         call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
                     
