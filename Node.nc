@@ -85,9 +85,12 @@ implementation{
       dbg(GENERAL_CHANNEL, "PING EVENT \n");
         if(call routingTable.contains(destination))
         {
+           
             routeDest = call routingTable.get(destination);
-
-            makePack(&sendPackage, TOS_NODE_ID, destination, MAX_TTL, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
+            // for(i = 0; i < routeDest.cost; i++){
+               
+            // }
+            makePack(&sendPackage, routeDest.nextHop, destination, MAX_TTL, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
 
             dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", destination, routeDest.nextHop);
 
