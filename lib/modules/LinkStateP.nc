@@ -2,7 +2,7 @@
 #include "../../includes/packet.h"
 #include "../../includes/route.h"
 
-#define MAXNODES 30
+#define MAXNODES 20
 
 module LinkStateP{
 
@@ -183,7 +183,7 @@ implementation{
         for(i = 0; i < maxNode; i++)
         {
           distance[i] = cost[start_node][i];
-          dbg(GENERAL_CHANNEL, "Starting distance: %d\n", distance[i]); //=========================================
+          //dbg(GENERAL_CHANNEL, "Starting distance: %d\n", distance[i]); //=========================================
           pred_list[i] = start_node;
           visited[i] = 0;
         }
@@ -195,10 +195,11 @@ implementation{
 
         while (node_count <= maxNode - 1)
         {
+          //dbg(GENERAL_CHANNEL, "Node Count: %d\n", node_count); //==========================================
           mindistance = 9999;
           //nextnode gives the node at minimum distance
           for (i = 0; i < maxNode; i++){
-            dbg(GENERAL_CHANNEL, "I: %d Check Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
+            //dbg(GENERAL_CHANNEL, "I: %d Check Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
             if (distance[i] <= mindistance && !visited[i])
             {
               mindistance = distance[i];
@@ -222,13 +223,16 @@ implementation{
           }
           node_count++;
         }
-      for (i = 0; i < maxNode; i++) //=================
+      for (i = 0; i < maxNode; i++) 
       {
         next_hop = TOS_NODE_ID;
-        if (distance[i] != 9999) //===============
+        dbg(GENERAL_CHANNEL, "Check One-Node %d\n", i);
+        if (distance[i] != 9999) 
         {
+          dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
           if (i != start_node) 
           {
+            dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
             j = i;
             do 
             {
@@ -242,6 +246,7 @@ implementation{
           }
           else
           {
+            dbg(GENERAL_CHANNEL, "Check Three.1-Node %d\n", i);
             next_hop = start_node;
           }
           
