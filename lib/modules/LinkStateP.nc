@@ -226,7 +226,7 @@ implementation{
       for (i = 0; i < maxNode; i++) 
       {
         next_hop = TOS_NODE_ID;
-        dbg(GENERAL_CHANNEL, "Check One-Node %d\n", i);
+        dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
         if (distance[i] != 9999) 
         {
           dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
