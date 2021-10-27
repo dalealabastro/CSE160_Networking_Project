@@ -224,7 +224,7 @@ implementation{
             {
               if (mindistance + cost[nextnode][i] < distance[i])
               {
-                dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE");
+                dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
                 distance[i] = mindistance + cost[nextnode][i];
                 pred_list[i] = nextnode;
               }
