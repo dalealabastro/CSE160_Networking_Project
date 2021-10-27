@@ -238,7 +238,7 @@ implementation
                 call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
                 return msg;
             }
-            dbg(GENERAL_CHANNEL, "Unknown Packet Type %d\n", len);
+            //dbg(GENERAL_CHANNEL, "Unknown Packet Type %d\n", len);
             return msg;
         }else{
             dbg(FLOODING_CHANNEL, "\n\n\n\n\n\n\n\n\n\n?\n\n\n\n\n\n");
