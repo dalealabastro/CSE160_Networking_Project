@@ -236,19 +236,19 @@ implementation{
         
       for(i = 0; i < maxNode; i++)
       {
-        dbg(GENERAL_CHANNEL, "NODE %d NODE DISTANCE: %d\n", i, distance[i]);
+        //dbg(GENERAL_CHANNEL, "NODE %d NODE DISTANCE: %d\n", i, distance[i]);
       }
 
       for (i = 0; i < maxNode; i++) 
       {
         next_hop = TOS_NODE_ID;
-        dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
+        //dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
         if (distance[i] != 9999) 
         {
-          dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
+          //dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
           if (i != start_node) 
           {
-            dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
+            //dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
             j = i;
             do 
             {
