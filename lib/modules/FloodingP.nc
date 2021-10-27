@@ -100,6 +100,10 @@ implementation
             {
                 return msg;
             }
+            else if (myMsg->src == myMsg->dest)
+            {
+                dbg(GENERAL_CHANNEL, "Message: %s\n", msg);
+            }
             else if (TOS_NODE_ID == myMsg->src)
             {   
                 if(myMsg->protocol == PROTOCOL_PING){
@@ -114,7 +118,8 @@ implementation
                         dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", myMsg->dest, routeDest.nextHop); // ---
                         makePack(&sendPackage, routeDest.nextHop, myMsg->dest, MAX_TTL, PROTOCOL_PING, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
                         call InternalSender.send(sendPackage, routeDest.nextHop);                    
-                    }else{
+                    }
+                    else{
                     
                         dbg(NEIGHBOR_CHANNEL, "Couldn't find the routing table for: %d so flooding\n",TOS_NODE_ID);
                         makePack(&sendPackage, myMsg->dest, myMsg->src, myMsg->TTL-1, PROTOCOL_PINGREPLY, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
