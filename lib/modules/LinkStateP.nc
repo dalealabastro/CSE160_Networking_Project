@@ -31,7 +31,7 @@ implementation{
   command void LinkState.start(){
     dbg(ROUTING_CHANNEL, "Link-State Routing Booted\n");
     call lsrTimer.startPeriodic(80000 + (uint16_t)((call Random.rand16())%10000));
-    call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
+    call dijkstraTimer.startOneShot(80000 + (uint16_t)((call Random.rand16())%10000));
   }
 
   command void LinkState.printRoutingTable()
@@ -39,7 +39,7 @@ implementation{
     route PriRoute;
     int i;
     dbg(GENERAL_CHANNEL, "ROUTING TABLE SIZE: %d\n", call routingTable.size());
-    for(i = 1; i <= call routingTable.size(); i++){
+    for(i=1; i <= call routingTable.size(); i++){
       PriRoute = call routingTable.get(i);
       dbg(GENERAL_CHANNEL, "Dest: %d \t Next Hop: %d Cost: %d\n", PriRoute.dest,  PriRoute.nextHop, PriRoute.cost);
     }
@@ -107,7 +107,7 @@ implementation{
         //update lspl
         call lspLinkList.pushback(lspL);
         //update sshortest past 
-	      call dijkstraTimer.startOneShot(90000 + (uint16_t)((call Random.rand16())%10000));
+	      call dijkstraTimer.startOneShot(80000 + (uint16_t)((call Random.rand16())%10000));
       }
       
       if(!isvalueinarray(neighborNode.src,neighborArr,neighborListSize)){
@@ -145,110 +145,105 @@ implementation{
     }
 
     event void dijkstraTimer.fired()
-    {
-      route newRoute;
-      int nodesize[MAXNODES];
-      int size = call lspLinkList.size();
-      int maxNode = MAXNODES;
-      int i,j,next_hop, cost[maxNode][maxNode], distance[maxNode], pred_list[maxNode];
-      int visited[maxNode], node_count, mindistance, nextnode;
-    
-      int start_node = TOS_NODE_ID;
-      bool adjMatrix[maxNode][maxNode];
-      //dbg(GENERAL_CHANNEL, "Link list size: %d\n", size);
-      for(i=0;i<maxNode;i++)
       {
-        for(j=0;j<maxNode;j++){
-          adjMatrix[i][j] = FALSE;
-        }
-      }
-
-      for(i=0; i<size;i++){
-        lspLink stuff = call lspLinkList.get(i);
-        adjMatrix[stuff.src][stuff.neighbor] = TRUE;
-      }
-
-      for(i=0;i<maxNode;i++)
-      {
-        for(j=0;j<maxNode;j++)
+        route newRoute;
+        int nodesize[MAXNODES];
+        int size = call lspLinkList.size();
+        int maxNode = MAXNODES;
+        int i,j,next_hop, cost[maxNode][maxNode], distance[maxNode], pred_list[maxNode];
+        int visited[maxNode], node_count, mindistance, nextnode;
+     
+        int start_node = TOS_NODE_ID;
+        bool adjMatrix[maxNode][maxNode];
+        //dbg(GENERAL_CHANNEL, "Link list size: %d\n", size);
+        for(i=0;i<maxNode;i++)
         {
-          if (adjMatrix[i][j] == 0)
-            cost[i][j] = 9999;
-          else
-            cost[i][j] = adjMatrix[i][j];
-        }
-      }
-      nextnode = 0;
-      //initialize pred[],distance[] and visited[]
-      for(i = 0; i < maxNode; i++)
-      {
-        distance[i] = cost[start_node][i];
-        //dbg(GENERAL_CHANNEL, "Starting distance: %d\n", distance[i]); //=========================================
-        pred_list[i] = start_node;
-        visited[i] = 0;
-      }
-
-
-      distance[start_node] = 0;
-      visited[start_node] = 1;
-      node_count = 1;
-
-      while (node_count <= maxNode - 1)
-      {
-        //dbg(GENERAL_CHANNEL, "Node Count: %d\n", node_count); //==========================================
-        mindistance = 9999;
-        //nextnode gives the node at minimum distance
-        for (i = 0; i < maxNode; i++)
-        {
-          if (distance[i] < mindistance && !visited[i])
-          {
-            //dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
-            mindistance = distance[i];
-            nextnode = i;
-            break;
+          for(j=0;j<maxNode;j++){
+            adjMatrix[i][j] = FALSE;
           }
-          // else
-          // {
-          //   dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
-          // }
         }
-        visited[nextnode] = 1;
 
-        // for(i = 0; i < maxNode; i++)
-        // {
-        //   dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
-        // }
-        //Checks to see if a better path through next node exists
-        for (i = 0; i < MAXNODES; i++)
+        for(i=0; i<size;i++){
+          lspLink stuff = call lspLinkList.get(i);
+          adjMatrix[stuff.src][stuff.neighbor] = TRUE;
+        }
+
+        for(i=0;i<maxNode;i++)
         {
-          if (!visited[i])
+          for(j=0;j<maxNode;j++)
           {
-            if (mindistance + cost[nextnode][i] < distance[i])
+            if (adjMatrix[i][j] == 0)
+           	  cost[i][j] = 9999;
+            else
+            	cost[i][j] = adjMatrix[i][j];
+          }
+        }
+        nextnode = 0;
+        //initialize pred[],distance[] and visited[]
+        for(i = 0; i < maxNode; i++)
+        {
+          distance[i] = cost[start_node][i];
+          //dbg(GENERAL_CHANNEL, "Starting distance: %d\n", distance[i]); //=========================================
+          pred_list[i] = start_node;
+          visited[i] = 0;
+        }
+
+
+        distance[start_node] = 0;
+        visited[start_node] = 1;
+        node_count = 1;
+
+        while (node_count <= maxNode - 1)
+        {
+          //dbg(GENERAL_CHANNEL, "Node Count: %d\n", node_count); //==========================================
+          mindistance = 9999;
+          //nextnode gives the node at minimum distance
+          for (i = 0; i < maxNode; i++)
+          {
+            if (distance[i] < mindistance && !visited[i])
             {
-              //dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
-              distance[i] = mindistance + cost[nextnode][i];
-              pred_list[i] = nextnode;
+              dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
+              mindistance = distance[i];
+              nextnode = i;
+              break;
+            }
+            else
+            {
+              dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
             }
           }
-        }
-        node_count++;
-      }
-        
-      for(i = 0; i < maxNode; i++)
-      {
-        //dbg(GENERAL_CHANNEL, "NODE %d NODE DISTANCE: %d\n", i, distance[i]);
-      }
+          visited[nextnode] = 1;
 
+          for(i = 0; i < maxNode; i++)
+          {
+            dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
+          }
+          
+          //Checks to see if a better path through next node exists
+          for (i = 0; i < maxNode; i++)
+          {
+            if (!visited[i])
+            {
+              if (mindistance + cost[nextnode][i] < distance[i])
+              {
+                //dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
+                distance[i] = mindistance + cost[nextnode][i];
+                pred_list[i] = nextnode;
+              }
+            }
+          }
+          node_count++;
+        }
       for (i = 0; i < maxNode; i++) 
       {
         next_hop = TOS_NODE_ID;
-        //dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
+        dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
         if (distance[i] != 9999) 
         {
-          //dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
+          dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
           if (i != start_node) 
           {
-            //dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
+            dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
             j = i;
             do 
             {
@@ -276,6 +271,5 @@ implementation{
           }
         }
       }
-
     }
   }
