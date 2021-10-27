@@ -110,7 +110,7 @@ implementation
                 
                     if(call routingTable.contains(myMsg -> src)){
 
-                        routeDest = call routingTable.get(myMsg->dest); // ---
+                        routeDest = call routingTable.get(myMsg->src); // ---
                         dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", myMsg->dest, routeDest.nextHop); // ---
                         makePack(&sendPackage, myMsg->dest, myMsg->src, MAX_TTL, PROTOCOL_PINGREPLY, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
                         call InternalSender.send(sendPackage, routeDest.nextHop);                    
