@@ -172,7 +172,7 @@ implementation{
           for(j=0;j<maxNode;j++)
           {
             if (adjMatrix[i][j] == 0)
-           	cost[i][j] = 9999;
+           	  cost[i][j] = 9999;
             else
             	cost[i][j] = adjMatrix[i][j];
           }
@@ -199,11 +199,12 @@ implementation{
           //nextnode gives the node at minimum distance
           for (i = 0; i < maxNode; i++)
           {
-            if (distance[i] <= mindistance && !visited[i])
+            if (distance[i] < mindistance && !visited[i])
             {
               dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
               mindistance = distance[i];
               nextnode = i;
+              break;
             }
             else
             {
@@ -214,7 +215,7 @@ implementation{
 
           for(i = 0; i < maxNode; i++)
           {
-            dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE VISITED: %d\n", node_count, i, visited[i]); //=======================
+            dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
           }
           //Checks to see if a better path through next node exists
           for (i = 0; i < maxNode; i++)
