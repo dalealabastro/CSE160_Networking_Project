@@ -7,13 +7,14 @@
 //Configuration
 // Configuration
 #define AM_LinkState 62
+
  
 configuration LinkStateC
 {
   provides interface LinkState;
   uses interface List<pack> as neighborListC;
   uses interface List<lspLink> as lspLinkC;
-   uses interface Hashmap<int> as HashmapC;
+   uses interface Hashmap<route> as HashmapC;
 }
 
 implementation

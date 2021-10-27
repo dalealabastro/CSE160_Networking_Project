@@ -1,25 +1,10 @@
 #include "../../includes/channels.h"
 #include "../../includes/packet.h"
 
-// You need to send neighbor discovery packets
-// periodically
-// – Nodes could die at any time
-// – Use a timer and post a task to do this periodically
-// o What is a good timer to avoid overloading thenetwork?
-// • Upon reception of a neighbor discovery packet,
-// the receiving node must reply back
-// • The mechanism is very similar to Ping and Ping
-// Reply, you could copy or reuse the code (Skeleton
-// code!)
-// • When getting a reply back, the node should gather
-// statistics
-
 module NeighborDiscoveryP
 {
 
   provides interface NeighborDiscovery;
-
-  /// uses interface
   uses interface Timer<TMilli> as NDTimer;
   uses interface SimpleSend as FloodSender;
   uses interface List<pack> as neighborListC;

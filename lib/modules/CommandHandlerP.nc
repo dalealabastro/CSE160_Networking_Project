@@ -5,28 +5,25 @@
  *
  */
 
+
 #include "../../includes/CommandMsg.h"
 #include "../../includes/command.h"
 #include "../../includes/channels.h"
 
-module CommandHandlerP
-{
-    provides interface CommandHandler;
-    uses interface Receive;
-    uses interface Pool<message_t>;
-    uses interface Queue<message_t *>;
-    uses interface Packet;
+module CommandHandlerP{
+   provides interface CommandHandler;
+   uses interface Receive;
+   uses interface Pool<message_t>;
+   uses interface Queue<message_t*>;
+   uses interface Packet;
 }
 
-implementation
-{
-    task void processCommand()
-    {
-        if (!call Queue.empty())
-        {
+implementation{
+    task void processCommand(){
+        if(! call Queue.empty()){
             CommandMsg *msg;
             uint8_t commandID;
-            uint8_t *buff;
+            uint8_t* buff;
             message_t *raw_msg;
             void *payload;
 
@@ -35,22 +32,20 @@ implementation
             payload = call Packet.getPayload(raw_msg, sizeof(CommandMsg));
 
             // Check to see if the packet is valid.
-            if (!payload)
-            {
+            if(!payload){
                 call Pool.put(raw_msg);
                 post processCommand();
                 return;
             }
             // Change it to our type.
-            msg = (CommandMsg *)payload;
+            msg = (CommandMsg*) payload;
 
             dbg(COMMAND_CHANNEL, "A Command has been Issued.\n");
-            buff = (uint8_t *)msg->payload;
+            buff = (uint8_t*) msg->payload;
             commandID = msg->id;
 
             //Find out which command was called and call related command
-            switch (commandID)
-            {
+            switch(commandID){
             // A ping will have the destination of the packet as the first
             // value and the string in the remainder of the payload
             case CMD_PING:
@@ -90,15 +85,12 @@ implementation
             call Pool.put(raw_msg);
         }
 
-        if (!call Queue.empty())
-        {
+        if(! call Queue.empty()){
             post processCommand();
         }
     }
-    event message_t *Receive.receive(message_t * raw_msg, void *payload, uint8_t len)
-    {
-        if (!call Pool.empty())
-        {
+    event message_t* Receive.receive(message_t* raw_msg, void* payload, uint8_t len){
+        if (! call Pool.empty()){
             call Queue.enqueue(raw_msg);
             post processCommand();
             return call Pool.get();
