@@ -201,21 +201,21 @@ implementation{
           {
             if (distance[i] < mindistance && !visited[i])
             {
-              dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
+              //dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
               mindistance = distance[i];
               nextnode = i;
               break;
             }
-            else
-            {
-              dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
-            }
+            // else
+            // {
+            //   //dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
+            // }
           }
           visited[nextnode] = 1;
 
           for(i = 0; i < maxNode; i++)
           {
-            dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
+            //dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
           }
           //Checks to see if a better path through next node exists
           for (i = 0; i < maxNode; i++)
@@ -224,7 +224,7 @@ implementation{
             {
               if (mindistance + cost[nextnode][i] < distance[i])
               {
-                dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
+                //dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
                 distance[i] = mindistance + cost[nextnode][i];
                 pred_list[i] = nextnode;
               }
