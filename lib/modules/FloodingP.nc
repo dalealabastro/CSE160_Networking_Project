@@ -100,7 +100,7 @@ implementation
             {
                 return msg;
             }
-            else if (TOS_NODE_ID == myMsg->dest)
+            else if (TOS_NODE_ID == myMsg->src)
             {   
                 if(myMsg->protocol == PROTOCOL_PING){
                     route routeDest;
