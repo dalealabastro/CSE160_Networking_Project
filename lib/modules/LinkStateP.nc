@@ -203,6 +203,7 @@ implementation{
             dbg(GENERAL_CHANNEL, "I: %d Check Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
             if (distance[i] <= mindistance && !visited[i])
             {
+              dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
               mindistance = distance[i];
               nextnode = i;
             }
@@ -211,7 +212,7 @@ implementation{
 
           for(i = 0; i < maxNode; i++)
           {
-            dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE VISITED: %d\n", node_count, i, visited[i]);
+            dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE VISITED: %d\n", node_count, i, visited[i]); //=======================
           }
           //Checks to see if a better path through next node exists
           for (i = 0; i < maxNode; i++)
