@@ -34,6 +34,8 @@ module Node{
 
    uses interface SimpleSend as RouteSender;
 
+   uses interface SimpleSend as LspSender;
+
    uses interface Hashmap<route> as routingTable;
 
    uses interface LinkState;
@@ -94,7 +96,7 @@ implementation{
 
             dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", destination, routeDest.nextHop);
 
-            call RouteSender.send(sendPackage, routeDest.nextHop);
+            call LspSender.send(sendPackage, routeDest.nextHop);
         }
         else{
           makePack(&sendPackage, TOS_NODE_ID, destination, 0, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
