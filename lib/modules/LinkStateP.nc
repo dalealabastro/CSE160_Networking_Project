@@ -154,7 +154,6 @@ implementation{
      
         int start_node = TOS_NODE_ID;
         bool adjMatrix[maxNode][maxNode];
-
         //dbg(GENERAL_CHANNEL, "Link list size: %d\n", size);
         for(i=0;i<maxNode;i++)
         {
@@ -200,12 +199,13 @@ implementation{
           //nextnode gives the node at minimum distance
           for (i = 0; i < maxNode; i++)
           {
-            dbg(GENERAL_CHANNEL, "I: %d Check Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
+            dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
             if (distance[i] <= mindistance && !visited[i])
             {
               dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
               mindistance = distance[i];
               nextnode = i;
+              break;
             }
           }
           visited[nextnode] = 1;
