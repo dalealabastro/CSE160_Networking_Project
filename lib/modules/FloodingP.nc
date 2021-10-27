@@ -70,14 +70,13 @@ implementation
     //command to send new link state packet
     command error_t LspSender.send(pack msg, uint16_t dest)
     {
-        dbg(COMMAND_CHANNEL, "OVER HERE: %lu\n", dest);
         call InternalSender.send(msg, AM_BROADCAST_ADDR);
     }
 
     command error_t RouteSender.send(pack msg, uint16_t dest){
         
         msg.seq = sequenceN++;
-        dbg(COMMAND_CHANNEL, "LSP Network: %s\n", msg.payload);
+        //dbg(COMMAND_CHANNEL, "LSP Network: %s\n", msg.payload);
         call InternalSender.send(msg, dest);
     }
 
