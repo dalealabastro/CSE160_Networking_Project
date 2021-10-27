@@ -199,7 +199,7 @@ implementation{
           mindistance = 9999;
           //nextnode gives the node at minimum distance
           for (i = 0; i < maxNode; i++){
-            //dbg(GENERAL_CHANNEL, "I: %d Check Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
+            dbg(GENERAL_CHANNEL, "I: %d Check Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
             if (distance[i] <= mindistance && !visited[i])
             {
               mindistance = distance[i];
