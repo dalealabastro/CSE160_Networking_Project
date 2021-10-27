@@ -51,6 +51,7 @@ implementation {
     FloodingC.neighborListC -> neighborListC;
     FloodingC.HashmapC -> HashmapC;
     Node.RouteSender -> FloodingC.RouteSender;
+    Node.LspSender -> FloodingC.LspSender;
     
     components LinkStateC;
     Node.LinkState -> LinkStateC;
