@@ -133,7 +133,7 @@ def main():
     #s.ping(1, 2, "Hello, World");
     #s.routeDMP(2);
     s.runTime(20);
-    s.ping(1, 3, "Hi!");
+    #s.ping(1, 3, "Hi!");
     s.routeDMP(3);
     s.runTime(40);
 
