@@ -172,9 +172,13 @@ implementation{
           for(j=0;j<maxNode;j++)
           {
             if (adjMatrix[i][j] == 0)
-           	  cost[i][j] = 9999;
+            {
+              cost[i][j] = adjMatrix[i][j];
+            }
             else
-            	cost[i][j] = adjMatrix[i][j];
+            {
+              cost[i][j] = 9999;
+            }
           }
         }
         nextnode = 0;
@@ -182,7 +186,7 @@ implementation{
         for(i = 0; i < maxNode; i++)
         {
           distance[i] = cost[start_node][i];
-          dbg(GENERAL_CHANNEL, "Starting distance: %d\n", distance[i]); //=========================================
+          //dbg(GENERAL_CHANNEL, "Starting distance: %d\n", distance[i]); //=========================================
           pred_list[i] = start_node;
           visited[i] = 0;
         }
@@ -220,13 +224,13 @@ implementation{
           //Checks to see if a better path through next node exists
           for (i = 1; i < maxNode; i++)
           {
-            dbg(GENERAL_CHANNEL, "NODE COUNT: %d VISIT CHECK FOR %d - VISITED: %d\n", node_count, i, visited[i]);
+            //dbg(GENERAL_CHANNEL, "NODE COUNT: %d VISIT CHECK FOR %d - VISITED: %d\n", node_count, i, visited[i]);
             if (!visited[i])
             {
-              dbg(GENERAL_CHANNEL, "NODE COUNT: %d DISTANCE CHECK FOR %d - MINDISTANCE: ( %d + %d ) DISTANCE: %d\n", node_count, i, mindistance,cost[nextnode][i], distance[i]);
+              //dbg(GENERAL_CHANNEL, "NODE COUNT: %d DISTANCE CHECK FOR %d - MINDISTANCE: ( %d + %d ) DISTANCE: %d\n", node_count, i, mindistance,cost[nextnode][i], distance[i]);
               if (mindistance + cost[nextnode][i] < distance[i])
               {
-                dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
+                //dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
                 distance[i] = mindistance + cost[nextnode][i];
                 pred_list[i] = nextnode;
                 break;
