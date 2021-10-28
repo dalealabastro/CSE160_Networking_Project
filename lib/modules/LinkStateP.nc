@@ -180,7 +180,14 @@ implementation{
               cost[i][j] = adjMatrix[i][j];
             }
           }
+        }
 
+        for(i = 0; i < maxNode; i++)
+        {
+          for(j = 0 ; j < maxNode; j++)
+          {
+            dbg(GENERAL_CHANNEL, "FROM NODE: %d TO NODE %d - COST: %d\n", i, j, cost[i][j]);
+          }
         }
         nextnode = 0;
         //initialize pred[],distance[] and visited[]
@@ -206,14 +213,14 @@ implementation{
           {
             if (distance[i] < mindistance && !visited[i])
             {
-              dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
+              //dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
               mindistance = distance[i];
               nextnode = i;
               break;
             }
             else
             {
-             dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
+             //dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
             }
           }
           visited[nextnode] = 1;
