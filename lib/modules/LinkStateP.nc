@@ -171,14 +171,23 @@ implementation{
         {
           for(j=0;j<maxNode;j++)
           {
-            if (adjMatrix[i][j] != 0)
-            {
-              cost[i][j] = adjMatrix[i][j];
-            }
-            else
+            if (adjMatrix[i][j] == 0)
             {
               cost[i][j] = 9999;
             }
+            else
+            {
+              cost[i][j] = adjMatrix[i][j];
+            }
+
+          }
+
+        }
+        for(i=0; i < maxNode; i++)
+        {
+          for(j=0; j < maxNode; i++)
+          {
+            dbg(GENERAL_CHANNEL, "FROM NODE: %d TO NODE: %d COST: %d\n", i, j, cost[i][j]);
           }
         }
         nextnode = 0;
@@ -198,7 +207,7 @@ implementation{
 
         while (node_count <= maxNode - 1)
         {
-          dbg(GENERAL_CHANNEL, "Node Count: %d\n", node_count); //==========================================
+          //dbg(GENERAL_CHANNEL, "Node Count: %d\n", node_count); //==========================================
           mindistance = 9999;
           //nextnode gives the node at minimum distance
           for (i = 0; i < maxNode; i++)
