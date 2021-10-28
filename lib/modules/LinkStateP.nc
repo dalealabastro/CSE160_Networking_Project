@@ -171,7 +171,7 @@ implementation{
         {
           for(j=0;j<maxNode;j++)
           {
-            if (adjMatrix[i][j] == 0)
+            if (adjMatrix[i][j] != 0)
             {
               cost[i][j] = adjMatrix[i][j];
             }
