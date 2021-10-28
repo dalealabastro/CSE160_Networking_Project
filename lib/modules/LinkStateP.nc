@@ -182,7 +182,7 @@ implementation{
         for(i = 0; i < maxNode; i++)
         {
           distance[i] = cost[start_node][i];
-          //dbg(GENERAL_CHANNEL, "Starting distance: %d\n", distance[i]); //=========================================
+          dbg(GENERAL_CHANNEL, "Starting distance: %d\n", distance[i]); //=========================================
           pred_list[i] = start_node;
           visited[i] = 0;
         }
@@ -194,28 +194,28 @@ implementation{
 
         while (node_count <= maxNode - 1)
         {
-          //dbg(GENERAL_CHANNEL, "Node Count: %d\n", node_count); //==========================================
+          dbg(GENERAL_CHANNEL, "Node Count: %d\n", node_count); //==========================================
           mindistance = 9999;
           //nextnode gives the node at minimum distance
           for (i = 0; i < maxNode; i++)
           {
             if (distance[i] < mindistance && !visited[i])
             {
-              //dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
+              dbg(GENERAL_CHANNEL, "CHANGE OCCURS FOR - MINDISTANCE = %d - NEXT NODE FROM %d TO %d\n", distance[i], nextnode, i); //===============
               mindistance = distance[i];
               nextnode = i;
               break;
             }
-            // else
-            // {
-            //   //dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
-            // }
+            else
+            {
+             dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
+            }
           }
           visited[nextnode] = 1;
 
           for(i = 0; i < maxNode; i++)
           {
-            //dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
+            dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
           }
           //Checks to see if a better path through next node exists
           for (i = 0; i < maxNode; i++)
@@ -224,7 +224,7 @@ implementation{
             {
               if (mindistance + cost[nextnode][i] < distance[i])
               {
-                //dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
+                dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
                 distance[i] = mindistance + cost[nextnode][i];
                 pred_list[i] = nextnode;
               }
@@ -235,13 +235,13 @@ implementation{
       for (i = 0; i < maxNode; i++) 
       {
         next_hop = TOS_NODE_ID;
-        //dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
+        dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
         if (distance[i] != 9999) 
         {
-          //dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
+          dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
           if (i != start_node) 
           {
-            //dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
+            dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
             j = i;
             do 
             {
@@ -255,13 +255,13 @@ implementation{
           }
           else
           {
-            //dbg(GENERAL_CHANNEL, "Check Three.1-Node %d\n", i);
+            dbg(GENERAL_CHANNEL, "Check Three.1-Node %d\n", i);
             next_hop = start_node;
           }
           
           if (next_hop != 0 )
           {
-            //dbg(GENERAL_CHANNEL, "NODE: %d\n", i);
+            dbg(GENERAL_CHANNEL, "NODE: %d\n", i);
             newRoute.dest = i;
             newRoute.nextHop = next_hop;
             newRoute.cost = distance[i];
