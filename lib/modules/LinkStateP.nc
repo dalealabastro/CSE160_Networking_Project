@@ -213,15 +213,17 @@ implementation{
           }
           visited[nextnode] = 1;
 
-          for(i = 0; i < maxNode; i++)
-          {
-            dbg(GENERAL_CHANNEL, "NODE COUNT: %d TO NODE %d NODE VISITED: %d\n", node_count, i, visited[i]); //=======================
-          }
+          // for(i = 0; i < maxNode; i++)
+          // {
+          //   dbg(GENERAL_CHANNEL, "NODE COUNT: %d TO NODE %d NODE VISITED: %d\n", node_count, i, visited[i]); //=======================
+          // }
           //Checks to see if a better path through next node exists
           for (i = 0; i < maxNode; i++)
           {
+            dbg(GENERAL_CHANNEL, "NODE COUNT: %d VISIT CHECK\n", node_count);
             if (!visited[i])
             {
+              dbg(GENERAL_CHANNEL, "NODE COUNT: %d VISIT CHECK\n", node_count);
               if (mindistance + cost[nextnode][i] < distance[i])
               {
                 dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
@@ -235,13 +237,13 @@ implementation{
       for (i = 0; i < maxNode; i++) 
       {
         next_hop = TOS_NODE_ID;
-        dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
+        //dbg(GENERAL_CHANNEL, "Check One-Node %d Distance to Node: %d\n", i, distance[i]);
         if (distance[i] != 9999) 
         {
-          dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
+          //dbg(GENERAL_CHANNEL, "Check Two-Node %d\n", i);
           if (i != start_node) 
           {
-            dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
+            //dbg(GENERAL_CHANNEL, "Check Three-Node %d\n", i);
             j = i;
             do 
             {
@@ -255,13 +257,13 @@ implementation{
           }
           else
           {
-            dbg(GENERAL_CHANNEL, "Check Three.1-Node %d\n", i);
+            //dbg(GENERAL_CHANNEL, "Check Three.1-Node %d\n", i);
             next_hop = start_node;
           }
           
           if (next_hop != 0 )
           {
-            dbg(GENERAL_CHANNEL, "NODE: %d\n", i);
+            //dbg(GENERAL_CHANNEL, "NODE: %d\n", i);
             newRoute.dest = i;
             newRoute.nextHop = next_hop;
             newRoute.cost = distance[i];
