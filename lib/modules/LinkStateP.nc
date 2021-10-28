@@ -185,7 +185,7 @@ implementation{
         }
         for(i=0; i < maxNode; i++)
         {
-          for(j=0; j < maxNode; i++)
+          for(j=0; j < maxNode; j++)
           {
             dbg(GENERAL_CHANNEL, "FROM NODE: %d TO NODE: %d COST: %d\n", i, j, cost[i][j]);
           }
