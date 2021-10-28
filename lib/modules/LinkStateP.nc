@@ -220,10 +220,10 @@ implementation{
           //Checks to see if a better path through next node exists
           for (i = 0; i < maxNode; i++)
           {
-            dbg(GENERAL_CHANNEL, "NODE COUNT: %d VISIT CHECK\n", node_count);
+            dbg(GENERAL_CHANNEL, "NODE COUNT: %d VISIT CHECK FOR %d - VISITED: %d\n", node_count, i, visited[i]);
             if (!visited[i])
             {
-              dbg(GENERAL_CHANNEL, "NODE COUNT: %d VISIT CHECK\n", node_count);
+              dbg(GENERAL_CHANNEL, "NODE COUNT: %d DISTANCE CHECK FOR %d - DISTANCE %d\n", node_count, i, distance[i]);
               if (mindistance + cost[nextnode][i] < distance[i])
               {
                 dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
