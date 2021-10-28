@@ -162,7 +162,8 @@ implementation{
           }
         }
 
-        for(i=0; i<size;i++){
+        for(i=0; i<size;i++)
+        {
           lspLink stuff = call lspLinkList.get(i);
           adjMatrix[stuff.src][stuff.neighbor] = TRUE;
         }
@@ -182,13 +183,13 @@ implementation{
           }
         }
 
-        for(i = 0; i < maxNode; i++)
-        {
-          for(j = 0 ; j < maxNode; j++)
-          {
-            dbg(GENERAL_CHANNEL, "FROM NODE: %d TO NODE %d - COST: %d\n", i, j, cost[i][j]);
-          }
-        }
+        // for(i = 0; i < maxNode; i++)
+        // {
+        //   for(j = 0 ; j < maxNode; j++)
+        //   {
+        //     dbg(GENERAL_CHANNEL, "FROM NODE: %d TO NODE %d - COST: %d\n", i, j, cost[i][j]);
+        //   }
+        // }
         nextnode = 0;
         //initialize pred[],distance[] and visited[]
         for(i = 0; i < maxNode; i++)
