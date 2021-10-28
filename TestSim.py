@@ -134,7 +134,7 @@ def main():
     #s.routeDMP(2);
     s.runTime(20);
     #s.ping(1, 3, "Hi!");
-    s.routeDMP(10);
+    s.routeDMP(1);
     s.runTime(40);
 
 if __name__ == '__main__':
