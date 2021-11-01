@@ -102,7 +102,7 @@ implementation{
 			{
 				if(i == position)
 				{
-					container[i] = 0;
+					
 					resize = TRUE;
 				}
 
