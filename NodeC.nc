@@ -58,4 +58,7 @@ implementation {
     Node.routingTable ->HashmapC;
     LinkStateC.neighborListC-> neighborListC;
     LinkStateC.HashmapC -> HashmapC;
+
+    components TCPHandlerC;
+    Node.TCPHandler -> TCPHandlerC;
 }
