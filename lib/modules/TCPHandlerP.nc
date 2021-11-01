@@ -310,7 +310,7 @@ implementation {
             return;
         }
         
-        call CurrentMessages.pushfrontdrop(*msg);
+        call CurrentMessages.pushfront(*msg);
         sendNextFromSocket(socketFD);             
     }
 
@@ -477,6 +477,7 @@ implementation {
                 temp_buffer[i] = socket.sendBuff[socket.lastSent+i];
             }
         }
+
         sendDat(socketFD, temp_buffer, TCP_PAYLOAD_SIZE);
         call PacketTimer.startOneShot(call PacketTimer.getNow() + 2*socket.RTT);
     }
@@ -531,7 +532,7 @@ implementation {
         socket.flag = 0;
         socket.RTT = default_rtt;
 
-        call ServerList.pushbackdrop(socket);
+        call ServerList.pushback(socket);
         dbg(TRANSPORT_CHANNEL, "Server started on Port %hhu\n", port);
     }
 
