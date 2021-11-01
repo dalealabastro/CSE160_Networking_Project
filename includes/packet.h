@@ -12,7 +12,9 @@
 enum{
 	PACKET_HEADER_LENGTH = 8,
 	PACKET_MAX_PAYLOAD_SIZE = 28 - PACKET_HEADER_LENGTH,
-	MAX_TTL = 15
+	MAX_TTL = 15,
+	//to identify the age of neighbors in neighbor discovery
+	MAX_NEIGHBOR_AGE = 5
 };
 
 
@@ -32,8 +34,40 @@ typedef nx_struct pack{
  * 		pack *input = pack to be printed.
  */
 void logPack(pack *input){
-	dbg(GENERAL_CHANNEL, "Src: %hhu Dest: %hhu Seq: %hhu TTL: %hhu Protocol:%hhu  Payload: %s\n",
-	input->src, input->dest, input->seq, input->TTL, input->protocol, input->payload);
+	char* protocol = "";
+	switch (input->protocol) {
+		case PROTOCOL_PING:
+			protocol = "PING";
+			break;
+		case PROTOCOL_PINGREPLY:
+			protocol = "PINGREPLY";
+			break;
+		case PROTOCOL_LINKEDLIST:
+			protocol = "LINKEDLIST";
+			break;
+		case PROTOCOL_NAME:
+			protocol = "NAME";
+			break;
+		case PROTOCOL_TCP:
+			protocol = "TCP";
+			break;
+		case PROTOCOL_DV:
+			protocol = "DV";
+			break;
+		case PROTOCOL_CMD:
+			protocol = "CMD";
+			break;
+		default:
+			protocol = "UNKNOWN";
+	}
+
+	if (input->protocol == PROTOCOL_TCP) {
+		dbg(GENERAL_CHANNEL, "Src: %hhu Dest: %hhu Seq: %hhu TTL: %hhu Protocol: %s\n",
+			input->src, input->dest, input->seq, input->TTL, protocol);
+	} else {
+		dbg(GENERAL_CHANNEL, "Src: %hhu Dest: %hhu Seq: %hhu TTL: %hhu Protocol: %s Payload: %s\n",
+			input->src, input->dest, input->seq, input->TTL, protocol, input->payload);
+	}
 }
 
 enum{
