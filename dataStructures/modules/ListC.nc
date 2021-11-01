@@ -108,7 +108,7 @@ implementation{
 
 				if(resize == TRUE)
 				{
-					contrainer[i] = container[i + 1];
+					container[i] = container[i + 1];
 				}
 			}
 			size--;
