@@ -162,8 +162,7 @@ implementation{
           }
         }
 
-        for(i=0; i<size;i++)
-        {
+        for(i=0; i<size;i++){
           lspLink stuff = call lspLinkList.get(i);
           adjMatrix[stuff.src][stuff.neighbor] = TRUE;
         }
@@ -172,24 +171,12 @@ implementation{
         {
           for(j=0;j<maxNode;j++)
           {
-            if (adjMatrix[i][j] == FALSE)
-            {
-              cost[i][j] = 9999;
-            }
+            if (adjMatrix[i][j] == 0)
+           	  cost[i][j] = 9999;
             else
-            {
-              cost[i][j] = adjMatrix[i][j];
-            }
+            	cost[i][j] = adjMatrix[i][j];
           }
         }
-
-        // for(i = 0; i < maxNode; i++)
-        // {
-        //   for(j = 0 ; j < maxNode; j++)
-        //   {
-        //     dbg(GENERAL_CHANNEL, "FROM NODE: %d TO NODE %d - COST: %d\n", i, j, cost[i][j]);
-        //   }
-        // }
         nextnode = 0;
         //initialize pred[],distance[] and visited[]
         for(i = 0; i < maxNode; i++)
@@ -221,28 +208,25 @@ implementation{
             }
             else
             {
-             //dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
+              //dbg(GENERAL_CHANNEL, "I: %d Current Distance: %d Min Distance: %d\n", i, distance[i], mindistance); //===================================
             }
           }
           visited[nextnode] = 1;
 
           // for(i = 0; i < maxNode; i++)
           // {
-          //   dbg(GENERAL_CHANNEL, "NODE COUNT: %d TO NODE %d NODE VISITED: %d\n", node_count, i, visited[i]); //=======================
+          //   dbg(GENERAL_CHANNEL, "NODE: %d TO NODE %d NODE DISTANCE: %d\n", node_count, i, distance[i]); //=======================
           // }
           //Checks to see if a better path through next node exists
-          for (i = 1; i < maxNode; i++)
+          for (i = 0; i < maxNode; i++)
           {
-            //dbg(GENERAL_CHANNEL, "NODE COUNT: %d VISIT CHECK FOR %d - VISITED: %d\n", node_count, i, visited[i]);
             if (!visited[i])
             {
-              //dbg(GENERAL_CHANNEL, "NODE COUNT: %d DISTANCE CHECK FOR %d - MINDISTANCE: ( %d + %d ) DISTANCE: %d\n", node_count, i, mindistance,cost[nextnode][i], distance[i]);
-              if(mindistance + cost[nextnode][i] < distance[i])
+              if (mindistance + cost[nextnode][i] < distance[i])
               {
                 //dbg(GENERAL_CHANNEL, "FOUND A BETTER ONE - NODE: %d\n", i);
                 distance[i] = mindistance + cost[nextnode][i];
                 pred_list[i] = nextnode;
-                break;
               }
             }
           }

@@ -1,5 +1,6 @@
 #include <Timer.h>
 #include "../../includes/socket.h"
+#include "../../includes/packet.h"
 
 configuration TCPHandlerC{
     provides interface TCPHandler;
@@ -18,7 +19,7 @@ implementation {
     components new ListC(socket_store_t, MAX_NUM_OF_SOCKETS) as ServerListC;
     TCPHandlerP.ServerList -> ServerListC;
 
-    components new ListC(pack, (SOCKET_BUFFER_SIZE / PACKET_SIZE) * 10) as CurrentMessagesC;
+    components new ListC(pack, (SOCKET_BUFFER_SIZE / PACKET_MAX_PAYLOAD_SIZE) * 10) as CurrentMessagesC;
     TCPHandlerP.CurrentMessages -> CurrentMessagesC;
 
 

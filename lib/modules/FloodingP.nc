@@ -73,14 +73,16 @@ implementation
         call InternalSender.send(msg, AM_BROADCAST_ADDR);
     }
 
-    command error_t RouteSender.send(pack msg, uint16_t dest){
+    command error_t RouteSender.send(pack msg, uint16_t dest)
+    {
         
         msg.seq = sequenceN++;
         //dbg(COMMAND_CHANNEL, "LSP Network: %s\n", msg.payload);
         call InternalSender.send(msg, dest);
     }
 
-    command void Flooding.flood(uint16_t source){
+    command void Flooding.flood(uint16_t source)
+    {
         pack neighborFlood;
 
         uint8_t floodingPayload[2] = {TOS_NODE_ID,0};
@@ -100,11 +102,7 @@ implementation
             {
                 return msg;
             }
-            else if (myMsg->src == myMsg->dest)
-            {
-                dbg(GENERAL_CHANNEL, "Message: %s\n", myMsg->payload);
-            }
-            else if (TOS_NODE_ID == myMsg->src)
+            else if (TOS_NODE_ID == myMsg->dest)
             {   
                 if(myMsg->protocol == PROTOCOL_PING){
                     route routeDest;
@@ -115,14 +113,12 @@ implementation
                     if(call routingTable.contains(myMsg -> src)){
 
                         routeDest = call routingTable.get(myMsg->dest); // ---
-                        dbg(NEIGHBOR_CHANNEL, "Current Node: %d, To get to: %d, send through: %d\n",TOS_NODE_ID, myMsg->dest, routeDest.nextHop);
-                        //dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", myMsg->dest, routeDest.nextHop); // ---
-                        makePack(&sendPackage, routeDest.nextHop, myMsg->dest, MAX_TTL, PROTOCOL_PING, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
+                        dbg(NEIGHBOR_CHANNEL, "To get to:%d, send through:%d\n", myMsg->dest, routeDest.nextHop); // ---
+                        makePack(&sendPackage, myMsg->dest, myMsg->src, MAX_TTL, PROTOCOL_PINGREPLY, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
                         call InternalSender.send(sendPackage, routeDest.nextHop);                    
-                    }
-                    else{
+                    }else{
                     
-                        dbg(NEIGHBOR_CHANNEL, "Couldn't find the routing table for: %d so flooding\n",TOS_NODE_ID);
+                        //dbg(NEIGHBOR_CHANNEL, "Couldn't find the routing table for: %d so flooding\n",TOS_NODE_ID);
                         makePack(&sendPackage, myMsg->dest, myMsg->src, myMsg->TTL-1, PROTOCOL_PINGREPLY, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
                         call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
                     
@@ -173,7 +169,7 @@ implementation
                             call lspLinkList.pushback(lspL);
                             //dbg(COMMAND_CHANNEL, "PushBack LSP Link neighbor: %d src: %d\n", lspL.neighbor, myMsg->src);
                         }
-                        makePack(&sendPackage, myMsg->src, AM_BROADCAST_ADDR, myMsg->TTL - 1, 2, myMsg->seq, (uint8_t*) myMsg->payload, PACKET_MAX_PAYLOAD_SIZE);
+                        makePack(&sendPackage, myMsg->src, AM_BROADCAST_ADDR, myMsg->TTL - 1, PROTOCOL_LINKSTATE, myMsg->seq, (uint8_t*) myMsg->payload, PACKET_MAX_PAYLOAD_SIZE);
                         call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
                     }
                     else
@@ -239,7 +235,7 @@ implementation
                 call InternalSender.send(sendPackage, AM_BROADCAST_ADDR);
                 return msg;
             }
-            //dbg(GENERAL_CHANNEL, "Unknown Packet Type %d\n", len);
+            dbg(GENERAL_CHANNEL, "Unknown Packet Type %d\n", len);
             return msg;
         }else{
             dbg(FLOODING_CHANNEL, "\n\n\n\n\n\n\n\n\n\n?\n\n\n\n\n\n");
