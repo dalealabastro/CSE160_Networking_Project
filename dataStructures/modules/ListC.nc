@@ -91,26 +91,4 @@ implementation{
 	command t List.get(uint16_t position){
 		return container[position];
 	}
-
-	command void List.remove(uint16_t position)
-	{
-		if(size > 0)
-		{
-			bool resize = FALSE;
-			for(i = 0; i < size - 1; i++)
-			{
-				if(i == position)
-				{
-					container[i] = 0;
-					resize = TRUE;
-				}
-
-				if(resize == TRUE)
-				{
-					contrainer[i] = container[i + 1];
-				}
-			}
-			size--;
-		}
-	}
 }
