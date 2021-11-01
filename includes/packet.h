@@ -42,8 +42,8 @@ void logPack(pack *input){
 		case PROTOCOL_PINGREPLY:
 			protocol = "PINGREPLY";
 			break;
-		case PROTOCOL_LINKEDLIST:
-			protocol = "LINKEDLIST";
+		case PROTOCOL_LINKSTATE:
+			protocol = "LINKSTATE";
 			break;
 		case PROTOCOL_NAME:
 			protocol = "NAME";
