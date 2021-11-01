@@ -96,6 +96,7 @@ implementation{
 	{
 		if(size > 0)
 		{
+			int32_t i;
 			bool resize = FALSE;
 			for(i = 0; i < size - 1; i++)
 			{
