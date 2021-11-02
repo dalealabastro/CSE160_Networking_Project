@@ -55,22 +55,22 @@ implementation{
     }
 
     event void AMControl.stopDone(error_t err) {
-        switch(msg->protocol) 
+        switch(myMsg->protocol) 
         {
             case PROTOCOL_PING:
-                dbg(GENERAL_CHANNEL, "--- Ping recieved from %d\n", msg->src);
-                dbg(GENERAL_CHANNEL, "--- Packet Payload: %s\n", msg->payload);
+                dbg(GENERAL_CHANNEL, "--- Ping recieved from %d\n", myMsg->src);
+                dbg(GENERAL_CHANNEL, "--- Packet Payload: %s\n", myMsg->payload);
                 dbg(GENERAL_CHANNEL, "--- Sending Reply...\n");
-                makePack(&sendPackage, msg->dest, msg->src, MAX_TTL, PROTOCOL_PINGREPLY, current_seq++, (uint8_t*)msg->payload, PACKET_MAX_PAYLOAD_SIZE);
+                makePack(&sendPackage, myMsg->dest, myMsg->src, MAX_TTL, PROTOCOL_PINGREPLY, current_seq++, (uint8_t*)myMsg->payload, PACKET_MAX_PAYLOAD_SIZE);
                 call RoutingHandler.send(&sendPackage);
                 break;
                     
             case PROTOCOL_PINGREPLY:
-                dbg(GENERAL_CHANNEL, "--- Ping reply recieved from %d\n", msg->src);
+                dbg(GENERAL_CHANNEL, "--- Ping reply recieved from %d\n", myMsg->src);
                 break;
                     
             default:
-                dbg(GENERAL_CHANNEL, "Unrecognized ping protocol: %d\n", msg->protocol);
+                dbg(GENERAL_CHANNEL, "Unrecognized ping protocol: %d\n", myMsg->protocol);
         }
     }
 
