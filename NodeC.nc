@@ -47,7 +47,7 @@ implementation {
     
     components LinkStateC;
     Node.LinkState -> LinkStateC;
-    Node.lspLinkList -> lspLinkC;
+    //Node.lspLinkList -> lspLinkC;
     Node.routingTable ->HashmapC;
     LinkStateC.neighborListC-> neighborListC;
     LinkStateC.HashmapC -> HashmapC;
