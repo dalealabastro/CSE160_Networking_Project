@@ -36,8 +36,6 @@ uses interface SimpleSend as FloodSender;
 uses interface SimpleSend as RouteSender;
 uses interface Hashmap<route> as routingTable;
 
-uses interface TCPHandler;
-
 uses interface LinkState;
 }
 
