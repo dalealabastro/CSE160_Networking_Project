@@ -1,42 +1,33 @@
-/*
- * ANDES Lab - University of California, Merced
- * This class provides the basic functions of a network node.
- *
- * @author UCM ANDES Lab
- * @date   2013/09/03
- *
- */
 #include <Timer.h>
 #include "includes/command.h"
 #include "includes/packet.h"
 #include "includes/CommandMsg.h"
 #include "includes/sendInfo.h"
 #include "includes/channels.h"
-#include "includes/lsp.h"
-#include "includes/route.h"
 
-module Node {
-uses interface Boot;
+module Node{
+    uses interface Boot;
 
-uses interface SplitControl as AMControl;
+    uses interface SplitControl as AMControl;
+    uses interface Receive;
 
-uses interface Receive;
+    uses interface SimpleSend as Sender;
 
-uses interface SimpleSend as Sender;
+    uses interface CommandHandler;
 
-uses interface CommandHandler;
+    uses interface NeighborDiscovery;
 
-uses interface NeighborDiscovery;
+    uses interface Flooding;
 
-uses interface Flooding;
+    //output of flooding
+    uses interface SimpleSend as FloodSender;
+    //routing table
+    uses interface SimpleSend as RouteSender;
+    uses interface Hashmap<route> as routingTable;
 
-//output of flooding
-uses interface SimpleSend as FloodSender;
-//routing table
-uses interface SimpleSend as RouteSender;
-uses interface Hashmap<route> as routingTable;
+    uses interface LinkState;
 
-uses interface LinkState;
+    uses interface TCPHandler;
 }
 
 implementation{
@@ -48,8 +39,6 @@ implementation{
     event void Boot.booted() {
         
         call AMControl.start();
-
-        dbg(GENERAL_CHANNEL, "NODE Booted\n");
 
         call NeighborDiscovery.start();
 
@@ -66,14 +55,54 @@ implementation{
     }
 
     event void AMControl.stopDone(error_t err) {
-        dbg(GENERAL_CHANNEL, "AMControl.stopDone %error_t\n", err);
+        switch(msg->protocol) 
+        {
+            case PROTOCOL_PING:
+                dbg(GENERAL_CHANNEL, "--- Ping recieved from %d\n", msg->src);
+                dbg(GENERAL_CHANNEL, "--- Packet Payload: %s\n", msg->payload);
+                dbg(GENERAL_CHANNEL, "--- Sending Reply...\n");
+                makePack(&sendPackage, msg->dest, msg->src, MAX_TTL, PROTOCOL_PINGREPLY, current_seq++, (uint8_t*)msg->payload, PACKET_MAX_PAYLOAD_SIZE);
+                call RoutingHandler.send(&sendPackage);
+                break;
+                    
+            case PROTOCOL_PINGREPLY:
+                dbg(GENERAL_CHANNEL, "--- Ping reply recieved from %d\n", msg->src);
+                break;
+                    
+            default:
+                dbg(GENERAL_CHANNEL, "Unrecognized ping protocol: %d\n", msg->protocol);
+        }
     }
 
     event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len) {
-        dbg(GENERAL_CHANNEL, "Packet Received\n");
-        if(len==sizeof(pack)) {
+        if (len == sizeof(pack)) {
             pack* myMsg=(pack*) payload;
-            dbg(GENERAL_CHANNEL, "Package Payload: %s\n", myMsg->payload);
+
+            // Check TTL
+            if (myMsg->TTL-- == 0) {
+                return msg;
+            }
+
+            // Distance Vector
+            if (myMsg->protocol == PROTOCOL_DV) {
+                call RoutingHandler.recieve(myMsg);
+            
+            // TCP
+            } else if (myMsg->protocol == PROTOCOL_TCP && myMsg->dest == TOS_NODE_ID) {
+                call TCPHandler.recieve(myMsg);
+
+            // Regular Ping
+            } else if (myMsg->dest == TOS_NODE_ID) {
+                pingHandler(myMsg);
+                
+            // Neighbor Discovery
+            } else if (myMsg->dest == AM_BROADCAST_ADDR) {
+                call NeighborDiscoveryHandler.recieve(myMsg);
+
+            // Not Destination
+            } else {
+                call RoutingHandler.send(myMsg);
+            }
             return msg;
         }
         dbg(GENERAL_CHANNEL, "Unknown Packet Type %d\n", len);
@@ -118,9 +147,17 @@ implementation{
 
     event void CommandHandler.printDistanceVector() {}
 
-    event void CommandHandler.setTestServer() {}
+    event void CommandHandler.setTestServer()
+    {
+        dbg(GENERAL_CHANNEL, "TEST_SERVER EVENT\n");
+        call TCPHandler.startServer(port);
+    }
 
-    event void CommandHandler.setTestClient() {}
+    event void CommandHandler.setTestClient() 
+    {
+        dbg(GENERAL_CHANNEL, "TEST_CLIENT EVENT\n");
+        call TCPHandler.startClient(dest, srcPort, destPort, transfer);
+    }
 
     event void CommandHandler.setAppServer() {}
 
