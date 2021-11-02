@@ -41,14 +41,6 @@ implementation {
     void updateSocket(socket_t socketFD, socket_store_t new_socket);
     void getState(enum socket_state state, char* str);
 
-    /* SECTION: Private Functions */
-
-    /**
-     * Gets the next valid file descriptor for a socket.
-     * Called when adding a new socket to the map of sockets.
-     *
-     * @return the next valid file descriptor, or 0 if no valid file descriptors
-     */
     socket_t getNextFD() {
         uint32_t* fds = call SocketMap.getKeys(); 
         uint16_t size = call SocketMap.size();
@@ -72,16 +64,6 @@ implementation {
         return 0;
     }
 
-    /**
-     * Gets the file descriptor of a socket.
-     *
-     * @param dest the node ID for packet destinations from the socket.
-     * @param srcPort the local port associated with the socket.
-     * @param destPort the remote port for packet destinations from the socket.
-     *
-     * @return the file descriptor associated with the socket, or 0
-     *         if one does not exist.
-     */
     socket_t getFD(uint16_t dest, uint16_t srcPort, uint16_t destPort) {
         uint32_t* fds = call SocketMap.getKeys();
         uint16_t size = call SocketMap.size();
@@ -104,12 +86,6 @@ implementation {
         return 0;
     }
 
-    /**
-     * Get the name of the given socket state (for debugging)
-     *
-     * @param state the state of the socket
-     * @param str the string to copy the name into
-     */
     void getState(enum socket_state state, char* str) {
         switch(state) {
             case CLOSED:
@@ -132,16 +108,6 @@ implementation {
         }
     }
 
-    /**
-     * Called when a server recieves a syn packet.
-     * Creates a socket for the connection that's a copy of the server socket.
-     *
-     * @param dest the client's address.
-     * @param srcPort the server's port.
-     * @param destPort the client's port.
-     *
-     * @return the socket for the new connection, or NULL if unsuccessful
-     */
     socket_t connect(uint16_t dest, uint16_t srcPort, uint16_t destPort) {
         uint16_t size = call ServerList.size();
         uint16_t i;
@@ -163,14 +129,6 @@ implementation {
         return 0;
     }
 
-    /**
-     * Adds a socket to the map of sockets.
-     * Automatically assigns a file descriptor to the socket.
-     *
-     * @param socket the socket to add to the list.
-     *
-     * @return the file descriptor for the new socket
-     */
     socket_t addSocket(socket_store_t socket) {
         socket_t fd = next_fd;
         call SocketMap.insert(next_fd, socket);
@@ -178,12 +136,6 @@ implementation {
         return fd;
     }
 
-    /**
-     * Updates a socket's state based on its file descriptor.
-     *
-     * @param socketFD the file descriptor associated with the socket.
-     * @param new_state the state to update the socket to.
-     */
     void updateState(socket_t socketFD, enum socket_state new_state) {
         socket_store_t socket;
 
@@ -197,12 +149,6 @@ implementation {
         call SocketMap.insert(socketFD, socket);
     }
 
-    /**
-     * Updates the stored socket.
-     *
-     * @param socketFD the file descriptor for the socket to update.
-     * @param socket a socket containing the updated values.
-     */
     void updateSocket(socket_t socketFD, socket_store_t new_socket) {
         if (!socketFD) {
             dbg(TRANSPORT_CHANNEL, "[Error] updateSocket: Invalid socket descriptor\n");
@@ -212,14 +158,6 @@ implementation {
         call SocketMap.insert(socketFD, new_socket);
     }
 
-    /**
-     * Checks if a sequence number has been acknowledged.
-     *
-     * @param socketFD the file descripter for the socket.
-     * @param seq the sequence number to check.
-     *
-     * @return true if the sequence has been acked, false if it has not.
-     */
     bool isAcked(socket_t socketFD, uint16_t seq) {
         socket_store_t socket;
 
@@ -244,14 +182,6 @@ implementation {
         }
     }
 
-    /**
-     * Checks if a sequence number has been read.
-     *
-     * @param socketFD the file descripter for the socket.
-     * @param seq the sequence number to check.
-     *
-     * @return true if the sequence has been read, false if it has not.
-     */
     bool isRead(socket_t socketFD, uint16_t seq) {
         socket_store_t socket;
 
@@ -270,14 +200,6 @@ implementation {
         }
     }
 
-    /**
-     * Checks if a sequence number has been written.
-     *
-     * @param socketFD the file descripter for the socket.
-     * @param seq the sequence number to check.
-     *
-     * @return true if the sequence has been written, false if it has not.
-     */
     bool isWritten(socket_t socketFD, uint16_t seq) {
         socket_store_t socket;
 
@@ -296,12 +218,6 @@ implementation {
         }
     }
 
-    /**
-     * Sends the message through the socket. Use instead of sendNextFromSocket.
-     *
-     * @param socketFD the file descriptor for the socket.
-     * @param msg the packet to send.
-     */
     void write(socket_t socketFD, pack* msg) {
         socket_store_t socket;
 
@@ -314,15 +230,6 @@ implementation {
         sendNextFromSocket(socketFD);             
     }
 
-    /**
-     * Fills the send buffer with the bytes to send
-     * Will resume filling if all bytes did not fit.
-     *
-     * @param The socket to fill.
-     * @param transfer the number of bytes to send with values (0..transfer-1)
-     *
-     * @return the number of bytes of 'transfer' left to put into the buffer.
-     */
     uint8_t fill(socket_store_t* socket, uint32_t transfer) {
         uint32_t i;
         uint8_t count;
@@ -380,9 +287,6 @@ implementation {
         return 0;
     }
 
-    /**
-     * Prints the contents of a packet's payload
-     */
     void printUnread(socket_t socketFD) {
         socket_store_t socket;
         uint16_t i;
@@ -410,11 +314,6 @@ implementation {
         updateSocket(socketFD, socket);
     }
 
-    /**
-     * Sends the next packet for the socket.
-     *
-     * @param socketFD the file descriptor for the socket.
-     */
     void sendNextFromSocket(socket_t socketFD) {
         pack packet;
         tcp_header header;
@@ -435,11 +334,6 @@ implementation {
         call PacketTimer.startOneShot(call PacketTimer.getNow() + 2*socket.RTT);
     }
 
-    /**
-     * Sends the next data packet for the socket.
-     *
-     * @param socketFD the file descriptor for the socket.
-     */
     void sendNextData(socket_t socketFD) {
         pack packet;
         tcp_header header;
@@ -478,27 +372,10 @@ implementation {
             }
         }
 
-        // dbg(TRANSPORT_CHANNEL, "Tempbuff:\n");
-        // for (i = 0; i < TCP_PAYLOAD_SIZE; i++) {
-        //     dbg(TRANSPORT_CHANNEL, "%hhu\n", temp_buffer[i]);
-        // }
-
-        // dbg(TRANSPORT_CHANNEL, "Sendbuff:\n");
-        // for (i = 0; i < SOCKET_BUFFER_SIZE; i+= 8) {
-        //     dbg(TRANSPORT_CHANNEL, "%hhu, %hhu, %hhu, %hhu, %hhu, %hhu, %hhu, %hhu\n", 
-        //         socket.sendBuff[i], socket.sendBuff[i+1], socket.sendBuff[i+2], socket.sendBuff[i+3],
-        //         socket.sendBuff[i+4], socket.sendBuff[i+5], socket.sendBuff[i+6], socket.sendBuff[i+7]);
-        // }
-
         sendDat(socketFD, temp_buffer, TCP_PAYLOAD_SIZE);
         call PacketTimer.startOneShot(call PacketTimer.getNow() + 2*socket.RTT);
     }
 
-    /**
-     * Removes the message corresponding to the header
-     *
-     * @param ack_header the header for the received ack packet.
-     */
     void removeAck(tcp_header ack_header) {
         uint16_t i;
         uint16_t size = call CurrentMessages.size();
@@ -516,14 +393,6 @@ implementation {
         }
     }
     
-
-    /* SECTION: Commands */
-
-    /**
-     * Starts a 'server' TCP connection, waiting to recieve packets from the client.
-     *
-     * @param port the port to listen for connections on.
-     */
     command void TCPHandler.startServer(uint16_t port) {
         uint16_t num_connections = call SocketMap.size();
         socket_store_t socket;
@@ -548,15 +417,6 @@ implementation {
         dbg(TRANSPORT_CHANNEL, "Server started on Port %hhu\n", port);
     }
 
-    /**
-     * Starts a 'client' TCP connection, requires a server to be listening first.
-     *
-     * @param dest the node ID of the server.
-     * @param srcPort the client port to send the packets from.
-     * @param destPort the server port to send the packets to.
-     * @param transfer the number of bytes to transfer w/ value: (0..transfer-1).
-     * @param pointer to node's sequence number
-     */
     command void TCPHandler.startClient(uint16_t dest, uint16_t srcPort,
                                         uint16_t destPort, uint16_t transfer) {
         socket_store_t socket;
@@ -587,13 +447,6 @@ implementation {
         dbg(TRANSPORT_CHANNEL, "Transferring %hu bytes to destination...\n", transfer);
     }
 
-    /**
-     * Closes the 'client' TCP connection associated with the parameters.
-     * 
-     * @param dest the node ID of the server of this connection.
-     * @param srcPort the local port number associated with the connection.
-     * @param destPort the server's port associated with the connection.
-     */
     command void TCPHandler.closeClient(uint16_t dest, uint16_t srcPort, uint16_t destPort) {
         socket_t socketFD = getFD(dest, srcPort, destPort);
         dbg(TRANSPORT_CHANNEL, "Closing client on Port %hhu with destination %hu: %hhu\n", srcPort, dest, destPort);
@@ -606,15 +459,7 @@ implementation {
         updateState(socketFD, CLOSED);
     }
 
-    /**
-     * Processes TCP packet recieved by this node and update socket state.
-     * Performs actions based on the socket's state and the packet's flag.
-     * Called when the node recieves a TCP packet destined for it.
-     *
-     * @param msg the TCP packet to process
-     */
     command void TCPHandler.recieve(pack* msg) {
-        // FIXME: Instantly add msg into recieve buffer, more messages may be waiting
                                     
         socket_t socketFD;
         socket_store_t socket;
