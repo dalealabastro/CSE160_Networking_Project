@@ -21,6 +21,7 @@ implementation {
 
     Node -> MainC.Boot;
 
+
     Node.Receive -> GeneralReceive;
 
     components ActiveMessageC;
@@ -29,6 +30,11 @@ implementation {
     components new SimpleSendC(AM_PACK);
     Node.Sender -> SimpleSendC;
 
+    //Neighbor Discovery
+    //neighbor register list
+    //using neighbor discovery component
+    //wiring node to neighbor discovery
+    //wiring neighbor discovery resiter to node
     components NeighborDiscoveryC;
     Node.NeighborDiscovery -> NeighborDiscoveryC;
     NeighborDiscoveryC.neighborListC -> neighborListC;
@@ -37,8 +43,9 @@ implementation {
     components CommandHandlerC;
     Node.CommandHandler -> CommandHandlerC;
 
+    //components FloodingC;
     components FloodingC;
-    Node.FloodSender -> FloodingC.FloodSender;
+    //Node.FloodSender -> FloodingC.FloodSender;
     FloodingC.lspLinkC -> lspLinkC;
     FloodingC.NodeCacheC -> NodeCacheC;
     FloodingC.neighborListC -> neighborListC;
@@ -51,7 +58,4 @@ implementation {
     Node.routingTable ->HashmapC;
     LinkStateC.neighborListC-> neighborListC;
     LinkStateC.HashmapC -> HashmapC;
-
-    components TCPHandlerC;
-    Node.TCPHandler -> TCPHandlerC;
 }
