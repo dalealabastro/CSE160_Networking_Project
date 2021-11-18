@@ -226,7 +226,7 @@ implementation {
             return;
         }
         
-        call CurrentMessages.pushfrontdrop(*msg);
+        call CurrentMessages.pushfront(*msg); //============================================ drop
         sendNextFromSocket(socketFD);             
     }
 
@@ -413,7 +413,7 @@ implementation {
         socket.flag = 0;
         socket.RTT = default_rtt;
 
-        call ServerList.pushbackdrop(socket);
+        call ServerList.pushback(socket);//====================================================drop
         dbg(TRANSPORT_CHANNEL, "Server started on Port %hhu\n", port);
     }
 
@@ -483,14 +483,14 @@ implementation {
 
         socket = call SocketMap.get(socketFD);
 
-        // if(header.flag != DAT) {
+        /* if(header.flag != DAT) {
             dbg(TRANSPORT_CHANNEL, "--- TCP Packet recieved ---\n");
             logPack(msg);
             logHeader(&header);
             dbg(TRANSPORT_CHANNEL, "--------- Socket ----------\n");
             logSocket(&socket);
             dbg(TRANSPORT_CHANNEL, "---------------------------\n\n");
-        // }
+        // }*/
 
         // TODO: Give this its own function?
         switch(socket.state) {
