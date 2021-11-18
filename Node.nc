@@ -17,11 +17,6 @@
 
 #include "includes/socket.h"
 
-#define SERVER_SOCKET 123
-#define CLIENT_DEFAULT_SOCKET 200
-#define APP_TIMER 135000
-#define APP_BUFFER_SIZE 40
-
 module Node{
    uses interface Boot;
 
@@ -47,7 +42,7 @@ module Node{
 
    uses interface LinkState;
 
-   uses interface TCPhandler;
+   uses interface TCPHandler;
 }
 
 implementation{
