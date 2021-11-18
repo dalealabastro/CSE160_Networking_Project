@@ -19,6 +19,7 @@ class TestSim:
     NEIGHBOR_CHANNEL="neighbor";
     FLOODING_CHANNEL="flooding";
     ROUTING_CHANNEL="routing";
+    TRANSPORT_CHANNEL="transport";
 
     # Initialize Vars
     numMote=0
@@ -114,6 +115,12 @@ class TestSim:
     def routeDMP(self, destination):
         self.sendCMD(self.CMD_ROUTE_DUMP, destination, "routing command");
 
+    def testClient(self, destination):
+        self.sendCMD(self.CMD_ROUTE_DUMP, destination, "client");
+
+    def testServer(self, destination):
+        self.sendCMD(self.CMD_ROUTE_DUMP, destination, "server");
+
     def addChannel(self, channelName, out=sys.stdout):
         print 'Adding Channel', channelName;
         self.t.addChannel(channelName, out);
@@ -129,11 +136,14 @@ def main():
     s.addChannel(s.NEIGHBOR_CHANNEL); # Added for Proj. 1
     s.addChannel(s.FLOODING_CHANNEL); # Added for Proj. 1
     s.addChannel(s.ROUTING_CHANNEL); # Added for Proj. 2
+    s.addChannel(s.TRANSPORT_CHANNEL); # Added for Proj. 3
     s.runTime(40);
-    s.ping(1, 4, "Hello, World");
+    #s.ping(1, 4, "Hello, World");
+    s.testClient(4);
+    s.testServer(4);
     s.runTime(20);
     #s.ping(1, 3, "Hi!");
-    s.routeDMP(1);
+    #s.routeDMP(1);
     s.runTime(40);
 
 if __name__ == '__main__':

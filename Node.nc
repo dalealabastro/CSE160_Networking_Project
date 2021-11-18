@@ -15,6 +15,13 @@
 #include "includes/lsp.h"
 #include "includes/route.h"
 
+#include "includes/socket.h"
+
+#define SERVER_SOCKET 123
+#define CLIENT_DEFAULT_SOCKET 200
+#define APP_TIMER 135000
+#define APP_BUFFER_SIZE 40
+
 module Node{
    uses interface Boot;
 
@@ -39,6 +46,8 @@ module Node{
    uses interface Hashmap<route> as routingTable;
 
    uses interface LinkState;
+
+   uses interface TCPhandler;
 }
 
 implementation{
@@ -119,9 +128,13 @@ implementation{
 
    event void CommandHandler.printDistanceVector(){}
 
-   event void CommandHandler.setTestServer(){}
+   event void CommandHandler.setTestServer(){
+      call TCPHandler.startServer(123);
+   }
 
-   event void CommandHandler.setTestClient(){}
+   event void CommandHandler.setTestClient(){
+      call TCPHandler.startClient(TOS_NODE_ID, 200, 123, 1);
+   }
 
    event void CommandHandler.setAppServer(){}
 
