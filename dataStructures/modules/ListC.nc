@@ -91,4 +91,18 @@ implementation{
 	command t List.get(uint16_t position){
 		return container[position];
 	}
+
+	command void List.remove(int index){
+		uint16_t i;
+		
+		if(size>0){
+			// Move everything to the left.
+			for(i = 0; i<size-1; i++){
+				if(i >= index){
+					container[i] = container[i+1];
+				}
+			}
+			size--;
+		}
+	}
 }
