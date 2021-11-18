@@ -24,22 +24,22 @@ implementation {
 
     /* SECTION: Prototypes */
 
-    void sendSyn(socket_t socketFD);
-    void sendAck(socket_t socketFD, pack* original_message);
-    void sendFin(socket_t socketFD);
-    void sendDat(socket_t socketFD, uint8_t* data, uint16_t size);
+    void sendSyn(socket_t socketFD); // KEY
+    void sendAck(socket_t socketFD, pack* original_message); // KEY
+    void sendFin(socket_t socketFD); // KEY
+    void sendDat(socket_t socketFD, uint8_t* data, uint16_t size); // KEY
 
-    void send(socket_t socketFD, uint32_t transfer);
-    void write(socket_t socketFD, pack* msg);
-    void sendNext();
-    void sendNextFromSocket(socket_t socketFD);
+    //void send(socket_t socketFD, uint32_t transfer);
+    void write(socket_t socketFD, pack* msg); // KEY
+    //void sendNext();
+    void sendNextFromSocket(socket_t socketFD); // KEY
 
-    socket_t getNextFD();
-    socket_t getFD(uint16_t dest, uint16_t srcPort, uint16_t destPort);
-    socket_t addSocket(socket_store_t socket);
-    void updateState(socket_t socketFD, enum socket_state new_state);
-    void updateSocket(socket_t socketFD, socket_store_t new_socket);
-    void getState(enum socket_state state, char* str);
+    socket_t getNextFD(); // KEY
+    socket_t getFD(uint16_t dest, uint16_t srcPort, uint16_t destPort); // KEY
+    socket_t addSocket(socket_store_t socket); // KEY
+    void updateState(socket_t socketFD, enum socket_state new_state); // KEY
+    void updateSocket(socket_t socketFD, socket_store_t new_socket); // KEY
+    void getState(enum socket_state state, char* str); // KEY
 
     socket_t getNextFD() {
         uint32_t* fds = call SocketMap.getKeys(); 
