@@ -5,8 +5,7 @@ enum{
     MAX_NUM_OF_SOCKETS = 10,
     ROOT_SOCKET_ADDR = 255,
     ROOT_SOCKET_PORT = 255,
-    SOCKET_BUFFER_SIZE = 128,
-    PACKET_SIZE = 
+    SOCKET_BUFFER_SIZE = 128
 };
 
 enum socket_state{
