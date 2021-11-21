@@ -253,10 +253,10 @@ implementation{
 						myTCPPack = (tcp_pack*)(myNewMsg.payload);
 						i = myMsg->lastACK + 1;
 						j = 0;
-						dbg(GENERAL_CHANNNEL, "OVER HERE ASSHOLE");
+						dbg(TRANSPORT_CHANNEL, "Over Here Asshole\n");
 						while(j < myMsg->window && j < TCP_PACKET_MAX_PAYLOAD_SIZE && i <= mySocket.effectiveWindow){
 							myTCPPack->payload[j] = i;
-							dbg(GENERAL_CHANNEL, "Window = %u and Payload = %u\n", i, myTCPPack->payload[j]);
+							//dbg(GENERAL_CHANNEL, "Window = %u and Payload = %u\n", i, myTCPPack->payload[j]);
 							i++;
 							j++;
 						}
