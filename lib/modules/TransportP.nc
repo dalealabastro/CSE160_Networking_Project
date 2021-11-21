@@ -256,7 +256,7 @@ implementation{
 						
 						while(j < myMsg->window && j < TCP_PACKET_MAX_PAYLOAD_SIZE && i <= mySocket.effectiveWindow){
 							myTCPPack->payload[j] = i;
-							dbg(GENERAL_CHANNEL, "Window = %u and Payload = %u\n, i, myTCPPack->payload[j]);
+							dbg(GENERAL_CHANNEL, "Window = %u and Payload = %u\n", i, myTCPPack->payload[j]);
 							i++;
 							j++;
 						}
