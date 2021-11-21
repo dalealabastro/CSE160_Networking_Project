@@ -90,7 +90,7 @@ implementation{
 		call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 		mySocket.state = SYN_SENT;
 
-		//dbg(ROUTING_CHANNEL, "Node %u State is %u \n", mySocket.src.addr, mySocket.state);
+		dbg(ROUTING_CHANNEL, "Node %u State is %u \n", mySocket.src.addr, mySocket.state);
 
 		dbg(ROUTING_CHANNEL, "CLIENT TRYING \n");
 
@@ -120,7 +120,7 @@ implementation{
 		myTCPPack->ACK = i;
 		call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 
-		//dbg(ROUTING_CHANNEL, "Node %u State is %u \n", mySocket.src.addr, mySocket.state);
+		dbg(ROUTING_CHANNEL, "Node %u State is %u \n", mySocket.src.addr, mySocket.state);
 
 		dbg(ROUTING_CHANNEL, "SERVER CONNECTED\n");
 
