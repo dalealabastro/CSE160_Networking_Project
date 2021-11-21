@@ -2,7 +2,7 @@
 #include "../../includes/channels.h"
 #include "../../includes/protocol.h"
 #include "../../includes/packet.h"
-#include "../interfaces/listInfo.h"
+#include "../../includes/listInfo.h"
 #define BEACON_PERIOD 9000
 #define NEIGHBORLIST_SIZE 255
 
