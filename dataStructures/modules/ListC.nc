@@ -92,13 +92,13 @@ implementation{
 		return container[position];
 	}
 
-	command void List.remove(int index){
+	command void List.remove(int input){
 		uint16_t i;
 		
 		if(size>0){
 			// Move everything to the left.
 			for(i = 0; i<size-1; i++){
-				if(i >= index){
+				if(i >= input){
 					container[i] = container[i+1];
 				}
 			}
