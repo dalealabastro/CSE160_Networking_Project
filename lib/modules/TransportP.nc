@@ -108,11 +108,12 @@ implementation{
 		myTCPPack = (tcp_pack*)(myMsg.payload);
 		myTCPPack->destPort = mySocket.dest.port;
 		myTCPPack->srcPort = mySocket.src.port;
-		myTCPPack->flags = DATA_ACK_FLAG;
+		myTCPPack->flags = DATA_FLAG;
 		myTCPPack->seq = 0;
 
 		i = 0;
 		while(i < TCP_PACKET_MAX_PAYLOAD_SIZE && i <= mySocket.effectiveWindow){
+			dbg(TRANSPORT_CHANNEL, "Over Here Asshole\n");
 			myTCPPack->payload[i] = i;
 			i++;
 		}
