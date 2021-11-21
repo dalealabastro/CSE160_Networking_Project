@@ -113,7 +113,6 @@ implementation{
 
 		i = 0;
 		while(i < TCP_PACKET_MAX_PAYLOAD_SIZE && i <= mySocket.effectiveWindow){
-			dbg(TRANSPORT_CHANNEL, "Over Here Asshole\n");
 			myTCPPack->payload[i] = i;
 			i++;
 		}
@@ -173,7 +172,7 @@ implementation{
 					myTCPPack->seq = 1;
 					myTCPPack->ACK = seq + 1;
 					myTCPPack->flags = SYN_ACK_FLAG;
-					dbg(TRANSPORT_CHANNEL, "Sending SYN ACK! \n");
+					dbg(TRANSPORT_CHANNEL, "Sending SYN ACK! - PAYLOAD SIZE = %i \n", TCP_PACKET_MAX_PAYLOAD_SIZE);
 					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 					call Sender.send(myNewMsg, mySocket.dest.addr);
 				}
@@ -254,10 +253,8 @@ implementation{
 						myTCPPack = (tcp_pack*)(myNewMsg.payload);
 						i = myMsg->lastACK + 1;
 						j = 0;
-						dbg(TRANSPORT_CHANNEL, "Over Here Asshole\n");
 						while(j < myMsg->window && j < TCP_PACKET_MAX_PAYLOAD_SIZE && i <= mySocket.effectiveWindow){
 							myTCPPack->payload[j] = i;
-							//dbg(GENERAL_CHANNEL, "Window = %u and Payload = %u\n", i, myTCPPack->payload[j]);
 							i++;
 							j++;
 						}
