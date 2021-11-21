@@ -1,4 +1,4 @@
-#include "../interfaces/listInfo.h"
+#include "../../includes/listInfo.h"
 // Custom Interface
 interface NeighborDiscovery{
 	command void start();
