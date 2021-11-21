@@ -14,8 +14,10 @@
 #include "includes/channels.h"
 #include "includes/lsp.h"
 #include "includes/route.h"
-
 #include "includes/socket.h"
+#include "includes/TCPPacket.h"
+
+#define APP_BUFFER_SIZE 40
 
 module Node{
    uses interface Boot;
@@ -42,14 +44,23 @@ module Node{
 
    uses interface LinkState;
 
-   uses interface TCPHandler;
+   uses interface Transport;
+	uses interface Queue<socket_t> as SocketQueue;
+	uses interface List<socket_t> as SocketList;
 }
 
 implementation{
    pack sendPackage;
+   uint16_t nodeSeq = 0;
 
    // Prototypes
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
+
+   socket_t getSocket(uint8_t destPort, uint8_t srcPort);
+	socket_t getServerSocket(uint8_t destPort);
+	void connect(socket_t mySocket);
+	void connectDone(socket_t mySocket);
+	void TCPReceive(pack *myMsg);
 
    event void Boot.booted(){
       call AMControl.start();
@@ -118,17 +129,19 @@ implementation{
    }
 
    event void CommandHandler.printLinkState(){
-      //call LinkState.print();
+      call LinkState.print();
    }
 
    event void CommandHandler.printDistanceVector(){}
 
    event void CommandHandler.setTestServer(){
-      call TCPHandler.startServer(123);
+      dbg(GENERAL_CHANNEL, "SETTING TEST SERVER \n");
+	   call Transport.setTestServer();
    }
 
    event void CommandHandler.setTestClient(){
-      call TCPHandler.startClient(TOS_NODE_ID, 200, 123, 1);
+      dbg(GENERAL_CHANNEL, "SETTING TEST CLIENT \n");
+	   call Transport.setTestClient();
    }
 
    event void CommandHandler.setAppServer(){}
