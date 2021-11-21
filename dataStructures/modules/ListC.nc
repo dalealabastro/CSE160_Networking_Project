@@ -92,17 +92,15 @@ implementation{
 		return container[position];
 	}
 
-	command void List.remove(int input){
-		uint16_t i;
-		
-		if(size>0){
-			// Move everything to the left.
-			for(i = 0; i<size-1; i++){
-				if(i >= input){
-					container[i] = container[i+1];
-				}
-			}
-			size--;
+	command t List.remove(uint16_t position){
+		t hold;
+		uint16_t i = 0;
+		hold = container[position];
+		for(i = 0; i < position; i++){
+			container[i + 1] = container[i];
 		}
+		container[0] = hold;
+		hold = call List.popfront();
+		return hold;
 	}
 }
