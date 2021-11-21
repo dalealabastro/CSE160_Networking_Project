@@ -12,8 +12,6 @@
 #include "includes/CommandMsg.h"
 #include "includes/sendInfo.h"
 #include "includes/channels.h"
-#include "includes/lsp.h"
-#include "includes/route.h"
 #include "includes/socket.h"
 #include "includes/TCPPacket.h"
 
@@ -38,23 +36,18 @@ module Node{
 
    uses interface SimpleSend as RouteSender;
 
-   uses interface SimpleSend as LspSender;
-
-   uses interface Hashmap<route> as routingTable;
-
-   uses interface LinkState;
-
    uses interface Transport;
 	uses interface Queue<socket_t> as SocketQueue;
 	uses interface List<socket_t> as SocketList;
-}
+
+   //New
+
+	uses interface Timer<TMilli> as beaconTimer;
+
+	uses interface RoutingTable;
 
 implementation{
    pack sendPackage;
-   uint16_t nodeSeq = 0;
-
-   // Prototypes
-   void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 
    socket_t getSocket(uint8_t destPort, uint8_t srcPort);
 	socket_t getServerSocket(uint8_t destPort);
@@ -66,13 +59,10 @@ implementation{
       call AMControl.start();
 
       dbg(GENERAL_CHANNEL, "Booted\n");
-
-      call NeighborDiscovery.start();
-
-      call LinkState.start();
    }
 
    event void AMControl.startDone(error_t err){
+      call RoutingTable.start();
       if(err == SUCCESS){
          dbg(GENERAL_CHANNEL, "Radio On\n");
       }else{
@@ -98,26 +88,10 @@ implementation{
 
 
    event void CommandHandler.ping(uint16_t destination, uint8_t *payload){
-      route routeDest;
       dbg(GENERAL_CHANNEL, "PING EVENT \n");
-        if(call routingTable.contains(destination))
-        {
-           
-            routeDest = call routingTable.get(destination);
-            // for(i = 0; i < routeDest.cost; i++){
-               
-            // }
-            makePack(&sendPackage, routeDest.nextHop, destination, MAX_TTL, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
-
-            dbg(NEIGHBOR_CHANNEL, "Current Node: %d, To get to: %d, send through: %d\n",TOS_NODE_ID, destination, routeDest.nextHop);
-
-            call RouteSender.send(sendPackage, routeDest.nextHop);
-        }
-        else{
-          makePack(&sendPackage, TOS_NODE_ID, destination, 0, PROTOCOL_PING, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
-          dbg(NEIGHBOR_CHANNEL, "Coudn't find the Routing Table for:%d so flooding\n", TOS_NODE_ID);
-          call Sender.send(sendPackage, destination);
-        }
+	   nodeSeq++;
+      makePack(&sendPackage, TOS_NODE_ID, destination, 0, 0, nodeSeq, payload, PACKET_MAX_PAYLOAD_SIZE);
+      call Sender.send(sendPackage, destination);
    }
 
    event void CommandHandler.printNeighbors(){

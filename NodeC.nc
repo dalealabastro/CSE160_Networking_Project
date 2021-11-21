@@ -1,8 +1,6 @@
 #include <Timer.h>
 #include "includes/CommandMsg.h"
 #include "includes/packet.h"
-#include "includes/lsp.h"
-#include "includes/route.h"
 
 configuration NodeC{
 }
@@ -33,7 +31,6 @@ implementation {
     components NeighborDiscoveryC;
     Node.NeighborDiscovery -> NeighborDiscoveryC;
     NeighborDiscoveryC.neighborListC -> neighborListC;
-    LinkStateC.lspLinkC -> lspLinkC;
 
     components CommandHandlerC;
     Node.CommandHandler -> CommandHandlerC;
@@ -44,14 +41,15 @@ implementation {
     FloodingC.neighborListC -> neighborListC;
     FloodingC.HashmapC -> HashmapC;
     Node.RouteSender -> FloodingC.RouteSender;
-    
-    components LinkStateC;
-    Node.LinkState -> LinkStateC;
-    Node.routingTable ->HashmapC;
-    LinkStateC.neighborListC-> neighborListC;
-    LinkStateC.HashmapC -> HashmapC;
 
-    components TransportC;
+    components RoutingTableC;
+	Node.RoutingTable -> RoutingTableC.RoutingTable;
+
+	components ForwarderC;
+	Node.ForwardSender -> ForwarderC.SimpleSend;
+	Node.ForwardReceive -> ForwarderC.MainReceive;
+
+	components TransportC;
 	Node.Transport -> TransportC.Transport;
 	
 	components new QueueC(socket_t, 30) as SocketQueue;
