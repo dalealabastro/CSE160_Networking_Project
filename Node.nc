@@ -20,50 +20,52 @@
 module Node{
    uses interface Boot;
 
-   uses interface SplitControl as AMControl;
+	uses interface Timer<TMilli> as beaconTimer;
+	uses interface SplitControl as AMControl;
+	uses interface Receive;
 
-   uses interface Receive;
+	uses interface SimpleSend as Sender;
+	
+	uses interface SimpleSend as FloodSender;
+	uses interface Receive as FloodReceive;
 
-   uses interface SimpleSend as Sender;
+	uses interface NeighborDiscovery;
+	uses interface RoutingTable;
 
-   uses interface CommandHandler;
+	uses interface CommandHandler;
 
-   uses interface NeighborDiscovery;
+	uses interface SimpleSend as ForwardSender;
+	uses interface Receive as ForwardReceive;
 
-   uses interface Flooding;
-
-   uses interface SimpleSend as FloodSender;
-
-   uses interface SimpleSend as RouteSender;
-
-   uses interface Transport;
+	uses interface Transport;
 	uses interface Queue<socket_t> as SocketQueue;
 	uses interface List<socket_t> as SocketList;
 
-   //New
-
-	uses interface Timer<TMilli> as beaconTimer;
-
-	uses interface RoutingTable;
 }
 
 implementation{
    pack sendPackage;
+	uint16_t nodeSeq = 0;
 
-   socket_t getSocket(uint8_t destPort, uint8_t srcPort);
+   // Prototypes
+   void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
+
+	socket_t getSocket(uint8_t destPort, uint8_t srcPort);
 	socket_t getServerSocket(uint8_t destPort);
 	void connect(socket_t mySocket);
 	void connectDone(socket_t mySocket);
 	void TCPReceive(pack *myMsg);
 
+
    event void Boot.booted(){
       call AMControl.start();
-
       dbg(GENERAL_CHANNEL, "Booted\n");
+
    }
 
    event void AMControl.startDone(error_t err){
-      call RoutingTable.start();
+	//call NeighborDiscovery.start();
+	call RoutingTable.start();
       if(err == SUCCESS){
          dbg(GENERAL_CHANNEL, "Radio On\n");
       }else{
@@ -72,56 +74,68 @@ implementation{
       }
    }
 
-   event void AMControl.stopDone(error_t err){
-      
-   }
+   event void AMControl.stopDone(error_t err){}
+
+	event message_t* FloodReceive.receive(message_t* msg, void* payload, uint8_t len){
+		return msg;
+	}
+
+	event message_t* ForwardReceive.receive(message_t* msg, void* payload, uint8_t len){
+		return msg;
+	}
+
+	event void beaconTimer.fired(){
+
+
+}
 
    event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
       dbg(GENERAL_CHANNEL, "Packet Received\n");
       if(len==sizeof(pack)){
          pack* myMsg=(pack*) payload;
          dbg(GENERAL_CHANNEL, "Package Payload: %s\n", myMsg->payload);
+		
          return msg;
       }
       dbg(GENERAL_CHANNEL, "Unknown Packet Type %d\n", len);
       return msg;
    }
 
-
    event void CommandHandler.ping(uint16_t destination, uint8_t *payload){
       dbg(GENERAL_CHANNEL, "PING EVENT \n");
-	   nodeSeq++;
+	nodeSeq++;
       makePack(&sendPackage, TOS_NODE_ID, destination, 0, 0, nodeSeq, payload, PACKET_MAX_PAYLOAD_SIZE);
       call Sender.send(sendPackage, destination);
    }
 
    event void CommandHandler.printNeighbors(){
-      call NeighborDiscovery.print();
+	dbg(GENERAL_CHANNEL, "PRINT NEIGHBORLIST EVENT \n");
+	call NeighborDiscovery.print();
    }
 
    event void CommandHandler.printRouteTable(){
-      call LinkState.printRoutingTable();
-   }
+	dbg(GENERAL_CHANNEL, "PRING ROUTINGTABLE EVENT \n");
+	call RoutingTable.print();
+	}
 
-   event void CommandHandler.printLinkState(){
-      call LinkState.print();
-   }
+   event void CommandHandler.printLinkState(){}
 
    event void CommandHandler.printDistanceVector(){}
 
    event void CommandHandler.setTestServer(){
-      dbg(GENERAL_CHANNEL, "SETTING TEST SERVER \n");
-	   call Transport.setTestServer();
-   }
+	dbg(GENERAL_CHANNEL, "SETTING TEST SERVER \n");
+	call Transport.setTestServer();
+}
 
    event void CommandHandler.setTestClient(){
-      dbg(GENERAL_CHANNEL, "SETTING TEST CLIENT \n");
-	   call Transport.setTestClient();
-   }
+	dbg(GENERAL_CHANNEL, "SETTING TEST CLIENT \n");
+	call Transport.setTestClient();
+}
 
    event void CommandHandler.setAppServer(){}
 
    event void CommandHandler.setAppClient(){}
+
 
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length){
       Package->src = src;
@@ -131,4 +145,5 @@ implementation{
       Package->protocol = protocol;
       memcpy(Package->payload, payload, length);
    }
+
 }
