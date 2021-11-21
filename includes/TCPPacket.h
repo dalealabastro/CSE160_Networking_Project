@@ -17,7 +17,7 @@ enum{
 	TCP_PACKET_MAX_PAYLOAD_SIZE = 12
 };
 
-typedef nx_struct tcp_pack{
+typedef nx_struct tcpPack{
 	nx_uint8_t destPort;
 	nx_uint8_t srcPort;
 	nx_uint8_t seq;
@@ -26,6 +26,6 @@ typedef nx_struct tcp_pack{
 	nx_uint8_t flags;
 	nx_uint8_t window;
 	nx_uint8_t payload[TCP_PACKET_MAX_PAYLOAD_SIZE];
-}tcp_pack;
+}tcpPack;
 
 #endif
