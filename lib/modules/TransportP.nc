@@ -108,7 +108,7 @@ implementation{
 		myTCPPack = (tcp_pack*)(myMsg.payload);
 		myTCPPack->destPort = mySocket.dest.port;
 		myTCPPack->srcPort = mySocket.src.port;
-		myTCPPack->flags = DATA_FLAG;
+		myTCPPack->flags = DATA_ACK_FLAG;
 		myTCPPack->seq = 0;
 
 		i = 0;
