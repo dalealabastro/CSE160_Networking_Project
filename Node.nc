@@ -45,6 +45,7 @@ module Node{
 	uses interface Timer<TMilli> as beaconTimer;
 
 	uses interface RoutingTable;
+}
 
 implementation{
    pack sendPackage;
