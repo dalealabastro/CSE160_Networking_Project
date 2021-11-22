@@ -37,8 +37,8 @@ implementation{
 		//myMsg->TTL -= 1;
 		uint16_t holder = 0;
 		uint16_t nextHop = 0;
-		tcp_pack* myTCPPack;
-		myTCPPack = (tcp_pack*)(myMsg->payload);
+		tcpPacket* myTCPPack;
+		myTCPPack = (tcpPacket*)(myMsg->payload);
 
 		myMsg->TTL -= 1;
 
