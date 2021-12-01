@@ -74,7 +74,7 @@ implementation{
 		}
 		dbg(TRANSPORT_CHANNEL, "Socket not found. \n");
 	}
-	//Creates and packs our packet and send
+
 	command error_t Transport.connect(socket_t fd){
 		pack myMsg;
 		tcpPacket* myTCPPack;
@@ -93,7 +93,7 @@ implementation{
 		dbg(ROUTING_CHANNEL, "Node %u State is %u \n", mySocket.src.addr, mySocket.state);
 
 		dbg(ROUTING_CHANNEL, "CLIENT TRYING \n");
-		//Call sender.send which goes to fowarder.P
+
 		call Sender.send(myMsg, mySocket.dest.addr);
 
 }	
@@ -131,14 +131,6 @@ implementation{
 		call Sender.send(myMsg, mySocket.dest.addr);
 
 }	
-	// void disconnect(socket_t da){
-	// 	pack myMsg;
-	// 	tcpPacket* myTCPPack;
-	// 	socket_t mySocket = da;
-	// 	uint16_t i = 0;
-
-
-	// }
 
 	command error_t Transport.receive(pack* msg){
 		uint8_t srcPort = 0;
@@ -164,7 +156,7 @@ implementation{
 		flags = myMsg->flags;
 
 		if(flags == SYN_FLAG || flags == SYN_ACK_FLAG || flags == ACK_FLAG){
-			//---------
+
 			if(flags == SYN_FLAG){
 				dbg(TRANSPORT_CHANNEL, "Got SYN! \n");
 				mySocket = getServerSocket(destPort);
@@ -212,14 +204,13 @@ implementation{
 					mySocket.state = ESTABLISHED;
 					call SocketList.pushback(mySocket);
 				}
-				//disconnect(mySocket); //------------------------------------------------------
 			}
-
 		}
 
 		if(flags == DATA_FLAG || flags == DATA_ACK_FLAG){
 
 			if(flags == DATA_FLAG){
+				dbg(TRANSPORT_CHANNEL, "OVER HERE ASSHOLE");
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.state == ESTABLISHED){
 					myTCPPack = (tcpPacket*)(myNewMsg.payload);
@@ -240,7 +231,7 @@ implementation{
 							i++;
 						}
 					}
-				//Window size is the socket buffer size - the last recieved mysocket +1
+
 				mySocket.effectiveWindow = SOCKET_BUFFER_SIZE - mySocket.lastRcvd + 1;
 				call SocketList.pushback(mySocket);
 			
@@ -257,6 +248,7 @@ implementation{
 				}
 			
 			} else if (flags == DATA_ACK_FLAG){
+				dbg(TRANSPORT_CHANNEL, "OVER HERE AGAIN ASSHOLE");
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.state == ESTABLISHED){
 					if(myMsg->window != 0 && myMsg->lastACK != mySocket.effectiveWindow){
@@ -341,7 +333,7 @@ implementation{
 		call SocketList.pushback(mySocket);
 	}
 	command void Transport.setTestClient(){
-		//Set test client and undergoe 3 way connection. Goes to transport.connect
+
 		socket_t mySocket;
 		socket_addr_t myAddr;
 
