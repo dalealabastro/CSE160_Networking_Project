@@ -18,6 +18,7 @@ implementation{
 
 	command error_t ForwardSender.send(pack msg, uint16_t dest){
 		uint16_t nextHop = 0;
+		dbg(TRANSPORT_CHANNEL, "FORWARDER-SENDER");
 		nextHop = call RoutingTable.getNextHop(dest);
 
 		if(nextHop == 999 || nextHop < 1){
@@ -42,13 +43,13 @@ implementation{
 
 		myMsg->TTL -= 1;
 		
-		dbg(TRANSPORT_CHANNEL, "MIDDLE\n");
+		dbg(TRANSPORT_CHANNEL, "INTERNAL-RECEIVER MIDDLE\n");
 
 		if(myMsg->dest == TOS_NODE_ID){
 			if(myMsg->protocol == PROTOCOL_PINGREPLY){
 				dbg(ROUTING_CHANNEL, "Got PingReply\n");
 			} else if (myMsg->protocol == PROTOCOL_PING){
-				dbg(TRANSPORT_CHANNEL, "CLIMAX\n");
+				dbg(TRANSPORT_CHANNEL, "INTERNAL_RECEIVER PROTOCOL_PING\n");
 				holder = myMsg->src;
 				myMsg->src = myMsg->dest;
 				myMsg->dest = holder;
@@ -56,9 +57,9 @@ implementation{
 				call ForwardSender.send(*myMsg, myMsg->dest);
 			} else if (myMsg->protocol == PROTOCOL_TCP){
 				dbg(TRANSPORT_CHANNEL, "Node %u got Packet type %i\n", TOS_NODE_ID, myTCPPack->flags);
-				dbg(TRANSPORT_CHANNEL, "TWIST.\n");
+				dbg(TRANSPORT_CHANNEL, "INTERNAL-RECIEVER PROTOCOL_TCP BEFORE\n");
 				call Transport.receive(myMsg);
-				dbg(TRANSPORT_CHANNEL, "ANOTHER TWIST\n");
+				dbg(TRANSPORT_CHANNEL, "INTERNAL-RECIEVER PROTOCOL_TCP BEFORE\n");
 			//} else if (myMsg->protocol == PROTOCOL_LINKSTATE){
 			//	call RoutingTable.receive(myMsg);
 			}
@@ -66,7 +67,7 @@ implementation{
 			if(myMsg->TTL == 0){
 				dbg(ROUTING_CHANNEL, "Dropping Packet");
 			}
-				
+			dbg(TRANSPORT_CHANNEL, "INTERNAL-RECIVER\n");
 			nextHop = call RoutingTable.getNextHop(myMsg->dest);
 			if(nextHop < 1 || nextHop >= 999){
 				dbg(ROUTING_CHANNEL, "Dropping Packet");
@@ -74,7 +75,7 @@ implementation{
 			}
 			call ForwardSender.send(*myMsg, nextHop);
 		}
-		dbg(TRANSPORT_CHANNEL, "ENDING.\n");
+		dbg(TRANSPORT_CHANNEL, "INTERNAL_RECIEVER ENDING.\n");
 		return msg;
 	}
 }
