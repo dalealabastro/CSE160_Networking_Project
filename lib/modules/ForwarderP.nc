@@ -59,7 +59,7 @@ implementation{
 				dbg(TRANSPORT_CHANNEL, "Node %u got Packet type %i\n", TOS_NODE_ID, myTCPPack->flags);
 				dbg(TRANSPORT_CHANNEL, "INTERNAL-RECIEVER PROTOCOL_TCP BEFORE\n");
 				call Transport.receive(myMsg);
-				dbg(TRANSPORT_CHANNEL, "INTERNAL-RECIEVER PROTOCOL_TCP BEFORE\n");
+				dbg(TRANSPORT_CHANNEL, "INTERNAL-RECIEVER PROTOCOL_TCP AFTER\n");
 			//} else if (myMsg->protocol == PROTOCOL_LINKSTATE){
 			//	call RoutingTable.receive(myMsg);
 			}
