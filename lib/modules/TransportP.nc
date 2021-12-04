@@ -213,8 +213,10 @@ implementation{
 				dbg(TRANSPORT_CHANNEL, "OVER HERE ASSHOLE\n");
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.state == ESTABLISHED){
+					dbg(TRANSPORT_CHANNEL, "WHY WONT YOU LOVE ME ANYMORE");
 					myTCPPack = (tcpPacket*)(myNewMsg.payload);
 					if(myMsg->payload[0] != 0){
+						dbg(TRANSPORT_CHANNEL, "WHAT!!!! YOU LOVE SAM??");
 						i = mySocket.lastRcvd + 1;
 						j = 0;
 						while(j < myMsg->ACK){
@@ -225,6 +227,7 @@ implementation{
 						}
 					}else{
 						i = 0;
+						dbg(TRANSPORT_CHANNEL, "WHAT!!!! YOU DON'T LOVE ME ANYMORE??");
 						while(i < myMsg->ACK){
 							mySocket.rcvdBuff[i] = myMsg->payload[i];
 							mySocket.lastRcvd = myMsg->payload[i];
