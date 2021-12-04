@@ -33,7 +33,6 @@ implementation{
 	//}
 
 	event message_t* InternalReceiver.receive(message_t* msg, void* payload, uint8_t len){
-		dbg(TRANSPORT_CHANNEL, "MIDDLE\n");
 		pack *myMsg = (pack *) payload;
 		//myMsg->TTL -= 1;
 		uint16_t holder = 0;
@@ -42,6 +41,8 @@ implementation{
 		myTCPPack = (tcpPacket*)(myMsg->payload);
 
 		myMsg->TTL -= 1;
+		
+		dbg(TRANSPORT_CHANNEL, "MIDDLE\n");
 
 		if(myMsg->dest == TOS_NODE_ID){
 			if(myMsg->protocol == PROTOCOL_PINGREPLY){
