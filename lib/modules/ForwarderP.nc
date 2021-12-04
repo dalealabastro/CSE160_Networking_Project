@@ -18,7 +18,7 @@ implementation{
 
 	command error_t ForwardSender.send(pack msg, uint16_t dest){
 		uint16_t nextHop = 0;
-		dbg(TRANSPORT_CHANNEL, "FORWARDER-SENDER");
+		dbg(TRANSPORT_CHANNEL, "FORWARDER-SENDER\n");
 		nextHop = call RoutingTable.getNextHop(dest);
 
 		if(nextHop == 999 || nextHop < 1){
@@ -65,7 +65,7 @@ implementation{
 			}
 		}else{
 			if(myMsg->TTL == 0){
-				dbg(ROUTING_CHANNEL, "Dropping Packet");
+				dbg(ROUTING_CHANNEL, "Dropping Packet\n");
 			}
 			dbg(TRANSPORT_CHANNEL, "INTERNAL-RECIVER\n");
 			nextHop = call RoutingTable.getNextHop(myMsg->dest);
@@ -75,7 +75,7 @@ implementation{
 			}
 			call ForwardSender.send(*myMsg, nextHop);
 		}
-		dbg(TRANSPORT_CHANNEL, "INTERNAL_RECIEVER ENDING.\n");
+		dbg(TRANSPORT_CHANNEL, "INTERNAL_RECIEVER ENDING\n");
 		return msg;
 	}
 }
