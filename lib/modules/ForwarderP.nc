@@ -53,13 +53,9 @@ implementation{
 				call ForwardSender.send(*myMsg, myMsg->dest);
 			} else if (myMsg->protocol == PROTOCOL_TCP){
 				dbg(TRANSPORT_CHANNEL, "Node %u got Packet type %i\n", TOS_NODE_ID, myTCPPack->flags);
-				if(myTCPPACK->flags == 0){
-					dbg(TRANSPORT_CHANNEL, "OH HI MARK.\n");
-				}
+				dbg(TRANSPORT_CHANNEL, "OH HI MARK.\n");
 				call Transport.receive(myMsg);
-				if(myTCPPACK->flags == 0){
-					dbg(TRANSPORT_CHANNEL, "NOW GO FUCK YOURSELF MARK.\n");
-				}
+				dbg(TRANSPORT_CHANNEL, "NOW GO FUCK YOURSELF MARK.\n");
 			//} else if (myMsg->protocol == PROTOCOL_LINKSTATE){
 			//	call RoutingTable.receive(myMsg);
 			}
