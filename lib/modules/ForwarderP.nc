@@ -24,7 +24,9 @@ implementation{
 			dbg(ROUTING_CHANNEL, "No Route Found\n");
 		}else{
 			dbg(ROUTING_CHANNEL, "Forwarding Packet to %u to get to %u\n", nextHop, dest);
+			dbg(TRANSPORT_CHANNEL, "HELLO WORLD\n");
 			call Sender.send(msg, nextHop);
+			dbg(TRANSPORT_CHANNEL, "GOODBYE WORLD\n");
 		}
 	}
 
