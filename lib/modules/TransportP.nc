@@ -210,9 +210,9 @@ implementation{
 		if(flags == DATA_FLAG || flags == DATA_ACK_FLAG){
 
 			if(flags == DATA_FLAG){
-				dbg(TRANSPORT_CHANNEL, "OVER HERE ASSHOLE\n");
+				dbg(TRANSPORT_CHANNEL, "DATA_FLAG START\n");
 				mySocket = getSocket(destPort, srcPort);
-				dbg(TRANSPORT_CHANNEL, "FINALLY YOU NOTICES\n");
+				dbg(TRANSPORT_CHANNEL, "DATA_FLAG 1\n");
 				if(mySocket.state == ESTABLISHED){
 					myTCPPack = (tcpPacket*)(myNewMsg.payload);
 					if(myMsg->payload[0] != 0){
@@ -233,10 +233,10 @@ implementation{
 						}
 					}
 				}
-				dbg(TRANSPORT_CHANNEL, "PAY ATTENTION TO ME\n");
+				dbg(TRANSPORT_CHANNEL, "DATA_FLAG 2\n");
 				mySocket.effectiveWindow = SOCKET_BUFFER_SIZE - mySocket.lastRcvd + 1;
 				call SocketList.pushback(mySocket);
-				dbg(TRANSPORT_CHANNEL, "FINE I HATE YOU TOO\n");
+				dbg(TRANSPORT_CHANNEL, "DATA_FLAG 3\n");
 				myTCPPack->destPort = mySocket.dest.port;
 				myTCPPack->srcPort = mySocket.src.port;
 				myTCPPack->seq = seq;
@@ -246,10 +246,10 @@ implementation{
 				myTCPPack->flags = DATA_ACK_FLAG;
 				dbg(TRANSPORT_CHANNEL, "SENDING DATA ACK FLAG\n");
 				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0 , myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
-				dbg(TRANSPORT_CHANNEL, "ITS OVER\n");
+				dbg(TRANSPORT_CHANNEL, "DATA_FLAG END\n");
 				call Sender.send(myNewMsg, mySocket.dest.addr);
 			} else if (flags == DATA_ACK_FLAG){
-				dbg(TRANSPORT_CHANNEL, "OVER HERE AGAIN ASSHOLE\n");
+				dbg(TRANSPORT_CHANNEL, "DATA_ACK_FLAG\n");
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.state == ESTABLISHED){
 					if(myMsg->window != 0 && myMsg->lastACK != mySocket.effectiveWindow){
