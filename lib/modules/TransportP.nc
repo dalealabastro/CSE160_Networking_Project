@@ -248,6 +248,7 @@ implementation{
 				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0 , myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 				dbg(TRANSPORT_CHANNEL, "DATA_FLAG END\n");
 				call Sender.send(myNewMsg, mySocket.dest.addr);
+				dbg(TRANSPORT_CHANNEL, "DATA_FLAG EPILOGUE\n");
 			} else if (flags == DATA_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "DATA_ACK_FLAG\n");
 				mySocket = getSocket(destPort, srcPort);
