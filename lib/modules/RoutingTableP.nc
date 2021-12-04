@@ -34,7 +34,7 @@ implementation {
 	
 	command uint16_t RoutingTable.getNextHop(uint16_t finalDest){		
 		uint32_t i = 0;	
-		dbg(TRANSPORT_CHANNEL, "HOLA SENOR\n");
+		dbg(TRANSPORT_CHANNEL, "ROUTING TABLE NEXT HOP\n");
 		for (i = 0; i < 255; i++) {
 			if (RoutingTableS[i].dest == finalDest && RoutingTableS[i].cost < 999) {
 				return RoutingTableS[i].nextHop;
