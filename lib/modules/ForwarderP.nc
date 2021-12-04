@@ -33,6 +33,7 @@ implementation{
 	//}
 
 	event message_t* InternalReceiver.receive(message_t* msg, void* payload, uint8_t len){
+		dbg(TRANSPORT_CHANNEL, "MIDDLE\n");
 		pack *myMsg = (pack *) payload;
 		//myMsg->TTL -= 1;
 		uint16_t holder = 0;
@@ -46,6 +47,7 @@ implementation{
 			if(myMsg->protocol == PROTOCOL_PINGREPLY){
 				dbg(ROUTING_CHANNEL, "Got PingReply\n");
 			} else if (myMsg->protocol == PROTOCOL_PING){
+				dbg(TRANSPORT_CHANNEL, "CLIMAX\n");
 				holder = myMsg->src;
 				myMsg->src = myMsg->dest;
 				myMsg->dest = holder;
@@ -53,9 +55,9 @@ implementation{
 				call ForwardSender.send(*myMsg, myMsg->dest);
 			} else if (myMsg->protocol == PROTOCOL_TCP){
 				dbg(TRANSPORT_CHANNEL, "Node %u got Packet type %i\n", TOS_NODE_ID, myTCPPack->flags);
-				dbg(TRANSPORT_CHANNEL, "OH HI MARK.\n");
+				dbg(TRANSPORT_CHANNEL, "TWIST.\n");
 				call Transport.receive(myMsg);
-				dbg(TRANSPORT_CHANNEL, "NOW GO FUCK YOURSELF MARK.\n");
+				dbg(TRANSPORT_CHANNEL, "ANOTHER TWIST\n");
 			//} else if (myMsg->protocol == PROTOCOL_LINKSTATE){
 			//	call RoutingTable.receive(myMsg);
 			}
@@ -71,7 +73,7 @@ implementation{
 			}
 			call ForwardSender.send(*myMsg, nextHop);
 		}
-		dbg(TRANSPORT_CHANNEL, "OH YOU CAME BACK FOR MORE MARK.\n");
+		dbg(TRANSPORT_CHANNEL, "ENDING.\n");
 		return msg;
 	}
 }
