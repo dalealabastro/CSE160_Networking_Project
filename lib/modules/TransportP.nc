@@ -235,6 +235,7 @@ implementation{
 							i++;
 						}
 					}
+				}
 				dbg(TRANSPORT_CHANNEL, "PAY ATTENTION TO ME\n");
 				mySocket.effectiveWindow = SOCKET_BUFFER_SIZE - mySocket.lastRcvd + 1;
 				call SocketList.pushback(mySocket);
@@ -250,8 +251,6 @@ implementation{
 				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0 , myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 				dbg(TRANSPORT_CHANNEL, "ITS OVER\n");
 				call Sender.send(myNewMsg, mySocket.dest.addr);
-				}
-			
 			} else if (flags == DATA_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "OVER HERE AGAIN ASSHOLE\n");
 				mySocket = getSocket(destPort, srcPort);
