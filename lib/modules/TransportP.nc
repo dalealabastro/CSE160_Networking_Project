@@ -258,8 +258,11 @@ implementation{
 			
 			} else if (flags == DATA_ACK_FLAG){
 				mySocket = getSocket(destPort, srcPort);
+				dbg(TRANSPORT_CHANNEL, "HEllo\n");
 				if(mySocket.state == ESTABLISHED){
+					dbg(TRANSPORT_CHANNEL, "HEllo 1\n");
 					if(myMsg->window != 0 && myMsg->lastACK != mySocket.effectiveWindow){
+						dbg(TRANSPORT_CHANNEL, "HEllo 2\n");
 						myTCPPack = (tcpPacket*)(myNewMsg.payload);
 						i = myMsg->lastACK + 1;
 						j = 0;
