@@ -11,11 +11,8 @@ implementation{
 	components new SimpleSendC(AM_ROUTING);
 	components new AMReceiverC(AM_ROUTING);
 	
-	//components new ListC(neighbor* , 64) as NeighborList;
-	//RoutingTableP.NeighborList -> NeighborList;
-	//components new ListC(routingTableS* , 64) as routingTable;
-	
-	//RoutingTableP.routingTable -> routingTable;
+	components new HashmapC(uint16_t, 64) as RoutingTableC;
+    	RoutingTableP.RoutingTable -> RoutingTableC;
 
 	components NeighborDiscoveryC;
 	RoutingTableP.NeighborDiscovery -> NeighborDiscoveryC;
