@@ -35,7 +35,7 @@ implementation{
 		  call SocketList.pushfront(mySocket);
 		  Transport.makePack(&p, TOS_NODE_ID, mySocket.dest.location, MAX_TTL, PROTOCOL_TCP, 0, t, PACKET_MAX_PAYLOAD_SIZE);
 
-		  call transmitTimer.startOneShot(140000);
+		  call beaconTimer.startOneShot(140000);
 
 		  call Sender.send(&p, mySocket.dest.location); 
 	       } 
