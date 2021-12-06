@@ -11,7 +11,7 @@
 #define ACK_FLAG 4
 #define FIN_FLAG 5
 #define FIN_ACK 6
-#define TCP_MAX_PAYLOAD_SIZE = 6
+#define TCP_MAX_PAYLOAD_SIZE 6
 
 typedef nx_struct tcpPacket{
 	nx_uint8_t destPort;
