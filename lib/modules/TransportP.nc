@@ -14,7 +14,7 @@ module TransportP{
 
 
 	uses interface List<socket_t> as SocketList;
-	uses interface List<pack> as packetList;
+	uses interface List<pack> as PacketList;
 
 	uses interface RoutingTable;
 
