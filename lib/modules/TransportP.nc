@@ -233,10 +233,8 @@ implementation{
 						}
 					}
 				}
-				dbg(TRANSPORT_CHANNEL, "DATA_FLAG 2\n");
 				mySocket.effectiveWindow = SOCKET_BUFFER_SIZE - mySocket.lastRcvd + 1;
 				call SocketList.pushback(mySocket);
-				dbg(TRANSPORT_CHANNEL, "DATA_FLAG 3\n");
 				myTCPPack->destPort = mySocket.dest.port;
 				myTCPPack->srcPort = mySocket.src.port;
 				myTCPPack->seq = seq;
@@ -244,11 +242,8 @@ implementation{
 				myTCPPack->lastACK = mySocket.lastRcvd;
 				myTCPPack->window = mySocket.effectiveWindow;
 				myTCPPack->flags = DATA_ACK_FLAG;
-				dbg(TRANSPORT_CHANNEL, "SENDING DATA ACK FLAG\n");
 				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0 , myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
-				dbg(TRANSPORT_CHANNEL, "DATA_FLAG END\n");
 				call Sender.send(myNewMsg, mySocket.dest.addr);
-				dbg(TRANSPORT_CHANNEL, "DATA_FLAG EPILOGUE\n");
 			} else if (flags == DATA_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "DATA_ACK_FLAG\n");
 				mySocket = getSocket(destPort, srcPort);
@@ -279,7 +274,6 @@ implementation{
 						dbg(TRANSPORT_CHANNEL, "SENDING NEW DATA \n");
 						call Sender.send(myNewMsg, mySocket.dest.addr);
 					}else{
-						dbg(TRANSPORT_CHANNEL, "HELLO\n");
 						mySocket.state = FIN_FLAG;
 						call SocketList.pushback(mySocket);
 						myTCPPack = (tcpPacket*)(myNewMsg.payload);
@@ -297,7 +291,6 @@ implementation{
 		}
 		if(flags == FIN_FLAG || flags == FIN_ACK){
 			if(flags == FIN_FLAG){
-				dbg(TRANSPORT_CHANNEL, "HELLO 1\n");
 				dbg(TRANSPORT_CHANNEL, "GOT FIN FLAG \n");
 				mySocket = getSocket(destPort, srcPort);
 				mySocket.state = CLOSED;
