@@ -97,7 +97,7 @@ implementation{
 		myTCPPack->flag = SYN_FLAG;
 
 		call Transport.makePack(&myMsg, TOS_NODE_ID, fd.dest.location, 15, 4, 0, myTCPPack, 6);
-		mySocket.state = SYN_SENT;
+		fd.state = SYN_SENT;
 
 		dbg(ROUTING_CHANNEL, "CLIENT TRYING \n");
 		//Call sender.send which goes to fowarder.P
@@ -124,11 +124,11 @@ implementation{
 		}
 
 		myTCPPack->ACK = i;
-		call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
+		call Transport.makePack(&myMsg, TOS_NODE_ID, fd.dest.location, 15, 4, 0, myTCPPack, 6);
 
 		call beaconTimer.startOneShot(140000);
 
-		call Sender.send(myMsg, mySocket.dest.addr);
+		call Sender.send(myMsg, fd.dest.addr);
 
 }	
 
@@ -231,15 +231,15 @@ implementation{
 					}
 				}
 				//Window size is the socket buffer size - the last recieved mysocket +1
-				mySocket.advertisedWindow = SOCKET_BUFFER_SIZE - mySocket.lastRCVD + 1;
+				mySocket.advertisedWindow = 64 - mySocket.lastRCVD + 1;
 				mySocket.nextExp = seq + 1
-				call SocketList.pushback(mySocket);
+				call SocketList.pushfront(mySocket);
 			
 				myTCPPack->destPort = mySocket.dest.port;
 				myTCPPack->srcPort = mySocket.src.port;
 				myTCPPack->seq = seq;
 				myTCPPack->ACK = seq + 1;
-				myTCPPack->lastACKED = mySocket.lastRCVD;
+				myTCPPack->lastACKed = mySocket.lastRCVD;
 				myTCPPack->advertisedWindow = mySocket.advertisedWindow;
 				myTCPPack->flag = DATA_ACK_FLAG;
 				dbg(TRANSPORT_CHANNEL, "SENDING DATA ACK FLAG\n");
@@ -249,13 +249,13 @@ implementation{
 				dbg(TRANSPORT_CHANNEL, "RECEIVED DATA ACK, LAST ACKED: %d\n", myMsg->lastACKed);
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.dest.port && mySocket.CONN == ESTABLISHED){
-					if(myMsg->advertisedWindow != 0 && myMsg->lastACKED != mySocket.transfer){
+					if(myMsg->advertisedWindow != 0 && myMsg->lastACKed != mySocket.transfer){
 						dbg(TRANSPORT_CHANNEL, "SENDING NEXT DATA\n");
 						
 						myTCPPack = (tcpPacket*)(myNewMsg.payload);
-						i = myMsg->lastACK + 1;
+						i = myMsg->lastACKed + 1;
 						j = 0;
-						while(j < msg->advertisedWindow && j < 6 && i <= mySocket.transfer){
+						while(j < myMsg->advertisedWindow && j < 6 && i <= mySocket.transfer){
 							dbg(TRANSPORT_CHANNEL, "Writing to Payload: %d\n", i);
 							myTCPPack->payload[j] = i;
 							i++;
@@ -272,7 +272,7 @@ implementation{
 						
 						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						
-						call transmitTimer.startOneShot(140000);
+						call beaconTimer.startOneShot(140000);
 						
 						call Sender.send(myNewMsg, mySocket.dest.location);
 					}else{
@@ -308,11 +308,11 @@ implementation{
 					myTCPPack->ACK = seq + 1;
 					myTCPPack->flag = FIN_ACK;
 
-					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, 6);
-					call Sender.send(myNewMsg, mySocket.dest.addr);
+					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
+					call Sender.send(myNewMsg, mySocket.dest.location);
 				}
 			}
-			if(flags == FIN_ACK){
+			if(flag == FIN_ACK){
 				dbg(TRANSPORT_CHANNEL, "GOT FIN ACK \n");
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.dest.port)
