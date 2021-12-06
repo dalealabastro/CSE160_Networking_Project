@@ -342,10 +342,10 @@ implementation{
 		socket_t mySocket;
 		socket_addr_t myAddr;
 
-		dest = 2;
-		srcPort = 1;
-		destPort = 4;
-		transfer = 78;
+		uint8_t dest = 2;
+		uint8_t srcPort = 1;
+		uint8_t destPort = 4;
+		uint8_t transfer = 78;
 
 		myAddr.location = TOS_NODE_ID;
 		myAddr.port = srcPort;
