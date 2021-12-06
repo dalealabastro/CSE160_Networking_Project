@@ -27,20 +27,18 @@ implementation{
 	pack inFlight;
 
 	event void beaconTimer.fired(){
-		pack myMsg = inFlight;
+	       pack p = inFlight;
+	       tcp_pack * t = (tcp_pack*)(p.payload);
+	       socket_t mySocket = getSocket(t->srcPort, t->destPort);
+	       if(mySocket.dest.port){
+		  dbg(TRANSPORT_CHANNEL, "PACKET DROPPED, RETRANSMITTING PACKET\n");
+		  call SocketList.pushfront(mySocket);
+		  Transport.makePack(&p, TOS_NODE_ID, mySocket.dest.location, MAX_TTL, PROTOCOL_TCP, 0, t, PACKET_MAX_PAYLOAD_SIZE);
 
-		//cast as a tcpPacket
-		tcpPacket* myTCPPack = (tcpPacket*)(myMsg.payload);
-		socket_t mySocket = getSocket(myTCPPack->srcPort, myTCPPack->destPort);
-		
-		if(mySocket.dest.port){
-			call SocketList.pushback(mySocket);
+		  call transmitTimer.startOneShot(140000);
 
-			call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
-			call Sender.send(&myMsg, mySocket.dest.location);
-		}
-	
-
+		  call Sender.send(&p, mySocket.dest.location); 
+	       } 
 	}
 
 	socket_t getSocket(uint8_t destPort, uint8_t srcPort){
