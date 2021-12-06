@@ -22,10 +22,10 @@ implementation{
 	components RoutingTableC;
 	TransportP.RoutingTable -> RoutingTableC.RoutingTable;
 
-	components new ListC(socket_t, 30) as SocketList;
+	components new ListC(socket_t, 64) as SocketList;
 	TransportP.SocketList -> SocketList;
 	
-	components new ListC(pack, 30) as PacketListC;
+	components new ListC(pack, 64) as PacketListC;
     	TransportP.PacketList -> PacketListC;
 
 	//components new QueueC(socket_t, 30) as socketQueue;
