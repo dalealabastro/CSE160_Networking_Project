@@ -232,7 +232,7 @@ implementation{
 				}
 				//Window size is the socket buffer size - the last recieved mysocket +1
 				mySocket.advertisedWindow = 64 - mySocket.lastRCVD + 1;
-				mySocket.nextExp = seq + 1
+				mySocket.nextExp = seq + 1;
 				call SocketList.pushfront(mySocket);
 			
 				myTCPPack->destPort = mySocket.dest.port;
