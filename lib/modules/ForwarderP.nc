@@ -16,6 +16,22 @@ module ForwarderP{
 
 implementation{
 
+	command error_t ForwardSender.send(pack msg, uint16_t dest){
+		uint16_t nextHop = 0;
+		nextHop = call RoutingTable.getNextHop(dest);
+
+		if(nextHop == 999 || nextHop < 1){
+			dbg(ROUTING_CHANNEL, "No Route Found\n");
+		}else{
+			//dbg(ROUTING_CHANNEL, "Forwarding Packet to %u to get to %u\n", nextHop, dest);
+			call Sender.send(msg, nextHop);
+		}
+	}
+
+	//event message_t* RoutingTableReceive.receive(message_t* msg, void* payload, uint8_t len){
+		//return msg;
+	//}
+
 	event message_t* InternalReceiver.receive(message_t* msg, void* payload, uint8_t len){
 		pack* myMsg = (pack*) payload; //!!!! = REMOVE POINTER in *myMSG.
 		
