@@ -279,7 +279,7 @@ implementation{
 						dbg(TRANSPORT_CHANNEL, "SENDING NEW DATA \n");
 						call Sender.send(myNewMsg, mySocket.dest.addr);
 					}else{
-
+						dbg(TRANSPORT_CHANNEL, "HELLO\n");
 						mySocket.state = FIN_FLAG;
 						call SocketList.pushback(mySocket);
 						myTCPPack = (tcpPacket*)(myNewMsg.payload);
@@ -297,6 +297,7 @@ implementation{
 		}
 		if(flags == FIN_FLAG || flags == FIN_ACK){
 			if(flags == FIN_FLAG){
+				dbg(TRANSPORT_CHANNEL, "HELLO 1\n");
 				dbg(TRANSPORT_CHANNEL, "GOT FIN FLAG \n");
 				mySocket = getSocket(destPort, srcPort);
 				mySocket.state = CLOSED;
