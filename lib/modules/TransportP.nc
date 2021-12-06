@@ -51,7 +51,7 @@ implementation{
 		uint32_t size = call SocketList.size();
 		for (i = 0; i < size; i++){
 			mySocket = call SocketList.get(i);
-			if(mySocket.dest.port == srcPort && mySocket.src.port == destPort){
+			if(mySocket.dest.port == srcPort && mySocket.src.port == destPort && mySocket.CONN != LISTEN){
 				foundSocket = TRUE;
 				call SocketList.remove(i);
 				break;
