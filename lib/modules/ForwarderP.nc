@@ -23,7 +23,7 @@ implementation{
 		if(nextHop == 999 || nextHop < 1){
 			dbg(ROUTING_CHANNEL, "No Route Found\n");
 		}else{
-			# dbg(ROUTING_CHANNEL, "Forwarding Packet to %u to get to %u\n", nextHop, dest);
+			//dbg(ROUTING_CHANNEL, "Forwarding Packet to %u to get to %u\n", nextHop, dest);
 			call Sender.send(msg, nextHop);
 		}
 	}
