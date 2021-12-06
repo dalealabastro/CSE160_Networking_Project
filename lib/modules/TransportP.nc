@@ -143,7 +143,6 @@ implementation{
 		socket_t mySocket;
 		tcpPacket* myMsg = (tcpPacket *)(msg->payload);
 
-
 		pack myNewMsg;
 		tcpPacket* myTCPPack;
 
@@ -240,23 +239,23 @@ implementation{
 				myTCPPack->srcPort = mySocket.src.port;
 				myTCPPack->seq = seq;
 				myTCPPack->ACK = seq + 1;
-				myTCPPack->lastACK = mySocket.lastRCVD;
-				myTCPPack->advertisedwindow = mySocket.advertisedWindow;
+				myTCPPack->lastACKED = mySocket.lastRCVD;
+				myTCPPack->advertisedWindow = mySocket.advertisedWindow;
 				myTCPPack->flag = DATA_ACK_FLAG;
 				dbg(TRANSPORT_CHANNEL, "SENDING DATA ACK FLAG\n");
 				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0 , myTCPPack, 6);
 				call Sender.send(myNewMsg, mySocket.dest.location);
 			} else if (flag == DATA_ACK_FLAG){
-				dbg(TRANSPORT_CHANNEL, "RECEIVED DATA ACK, LAST ACKED: %d\n", msg->lastACKed);
+				dbg(TRANSPORT_CHANNEL, "RECEIVED DATA ACK, LAST ACKED: %d\n", myMsg->lastACKed);
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.dest.port && mySocket.CONN == ESTABLISHED){
-					if(msg->advertisedWindow != 0 && msg->lastACKed != mySocket.transfer){
+					if(myMsg->advertisedWindow != 0 && myMsg->lastACKED != mySocket.transfer){
 						dbg(TRANSPORT_CHANNEL, "SENDING NEXT DATA\n");
 						
 						myTCPPack = (tcpPacket*)(myNewMsg.payload);
 						i = myMsg->lastACK + 1;
 						j = 0;
-						while(j < msg->advertisedWindow && j < TCP_PACKET_MAX_PAYLOAD_SIZE && i <= mySocket.transfer){
+						while(j < msg->advertisedWindow && j < 6 && i <= mySocket.transfer){
 							dbg(TRANSPORT_CHANNEL, "Writing to Payload: %d\n", i);
 							myTCPPack->payload[j] = i;
 							i++;
@@ -267,7 +266,7 @@ implementation{
 						myTCPPack->flag = DATA_FLAG;
 						myTCPPack->destPort = mySocket.dest.port;
 						myTCPPack->srcPort = mySocket.src.port;
-						myTCPPack->ACK = (i - 1) - msg->lastACKed;
+						myTCPPack->ACK = (i - 1) - myMsg->lastACKed;
 						myTCPPack->seq = ACKnum;
 						call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						
