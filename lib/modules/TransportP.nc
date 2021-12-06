@@ -37,7 +37,7 @@ implementation{
 
 		  call beaconTimer.startOneShot(140000);
 
-		  call Sender.send(&p, mySocket.dest.location); 
+		  call Sender.send(p, mySocket.dest.location); 
 	       } 
 	}
 
