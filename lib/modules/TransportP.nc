@@ -71,7 +71,7 @@ implementation{
 		socket_t mySocket;
 		uint16_t i = 0;
 		uint16_t size = call SocketList.size();
-		
+		dbg(TRANSPORT_CHANNEL, "MADE IT HERE INSTEAD");
 		for(i = 0; i < size; i++){
 			mySocket = call SocketList.get(i);
 			if(mySocket.src.port == destPort && mySocket.CONN == LISTEN){
