@@ -5,9 +5,6 @@
 #include "../../includes/TCPPacket.h"
 #include <Timer.h>
 
-#define TIMEOUT 140000
-#define TCP_MAX_PAYLOAD_SIZE 6
-
 module TransportP{
 	
 	uses interface Timer<TMilli> as beaconTimer;
@@ -42,7 +39,7 @@ implementation{
 
 			//have to cast it as a uint8_t* pointer
 
-			call Transport.makePack(&sendMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+			call Transport.makePack(&sendMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 			call Sender.send(sendMsg, mySocket.dest.location);
 		}
 	
@@ -101,14 +98,12 @@ implementation{
 		myTCPPack->seq = 1;
 		myTCPPack->flag = SYN_FLAG;
 
-		call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+		call Transport.makePack(&myMsg, TOS_NODE_ID, fd.dest.location, 15, 4, 0, myTCPPack, 6);
 		mySocket.state = SYN_SENT;
-
-		dbg(ROUTING_CHANNEL, "Node %u State is %u \n", mySocket.src.location, fd.state);
 
 		dbg(ROUTING_CHANNEL, "CLIENT TRYING \n");
 		//Call sender.send which goes to fowarder.P
-		call Sender.send(myMsg, mySocket.dest.location);
+		call Sender.send(myMsg, fd.dest.location);
 
 }	
 	
@@ -125,15 +120,15 @@ implementation{
 		myTCPPack->seq = 0;
 
 		i = 0;
-		while(i < TCP_PACKET_MAX_PAYLOAD_SIZE && i <= fd.transfer){
+		while(i < 6 && i <= fd.transfer){
 			myTCPPack->payload[i] = i;
 			i++;
 		}
 
 		myTCPPack->ACK = i;
-		call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+		call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 
-		call beaconTimer.startOneShot(TIMEOUT);
+		call beaconTimer.startOneShot(140000);
 
 		call Sender.send(myMsg, mySocket.dest.addr);
 
@@ -176,7 +171,7 @@ implementation{
 					myTCPPack->ACK = seq + 1;
 					myTCPPack->flag = SYN_ACK_FLAG;
 					dbg(TRANSPORT_CHANNEL, "Sending SYN ACK! - PAYLOAD SIZE = %i \n", TCP_PACKET_MAX_PAYLOAD_SIZE);
-					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, PROTOCOL_TCP, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 					call Sender.send(myNewMsg, mySocket.dest.location);
 				}
 			}
@@ -194,7 +189,7 @@ implementation{
 					myTCPPack->ACK = seq + 1;
 					myTCPPack->flag = ACK_FLAG;
 					dbg(TRANSPORT_CHANNEL, "SENDING ACK \n");
-					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, PROTOCOL_TCP, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 					call Sender.send(myNewMsg, mySocket.dest.location);
 
 					connectDone(mySocket);
@@ -251,7 +246,7 @@ implementation{
 				myTCPPack->advertisedwindow = mySocket.advertisedWindow;
 				myTCPPack->flag = DATA_ACK_FLAG;
 				dbg(TRANSPORT_CHANNEL, "SENDING DATA ACK FLAG\n");
-				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, PROTOCOL_TCP, 0 , myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0 , myTCPPack, 6);
 				call Sender.send(myNewMsg, mySocket.dest.location);
 			} else if (flag == DATA_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "RECEIVED DATA ACK, LAST ACKED: %d\n", msg->lastACKed);
@@ -276,11 +271,11 @@ implementation{
 						myTCPPack->srcPort = mySocket.src.port;
 						myTCPPack->ACK = (i - 1) - msg->lastACKed;
 						myTCPPack->seq = ACKnum;
-						call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+						call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						
-						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						
-						call transmitTimer.startOneShot(TIMEOUT);
+						call transmitTimer.startOneShot(140000);
 						
 						call Sender.send(myNewMsg, mySocket.dest.location);
 					}else{
@@ -293,7 +288,7 @@ implementation{
 						myTCPPack->seq = 1;
 						myTCPPack->ACK = seq + 1;
 						myTCPPack->flag = FIN_FLAG;
-						call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+						call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						call Sender.send(myNewMsg, mySocket.dest.location);
 
 					}
@@ -316,7 +311,7 @@ implementation{
 					myTCPPack->ACK = seq + 1;
 					myTCPPack->flag = FIN_ACK;
 
-					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, 6);
 					call Sender.send(myNewMsg, mySocket.dest.addr);
 				}
 			}
