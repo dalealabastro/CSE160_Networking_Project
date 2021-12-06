@@ -205,6 +205,7 @@ implementation{
 			if(flag == DATA_FLAG){
 				dbg(TRANSPORT_CHANNEL, "RECEIVED DATA\n");
 				mySocket = getSocket(destPort, srcPort);
+				dbg(TRANSPORT_CHANNEL, "THIS IS THE SOCKET: %i\n", mySocket.CONN);
 				if(mySocket.CONN == ESTABLISHED && mySocket.src.port){
 					myTCPPack = (tcpPacket*)(myNewMsg.payload);
 					if(myMsg->payload[0] != 0 && mySocket.nextExp){
