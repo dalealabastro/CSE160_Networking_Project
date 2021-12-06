@@ -23,7 +23,7 @@ implementation{
 		if(nextHop == 999 || nextHop < 1){
 			dbg(ROUTING_CHANNEL, "No Route Found\n");
 		}else{
-			dbg(ROUTING_CHANNEL, "Forwarding Packet to %u to get to %u\n", nextHop, dest);
+			//dbg(ROUTING_CHANNEL, "Forwarding Packet to %u to get to %u\n", nextHop, dest);
 			call Sender.send(msg, nextHop);
 		}
 	}
@@ -33,14 +33,17 @@ implementation{
 	//}
 
 	event message_t* InternalReceiver.receive(message_t* msg, void* payload, uint8_t len){
-		pack *myMsg = (pack *) payload;
-		//myMsg->TTL -= 1;
+		pack* myMsg = (pack*) payload; //!!!! = REMOVE POINTER in *myMSG.
+		
 		uint16_t holder = 0;
 		uint16_t nextHop = 0;
 		tcpPacket* myTCPPack;
 		myTCPPack = (tcpPacket*)(myMsg->payload);
 
 		myMsg->TTL -= 1;
+		
+		
+		//REFER TO LINES 145 TO 169 FOR TCP
 		
 
 		if(myMsg->dest == TOS_NODE_ID){
@@ -53,7 +56,7 @@ implementation{
 				myMsg->TTL = 15;
 				call ForwardSender.send(*myMsg, myMsg->dest);
 			} else if (myMsg->protocol == PROTOCOL_TCP){
-				dbg(TRANSPORT_CHANNEL, "Node %u got Packet type %i\n", TOS_NODE_ID, myTCPPack->flags);
+				dbg(TRANSPORT_CHANNEL, "Node %u got Packet type %i\n", TOS_NODE_ID, myTCPPack->flag);
 				call Transport.receive(myMsg);
 			//} else if (myMsg->protocol == PROTOCOL_LINKSTATE){
 			//	call RoutingTable.receive(myMsg);
