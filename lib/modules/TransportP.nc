@@ -97,7 +97,7 @@ implementation{
 		myTCPPack->flag = SYN_FLAG;
 
 		call Transport.makePack(&myMsg, TOS_NODE_ID, fd.dest.location, 15, 4, 0, myTCPPack, 6);
-		fd.state = SYN_SENT;
+		fd.CONN = SYN_SENT;
 
 		dbg(ROUTING_CHANNEL, "CLIENT TRYING \n");
 		//Call sender.send which goes to fowarder.P
@@ -128,7 +128,7 @@ implementation{
 
 		call beaconTimer.startOneShot(140000);
 
-		call Sender.send(myMsg, fd.dest.addr);
+		call Sender.send(myMsg, fd.dest.location);
 
 }	
 
