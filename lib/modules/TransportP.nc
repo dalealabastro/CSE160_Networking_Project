@@ -231,7 +231,7 @@ implementation{
 							i++;
 						}
 					}
-				}
+				
 				mySocket.effectiveWindow = SOCKET_BUFFER_SIZE - mySocket.lastRcvd + 1;
 				call SocketList.pushback(mySocket);
 				myTCPPack->destPort = mySocket.dest.port;
@@ -243,6 +243,7 @@ implementation{
 				myTCPPack->flags = DATA_ACK_FLAG;
 				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0 , myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 				call Sender.send(myNewMsg, mySocket.dest.addr);
+				}
 			} else if (flags == DATA_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "DATA_ACK_FLAG\n");
 				mySocket = getSocket(destPort, srcPort);
