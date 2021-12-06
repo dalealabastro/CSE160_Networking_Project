@@ -31,8 +31,13 @@ implementation{
 	//components new PoolC(socket_t, 30) as pool;
 	//TransportP.pool -> pool;
 
-	components new QueueC(pack, 30) as packetQueue;
-	TransportP.packetQueue -> packetQueue;
+	//================================================
+	//components new QueueC(pack, 30) as packetQueue;
+	//TransportP.packetQueue -> packetQueue;
+	//================================================
+	
+	components new ListC(pack, 64) as PacketListC;
+    	Node.PacketList -> PacketListC;
 
 	//components new QueueC(socket_t, 30) as socketQueue;
 	//TransportP.socketQueue -> socketQueue;
