@@ -4,6 +4,8 @@
 #include "protocol.h"
 #include "channels.h"
 
+#define BUFFER_SIZE 64
+
 #define CLOSED      0
 #define SYN_SENT    1
 #define SYN_RCVD    2
