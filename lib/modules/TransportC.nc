@@ -24,20 +24,9 @@ implementation{
 
 	components new ListC(socket_t, 30) as SocketList;
 	TransportP.SocketList -> SocketList;
-
-	//components new HashmapC(socket_t, 30) as socketHash;
-	//TransportP.socketHash -> socketHash;
-
-	//components new PoolC(socket_t, 30) as pool;
-	//TransportP.pool -> pool;
-
-	//================================================
-	//components new QueueC(pack, 30) as packetQueue;
-	//TransportP.packetQueue -> packetQueue;
-	//================================================
 	
-	components new ListC(pack, 64) as PacketListC;
-    	Node.PacketList -> PacketListC;
+	components new ListC(pack, 30) as PacketListC;
+    	TransportP.PacketList -> PacketListC;
 
 	//components new QueueC(socket_t, 30) as socketQueue;
 	//TransportP.socketQueue -> socketQueue;
