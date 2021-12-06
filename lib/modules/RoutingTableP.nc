@@ -15,7 +15,7 @@ module RoutingTableP{
 }
 
 implementation {
-
+	/*
 	//just use an array to do it
 	routingTableS RoutingTableS[255];
 	//keeps track of number of items in the array
@@ -210,8 +210,7 @@ implementation {
       Package->protocol = protocol;
       memcpy(Package->payload, payload, length);
    }
-   
-   /*
+   */
    void initLSTable(){
         uint16_t i, j;
         for(i = 0; i < MAX; i++){
@@ -335,11 +334,5 @@ implementation {
 
         dbg(ROUTING_CHANNEL, "\n");
     }
-    */
-	
-	
-	
-	
-
 }
 
