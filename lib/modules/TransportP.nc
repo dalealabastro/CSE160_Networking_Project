@@ -30,8 +30,8 @@ implementation{
 		pack myMsg = call packetQueue.head();
 		pack sendMsg;
 
-		//cast as a tcp_pack
-		tcp_pack* myTCPPack = (tcp_pack *)(myMsg.payload);
+		//cast as a tcpPacket
+		tcpPacket* myTCPPack = (tcpPacket *)(myMsg.payload);
 		socket_t mySocket = getSocket(myTCPPack->srcPort, myTCPPack->destPort);
 		
 		if(mySocket.dest.port){
@@ -74,13 +74,13 @@ implementation{
 		}
 		dbg(TRANSPORT_CHANNEL, "Socket not found. \n");
 	}
-
+	//Creates and packs our packet and send
 	command error_t Transport.connect(socket_t fd){
 		pack myMsg;
-		tcp_pack* myTCPPack;
+		tcpPacket* myTCPPack;
 		socket_t mySocket = fd;
 		
-		myTCPPack = (tcp_pack*)(myMsg.payload);
+		myTCPPack = (tcpPacket*)(myMsg.payload);
 		myTCPPack->destPort = mySocket.dest.port;
 		myTCPPack->srcPort = mySocket.src.port;
 		myTCPPack->ACK = 0;
@@ -93,19 +93,19 @@ implementation{
 		dbg(ROUTING_CHANNEL, "Node %u State is %u \n", mySocket.src.addr, mySocket.state);
 
 		dbg(ROUTING_CHANNEL, "CLIENT TRYING \n");
-
+		//Call sender.send which goes to fowarder.P
 		call Sender.send(myMsg, mySocket.dest.addr);
 
 }	
 	
 	void connectDone(socket_t fd){
 		pack myMsg;
-		tcp_pack* myTCPPack;
+		tcpPacket* myTCPPack;
 		socket_t mySocket = fd;
 		uint16_t i = 0;
 
 	
-		myTCPPack = (tcp_pack*)(myMsg.payload);
+		myTCPPack = (tcpPacket*)(myMsg.payload);
 		myTCPPack->destPort = mySocket.dest.port;
 		myTCPPack->srcPort = mySocket.src.port;
 		myTCPPack->flags = DATA_FLAG;
@@ -131,6 +131,14 @@ implementation{
 		call Sender.send(myMsg, mySocket.dest.addr);
 
 }	
+	// void disconnect(socket_t da){
+	// 	pack myMsg;
+	// 	tcpPacket* myTCPPack;
+	// 	socket_t mySocket = da;
+	// 	uint16_t i = 0;
+
+
+	// }
 
 	command error_t Transport.receive(pack* msg){
 		uint8_t srcPort = 0;
@@ -143,11 +151,11 @@ implementation{
 		uint16_t j = 0;
 		uint32_t key = 0;
 		socket_t mySocket;
-		tcp_pack* myMsg = (tcp_pack *)(msg->payload);
+		tcpPacket* myMsg = (tcpPacket *)(msg->payload);
 
 
 		pack myNewMsg;
-		tcp_pack* myTCPPack;
+		tcpPacket* myTCPPack;
 
 		srcPort = myMsg->srcPort;
 		destPort = myMsg->destPort;
@@ -156,7 +164,7 @@ implementation{
 		flags = myMsg->flags;
 
 		if(flags == SYN_FLAG || flags == SYN_ACK_FLAG || flags == ACK_FLAG){
-
+			//---------
 			if(flags == SYN_FLAG){
 				dbg(TRANSPORT_CHANNEL, "Got SYN! \n");
 				mySocket = getServerSocket(destPort);
@@ -166,13 +174,13 @@ implementation{
 					mySocket.dest.addr = msg->src;
 					call SocketList.pushback(mySocket);
 				
-					myTCPPack = (tcp_pack *)(myNewMsg.payload);
+					myTCPPack = (tcpPacket *)(myNewMsg.payload);
 					myTCPPack->destPort = mySocket.dest.port;
 					myTCPPack->srcPort = mySocket.src.port;
 					myTCPPack->seq = 1;
 					myTCPPack->ACK = seq + 1;
 					myTCPPack->flags = SYN_ACK_FLAG;
-					dbg(TRANSPORT_CHANNEL, "Sending SYN ACK! \n");
+					dbg(TRANSPORT_CHANNEL, "Sending SYN ACK! - PAYLOAD SIZE = %i \n", TCP_PACKET_MAX_PAYLOAD_SIZE);
 					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 					call Sender.send(myNewMsg, mySocket.dest.addr);
 				}
@@ -184,7 +192,7 @@ implementation{
 				mySocket.state = ESTABLISHED;
 				call SocketList.pushback(mySocket);
 
-				myTCPPack = (tcp_pack*)(myNewMsg.payload);
+				myTCPPack = (tcpPacket*)(myNewMsg.payload);
 				myTCPPack->destPort = mySocket.dest.port;
 				myTCPPack->srcPort = mySocket.src.port;
 				myTCPPack->seq = 1;
@@ -204,7 +212,9 @@ implementation{
 					mySocket.state = ESTABLISHED;
 					call SocketList.pushback(mySocket);
 				}
+				//disconnect(mySocket); //------------------------------------------------------
 			}
+
 		}
 
 		if(flags == DATA_FLAG || flags == DATA_ACK_FLAG){
@@ -212,7 +222,7 @@ implementation{
 			if(flags == DATA_FLAG){
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.state == ESTABLISHED){
-					myTCPPack = (tcp_pack*)(myNewMsg.payload);
+					myTCPPack = (tcpPacket*)(myNewMsg.payload);
 					if(myMsg->payload[0] != 0){
 						i = mySocket.lastRcvd + 1;
 						j = 0;
@@ -230,7 +240,7 @@ implementation{
 							i++;
 						}
 					}
-
+				//Window size is the socket buffer size - the last recieved mysocket +1
 				mySocket.effectiveWindow = SOCKET_BUFFER_SIZE - mySocket.lastRcvd + 1;
 				call SocketList.pushback(mySocket);
 			
@@ -250,10 +260,9 @@ implementation{
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.state == ESTABLISHED){
 					if(myMsg->window != 0 && myMsg->lastACK != mySocket.effectiveWindow){
-						myTCPPack = (tcp_pack*)(myNewMsg.payload);
+						myTCPPack = (tcpPacket*)(myNewMsg.payload);
 						i = myMsg->lastACK + 1;
 						j = 0;
-						
 						while(j < myMsg->window && j < TCP_PACKET_MAX_PAYLOAD_SIZE && i <= mySocket.effectiveWindow){
 							myTCPPack->payload[j] = i;
 							i++;
@@ -279,7 +288,7 @@ implementation{
 
 						mySocket.state = FIN_FLAG;
 						call SocketList.pushback(mySocket);
-						myTCPPack = (tcp_pack*)(myNewMsg.payload);
+						myTCPPack = (tcpPacket*)(myNewMsg.payload);
 						myTCPPack->destPort = mySocket.dest.port;
 						myTCPPack->srcPort = mySocket.src.port;
 						myTCPPack->seq = 1;
@@ -300,7 +309,7 @@ implementation{
 				mySocket.dest.port = srcPort;
 				mySocket.dest.addr = msg->src;
 		
-				myTCPPack = (tcp_pack *)(myNewMsg.payload);
+				myTCPPack = (tcpPacket *)(myNewMsg.payload);
 				myTCPPack->destPort = mySocket.dest.port;
 				myTCPPack->srcPort = mySocket.src.port;
 				myTCPPack->seq = 1;
@@ -332,7 +341,7 @@ implementation{
 		call SocketList.pushback(mySocket);
 	}
 	command void Transport.setTestClient(){
-
+		//Set test client and undergoe 3 way connection. Goes to transport.connect
 		socket_t mySocket;
 		socket_addr_t myAddr;
 
