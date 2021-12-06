@@ -14,7 +14,7 @@
 
 enum{
 	TCP_PACKET_HEADER_LENGTH = 8,
-	TCP_PACKET_MAX_PAYLOAD_SIZE = 12
+	TCP_PACKET_MAX_PAYLOAD_SIZE = 16
 };
 
 typedef nx_struct tcpPacket{
