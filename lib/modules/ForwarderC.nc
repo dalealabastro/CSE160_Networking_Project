@@ -13,9 +13,11 @@ implementation{
 	components RoutingTableC;
 	ForwarderP.RoutingTable -> RoutingTableC.RoutingTable;
 
+	ForwarderP.Sender -> SimpleSendC;
 	ForwarderP.InternalReceiver -> AMReceiverC;
 
 	MainReceive = ForwarderP.MainReceive;
+	SimpleSend = ForwarderP.ForwardSender;
 
 	components TransportC;
 	ForwarderP.Transport -> TransportC.Transport;
