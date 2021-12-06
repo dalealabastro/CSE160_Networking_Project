@@ -122,14 +122,14 @@ implementation{
 
    event void CommandHandler.printDistanceVector(){}
 
-   event void CommandHandler.setTestServer(){
+   event void CommandHandler.setTestServer(uint8_t* payload){
 	dbg(GENERAL_CHANNEL, "SETTING TEST SERVER \n");
-	call Transport.setTestServer();
+	call Transport.setTestServer(payload);
 }
 
-   event void CommandHandler.setTestClient(){
+   event void CommandHandler.setTestClient(unint8_t* payload){
 	dbg(GENERAL_CHANNEL, "SETTING TEST CLIENT \n");
-	call Transport.setTestClient();
+	call Transport.setTestClient(payload);
 }
 
    event void CommandHandler.setAppServer(){}
