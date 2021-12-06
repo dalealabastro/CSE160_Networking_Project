@@ -33,7 +33,7 @@ implementation{
 	//}
 
 	event message_t* InternalReceiver.receive(message_t* msg, void* payload, uint8_t len){
-		pack *myMsg = (pack *) payload; //!!!! = REMOVE POINTER in *myMSG.
+		pack* myMsg = (pack*) payload; //!!!! = REMOVE POINTER in *myMSG.
 		
 		uint16_t holder = 0;
 		uint16_t nextHop = 0;
