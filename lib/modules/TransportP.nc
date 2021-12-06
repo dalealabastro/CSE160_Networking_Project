@@ -5,6 +5,8 @@
 #include "../../includes/TCPPacket.h"
 #include <Timer.h>
 
+#define TIMEOUT 140000
+
 module TransportP{
 	
 	uses interface Timer<TMilli> as beaconTimer;
@@ -39,8 +41,8 @@ implementation{
 
 			//have to cast it as a uint8_t* pointer
 
-			call Transport.makePack(&sendMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
-			call Sender.send(sendMsg, mySocket.dest.addr);
+			call Transport.makePack(&sendMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+			call Sender.send(sendMsg, mySocket.dest.location);
 		}
 	
 
@@ -55,7 +57,7 @@ implementation{
 		for (i = 0; i < size; i++){
 			mySocket = call SocketList.get(i);
 			if(mySocket.dest.port == srcPort && mySocket.src.port == destPort){
-				sockFound = TRUE;
+				foundSocket = TRUE;
 				call SocketList.remove(i);
 				break;
 			}
@@ -76,7 +78,7 @@ implementation{
 		
 		for(i = 0; i < size; i++){
 			mySocket = call SocketList.get(i);
-			if(mySocket.src.port == destPort && mySocket.state == LISTEN){
+			if(mySocket.src.port == destPort && mySocket.CONN == LISTEN){
 				foundSocket = TRUE;
 				break;
 			}
@@ -101,11 +103,11 @@ implementation{
 		call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 		mySocket.state = SYN_SENT;
 
-		dbg(ROUTING_CHANNEL, "Node %u State is %u \n", mySocket.src.addr, mySocket.state);
+		dbg(ROUTING_CHANNEL, "Node %u State is %u \n", mySocket.src.location, fd.state);
 
 		dbg(ROUTING_CHANNEL, "CLIENT TRYING \n");
 		//Call sender.send which goes to fowarder.P
-		call Sender.send(myMsg, mySocket.dest.addr);
+		call Sender.send(myMsg, mySocket.dest.location);
 
 }	
 	
@@ -128,7 +130,7 @@ implementation{
 		}
 
 		myTCPPack->ACK = i;
-		call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
+		call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 
 		call beaconTimer.startOneShot(TIMEOUT);
 
@@ -171,7 +173,7 @@ implementation{
 					myTCPPack->srcPort = mySocket.src.port;
 					myTCPPack->seq = 1;
 					myTCPPack->ACK = seq + 1;
-					myTCPPack->flags = SYN_ACK_FLAG;
+					myTCPPack->flag = SYN_ACK_FLAG;
 					dbg(TRANSPORT_CHANNEL, "Sending SYN ACK! - PAYLOAD SIZE = %i \n", TCP_PACKET_MAX_PAYLOAD_SIZE);
 					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, PROTOCOL_TCP, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 					call Sender.send(myNewMsg, mySocket.dest.location);
@@ -189,7 +191,7 @@ implementation{
 					myTCPPack->srcPort = mySocket.src.port;
 					myTCPPack->seq = 1;
 					myTCPPack->ACK = seq + 1;
-					myTCPPack->flags = ACK_FLAG;
+					myTCPPack->flag = ACK_FLAG;
 					dbg(TRANSPORT_CHANNEL, "SENDING ACK \n");
 					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, PROTOCOL_TCP, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
 					call Sender.send(myNewMsg, mySocket.dest.location);
@@ -198,7 +200,7 @@ implementation{
 				}
 			}
 
-			else if(flags == ACK_FLAG){
+			else if(flag == ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "GOT ACK \n");
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.CONN == SYN_RCVD && mySocket.src.port){
