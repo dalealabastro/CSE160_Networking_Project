@@ -10,6 +10,7 @@ module RoutingTableP{
 	uses interface Timer<TMilli> as PeriodicTimer;
 	uses interface SimpleSend as Sender;
 	uses interface Receive as Receive;
+	uses interface Hashmap<uint16_t> as RoutingTable;
 	uses interface NeighborDiscovery;
 	
 	provides interface RoutingTable;	
