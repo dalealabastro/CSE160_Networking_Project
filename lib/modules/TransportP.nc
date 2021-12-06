@@ -321,13 +321,13 @@ implementation{
 		}
 }
 
-	command void Transport.setTestServer(uint8_t* payload){
+	command void Transport.setTestServer(){
 
 		socket_t mySocket;
 		socket_addr_t myAddr;
 
 		myAddr.location = TOS_NODE_ID;
-		myAddr.port = atoi(payload);
+		myAddr.port = 4;
 
 		mySocket.src = myAddr;
 
@@ -337,28 +337,15 @@ implementation{
 
 		call SocketList.pushfront(mySocket);
 	}
-	command void Transport.setTestClient(uint8_t* payload){
+	command void Transport.setTestClient(){
 		//Set test client and undergoe 3 way connection. Goes to transport.connect
 		socket_t mySocket;
 		socket_addr_t myAddr;
 
-		uint16_t dest, srcPort, destPort, transfer, i = 0;
-
-		char * token = strtok(payload, ",");
-		char buffer[5];
-		uint16_t arguments[4];
-
-		while(token){
-		memcpy(buffer, token, sizeof(token));
-		arguments[i] = atoi(token);
-		token = strtok(NULL, ",");
-		i++;
-		}
-
-		dest = arguments[0];
-		srcPort = arguments[1];
-		destPort = arguments[2];
-		transfer = arguments[3];
+		dest = 2;
+		srcPort = 1;
+		destPort = 4;
+		transfer = 78;
 
 		myAddr.location = TOS_NODE_ID;
 		myAddr.port = srcPort;
