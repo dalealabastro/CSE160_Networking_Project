@@ -49,7 +49,7 @@ implementation{
 		socket_t mySocket;
 		uint32_t i = 0;
 		uint32_t size = call SocketList.size();
-		dbg(TRANSPORT_CHANNEL, "MADE IT HERE\n");
+		dbg(TRANSPORT_CHANNEL, "MADE IT HERE %i\n", foundSocket);
 		for (i = 0; i < size; i++){
 			mySocket = call SocketList.get(i);
 			if(mySocket.dest.port == srcPort && mySocket.src.port == destPort){
@@ -58,7 +58,7 @@ implementation{
 				break;
 			}
 		}
-		
+		dbg(TRANSPORT_CHANNEL, "MADE IT HERE AFTER %i\n", foundSocket);
 		if(foundSocket)
 			return mySocket;
 		else
@@ -71,7 +71,7 @@ implementation{
 		socket_t mySocket;
 		uint16_t i = 0;
 		uint16_t size = call SocketList.size();
-		dbg(TRANSPORT_CHANNEL, "MADE IT HERE INSTEAD\n");
+		dbg(TRANSPORT_CHANNEL, "MADE IT HERE INSTEAD %i\n", foundSocket);
 		for(i = 0; i < size; i++){
 			mySocket = call SocketList.get(i);
 			if(mySocket.src.port == destPort && mySocket.CONN == LISTEN){
@@ -79,7 +79,7 @@ implementation{
 				break;
 			}
 		}
-		
+		dbg(TRANSPORT_CHANNEL, "MADE IT HERE INSTEAD AFTER %i\n", foundSocket);
 		if(foundSocket)
 			return mySocket;
 		else
