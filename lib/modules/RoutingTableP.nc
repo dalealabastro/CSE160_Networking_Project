@@ -2,7 +2,7 @@
 #include "../../includes/protocol.h"
 #include "../../includes/packet.h"
 #define TIMEOUT_MAX 10
-
+#define MAX 20
 
 module RoutingTableP{
 
