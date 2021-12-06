@@ -6,6 +6,7 @@
 #include <Timer.h>
 
 #define TIMEOUT 140000
+#define TCP_MAX_PAYLOAD_SIZE 6
 
 module TransportP{
 	
