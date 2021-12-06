@@ -49,7 +49,7 @@ implementation{
 		socket_t mySocket;
 		uint32_t i = 0;
 		uint32_t size = call SocketList.size();
-		dbg(TRANSPORT_CHANNEL, "MADE IT HERE");
+		dbg(TRANSPORT_CHANNEL, "MADE IT HERE\n");
 		for (i = 0; i < size; i++){
 			mySocket = call SocketList.get(i);
 			if(mySocket.dest.port == srcPort && mySocket.src.port == destPort){
@@ -71,7 +71,7 @@ implementation{
 		socket_t mySocket;
 		uint16_t i = 0;
 		uint16_t size = call SocketList.size();
-		dbg(TRANSPORT_CHANNEL, "MADE IT HERE INSTEAD");
+		dbg(TRANSPORT_CHANNEL, "MADE IT HERE INSTEAD\n");
 		for(i = 0; i < size; i++){
 			mySocket = call SocketList.get(i);
 			if(mySocket.src.port == destPort && mySocket.CONN == LISTEN){
