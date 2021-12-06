@@ -56,7 +56,7 @@ implementation{
 				myMsg->TTL = 15;
 				call ForwardSender.send(*myMsg, myMsg->dest);
 			} else if (myMsg->protocol == PROTOCOL_TCP){
-				dbg(TRANSPORT_CHANNEL, "Node %u got Packet type %i\n", TOS_NODE_ID, myTCPPack->flags);
+				dbg(TRANSPORT_CHANNEL, "Node %u got Packet type %i\n", TOS_NODE_ID, myTCPPack->flag);
 				call Transport.receive(myMsg);
 			//} else if (myMsg->protocol == PROTOCOL_LINKSTATE){
 			//	call RoutingTable.receive(myMsg);
