@@ -33,7 +33,7 @@ implementation{
 	       if(mySocket.dest.port){
 		  dbg(TRANSPORT_CHANNEL, "PACKET DROPPED, RETRANSMITTING PACKET\n");
 		  call SocketList.pushfront(mySocket);
-		  Transport.makePack(&p, TOS_NODE_ID, mySocket.dest.location, MAX_TTL, PROTOCOL_TCP, 0, t, PACKET_MAX_PAYLOAD_SIZE);
+		  Transport.makePack(&p, TOS_NODE_ID, fd.dest.location, 15, 4, 0, myTCPPack, 6);
 
 		  call beaconTimer.startOneShot(140000);
 
