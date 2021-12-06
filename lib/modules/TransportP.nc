@@ -37,8 +37,6 @@ implementation{
 		if(mySocket.dest.port){
 			call SocketList.pushback(mySocket);
 
-			//have to cast it as a uint8_t* pointer
-
 			call Transport.makePack(&sendMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 			call Sender.send(sendMsg, mySocket.dest.location);
 		}
@@ -170,17 +168,17 @@ implementation{
 					myTCPPack->seq = 1;
 					myTCPPack->ACK = seq + 1;
 					myTCPPack->flag = SYN_ACK_FLAG;
-					dbg(TRANSPORT_CHANNEL, "Sending SYN ACK! - PAYLOAD SIZE = %i \n", TCP_PACKET_MAX_PAYLOAD_SIZE);
+					dbg(TRANSPORT_CHANNEL, "Sending SYN ACK! - PAYLOAD SIZE = %i \n", 6);
 					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 					call Sender.send(myNewMsg, mySocket.dest.location);
 				}
 			}
 
-			else if(flags == SYN_ACK_FLAG){
+			else if(flag == SYN_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "Got SYN ACK! \n");
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.dest.port){
-					mySocket.state = ESTABLISHED;
+					mySocket.CONN = ESTABLISHED;
 					call SocketList.pushfront(mySocket);
 					myTCPPack = (tcpPacket*)(myNewMsg.payload);
 					myTCPPack->destPort = mySocket.dest.port;
@@ -214,12 +212,12 @@ implementation{
 				if(mySocket.CONN == ESTABLISHED && mySocket.src.port){
 					myTCPPack = (tcpPacket*)(myNewMsg.payload);
 					if(myMsg->payload[0] != 0 && mySocket.nextExp){
-						i = mySocket.lastRcvd + 1;
+						i = mySocket.lastRCVD + 1;
 						j = 0;
 						while(j < myMsg->ACK){
 							dbg(TRANSPORT_CHANNEL, "Writing to Receive Buffer: %d\n", i);
-							mySocket.rcvdBuff[i] = myMsg->payload[j];
-							mySocket.lastRcvd = myMsg->payload[j];
+							mySocket.rcvdBuffer[i] = myMsg->payload[j];
+							mySocket.lastRCVD = myMsg->payload[j];
 							i++;
 							j++;
 						}
@@ -227,14 +225,14 @@ implementation{
 						i = 0;
 						while(i < myMsg->ACK){
 							dbg(TRANSPORT_CHANNEL, "Writing to Receive Buffer: %d\n", i);
-							mySocket.rcvdBuff[i] = myMsg->payload[i];
-							mySocket.lastRcvd = myMsg->payload[i];
+							mySocket.rcvdBuffer[i] = myMsg->payload[i];
+							mySocket.lastRCVD = myMsg->payload[i];
 							i++;
 						}
 					}
 				}
 				//Window size is the socket buffer size - the last recieved mysocket +1
-				mySocket.advertisedWindow = SOCKET_BUFFER_SIZE - mySocket.lastRcvd + 1;
+				mySocket.advertisedWindow = SOCKET_BUFFER_SIZE - mySocket.lastRCVD + 1;
 				mySocket.nextExp = seq + 1
 				call SocketList.pushback(mySocket);
 			
@@ -242,11 +240,11 @@ implementation{
 				myTCPPack->srcPort = mySocket.src.port;
 				myTCPPack->seq = seq;
 				myTCPPack->ACK = seq + 1;
-				myTCPPack->lastACK = mySocket.lastRcvd;
+				myTCPPack->lastACK = mySocket.lastRCVD;
 				myTCPPack->advertisedwindow = mySocket.advertisedWindow;
 				myTCPPack->flag = DATA_ACK_FLAG;
 				dbg(TRANSPORT_CHANNEL, "SENDING DATA ACK FLAG\n");
-				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.addr, 15, 4, 0 , myTCPPack, 6);
+				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0 , myTCPPack, 6);
 				call Sender.send(myNewMsg, mySocket.dest.location);
 			} else if (flag == DATA_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "RECEIVED DATA ACK, LAST ACKED: %d\n", msg->lastACKed);
