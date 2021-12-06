@@ -212,7 +212,6 @@ implementation{
 			if(flags == DATA_FLAG){
 				dbg(TRANSPORT_CHANNEL, "DATA_FLAG START\n");
 				mySocket = getSocket(destPort, srcPort);
-				dbg(TRANSPORT_CHANNEL, "DATA_FLAG 1\n");
 				if(mySocket.state == ESTABLISHED){
 					myTCPPack = (tcpPacket*)(myNewMsg.payload);
 					if(myMsg->payload[0] != 0){
