@@ -18,7 +18,6 @@ implementation{
 
 	command error_t ForwardSender.send(pack msg, uint16_t dest){
 		uint16_t nextHop = 0;
-		dbg(TRANSPORT_CHANNEL, "FORWARDER-SENDER\n");
 		nextHop = call RoutingTable.getNextHop(dest);
 
 		if(nextHop == 999 || nextHop < 1){
