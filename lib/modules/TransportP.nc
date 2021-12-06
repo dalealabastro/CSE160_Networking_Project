@@ -34,7 +34,7 @@ implementation{
 		pack sendMsg;
 
 		//cast as a tcpPacket
-		tcpPacket* myTCPPack = (tcpPacket *)(myMsg.payload);
+		tcpPacket* myTCPPack = (tcpPacket*)(myMsg.payload);
 		socket_t mySocket = getSocket(myTCPPack->srcPort, myTCPPack->destPort);
 		
 		if(mySocket.dest.port){
