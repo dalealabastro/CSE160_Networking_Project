@@ -11,21 +11,17 @@
 #define ACK_FLAG 4
 #define FIN_FLAG 5
 #define FIN_ACK 6
-
-enum{
-	TCP_PACKET_HEADER_LENGTH = 8,
-	TCP_PACKET_MAX_PAYLOAD_SIZE = 100
-};
+#define TCP_MAX_PAYLOAD_SIZE 6
 
 typedef nx_struct tcpPacket{
 	nx_uint8_t destPort;
 	nx_uint8_t srcPort;
 	nx_uint8_t seq;
+	nx_uint16_t lastACKed;
 	nx_uint8_t ACK;
-	nx_uint8_t lastACK;
-	nx_uint8_t flags;
-	nx_uint8_t window;
-	nx_uint8_t payload[TCP_PACKET_MAX_PAYLOAD_SIZE];
+	nx_uint8_t flag;
+	nx_uint8_t advertisedWindow;
+	nx_uint16_t payload[TCP_MAX_PAYLOAD_SIZE];
 }tcpPacket;
 
 #endif
