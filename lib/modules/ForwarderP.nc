@@ -16,7 +16,7 @@ module ForwarderP{
 
 implementation{
 
-	command error_t ForwardSender.send(pack msg, uint16_t dest){
+	command error_t ForwardSender.sending(pack msg, uint16_t dest){
 		uint16_t nextHop = 0;
 		nextHop = call RoutingTable.getNextHop(dest);
 
