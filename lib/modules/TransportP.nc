@@ -265,6 +265,7 @@ implementation{
 						myTCPPack->srcPort = mySocket.src.port;
 						myTCPPack->ACK = (i - 1) - myMsg->lastACKed;
 						myTCPPack->seq = ACKnum;
+						dbg(TRANSPORT_CHANNEL, "LAST_ACK: %i ACK: %i SEQ: %i\n", myMsg->lastACKed, myTCPPack->ACK, ACKnum);
 						call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						
 						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
