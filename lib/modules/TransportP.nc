@@ -157,7 +157,7 @@ implementation{
 					mySocket.CONN = SYN_RCVD;
 					mySocket.dest.port = srcPort;
 					mySocket.dest.location = msg->src;
-					call SocketList.pushback(mySocket);
+					call SocketList.pushfront(mySocket);
 					myTCPPack = (tcpPacket *)(myNewMsg.payload);
 					myTCPPack->destPort = mySocket.dest.port;
 					myTCPPack->srcPort = mySocket.src.port;
@@ -195,7 +195,7 @@ implementation{
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.CONN == SYN_RCVD && mySocket.src.port){
 					mySocket.CONN = ESTABLISHED;
-					call SocketList.pushback(mySocket);
+					call SocketList.pushfront(mySocket);
 				}
 			}
 		}
