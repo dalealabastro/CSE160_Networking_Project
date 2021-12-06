@@ -28,7 +28,6 @@ implementation{
 
 	event void beaconTimer.fired(){
 		pack myMsg = inFlight;
-		pack sendMsg;
 
 		//cast as a tcpPacket
 		tcpPacket* myTCPPack = (tcpPacket*)(myMsg.payload);
@@ -37,8 +36,8 @@ implementation{
 		if(mySocket.dest.port){
 			call SocketList.pushback(mySocket);
 
-			call Transport.makePack(&sendMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
-			call Sender.send(sendMsg, mySocket.dest.location);
+			call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
+			call Sender.send(&myMsg, mySocket.dest.location);
 		}
 	
 
