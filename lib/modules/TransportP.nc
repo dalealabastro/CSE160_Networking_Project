@@ -226,7 +226,6 @@ implementation{
 							i++;
 						}
 					}
-				}
 				//Window size is the socket buffer size - the last recieved mysocket +1
 				mySocket.advertisedWindow = 64 - mySocket.lastRCVD + 1;
 				mySocket.nextExp = seq + 1;
@@ -242,6 +241,7 @@ implementation{
 				dbg(TRANSPORT_CHANNEL, "SENDING DATA ACK FLAG\n");
 				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0 , myTCPPack, 6);
 				call Sender.send(myNewMsg, mySocket.dest.location);
+				}
 			} else if (flag == DATA_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "RECEIVED DATA ACK, LAST ACKED: %d\n", myMsg->lastACKed);
 				mySocket = getSocket(destPort, srcPort);
