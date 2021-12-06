@@ -24,10 +24,10 @@ implementation{
 
 	socket_t getSocket(uint8_t destPort, uint8_t srcPort);
 	socket_t getServerSocket(uint8_t destPort);
-
+	pack inFlight;
 
 	event void beaconTimer.fired(){
-		pack myMsg = call packetQueue.head();
+		pack myMsg = inFlight;
 		pack sendMsg;
 
 		//cast as a tcpPacket
