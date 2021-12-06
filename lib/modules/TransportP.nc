@@ -28,7 +28,7 @@ implementation{
 
 	event void beaconTimer.fired(){
 	       pack p = inFlight;
-	       tcp_pack * t = (tcp_pack*)(p.payload);
+	       tcpPacket* t = (tcpPacket*)(p.payload);
 	       socket_t mySocket = getSocket(t->srcPort, t->destPort);
 	       if(mySocket.dest.port){
 		  dbg(TRANSPORT_CHANNEL, "PACKET DROPPED, RETRANSMITTING PACKET\n");
