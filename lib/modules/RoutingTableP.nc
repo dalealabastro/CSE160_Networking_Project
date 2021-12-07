@@ -1,6 +1,7 @@
 #include "../../includes/channels.h"
 #include "../../includes/protocol.h"
 #include "../../includes/packet.h"
+#include "../../includes/listInfo.h"
 #define TIMEOUT_MAX 10
 #define INFINITY 9999
 #define MAX 20
@@ -32,11 +33,12 @@ implementation {
 	command void sendLSPacket(){
 		char payload[255];
 		char tempC[127];
-		uint16_t i, size = call NeighborDiscovery.getNeighborListSize();            // Construct the link state packet by concatenating the neighborlist to the payload
+		uint16_t i, size = call NeighborDiscovery.getNeighborListSize();   // Construct the link state packet by concatenating the neighborlist to the payload
+		neighborTableS neighborList = call NeighborDiscovery.getNeighborList();
 		Neighbor neighbor;      
 		for(i = 0; i < size; i++){
-		    neighbor = call NeighborList.get(i);
-		    sprintf(tempC, "%d", neighbor.srcNode);
+		    neighbor = neighborList[i];
+		    sprintf(tempC, "%d", neighbor.node);
 		    strcat(payload, tempC);
 		    strcat(payload, ",");
 		}
@@ -82,9 +84,9 @@ implementation {
 			    dbg(ROUTING_CHANNEL, "Neighbors: %d and %d\n", i + 1, j + 1);
 		    }
 		}
-		}
+	}
 
-		command uint16_t minDist(uint16_t dist[], bool sptSet[]){
+	command uint16_t minDist(uint16_t dist[], bool sptSet[]){
 		uint16_t min = INFINITY, minIndex = 18, i;
 		for(i = 0; i < MAX; i++){
 		    if(sptSet[i] == FALSE && dist[i] < min)
