@@ -244,6 +244,7 @@ implementation{
 			} else if (flag == DATA_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "RECEIVED DATA ACK, LAST ACKED: %d\n", myMsg->lastACKed);
 				mySocket = getSocket(destPort, srcPort);
+				dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
 				if(mySocket.dest.port && mySocket.CONN == ESTABLISHED){
 					if(myMsg->advertisedWindow != 0 && myMsg->lastACKed != mySocket.transfer){
 						dbg(TRANSPORT_CHANNEL, "SENDING NEXT DATA\n");
@@ -267,7 +268,7 @@ implementation{
 						call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						
 						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
+						
 						call beaconTimer.startOneShot(140000);
 						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION AFTER: %i\n", mySocket.dest.location);
 						call Sender.send(myNewMsg, mySocket.dest.location);
