@@ -51,7 +51,7 @@ implementation{
 			mySocket = call SocketList.get(i);
 			if(mySocket.dest.port == srcPort && mySocket.src.port == destPort && mySocket.CONN != LISTEN){
 				foundSocket = TRUE;
-				call SocketList.remove(i);
+				//call SocketList.remove(i);
 				break;
 			}
 		}
