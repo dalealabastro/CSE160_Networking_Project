@@ -32,7 +32,7 @@ implementation {
 	command void sendLSPacket(){
 		char payload[255];
 		char tempC[127];
-		uint16_t i, size = call NeighborList.size();            // Construct the link state packet by concatenating the neighborlist to the payload
+		uint16_t i, size = call NeighborDiscovery.getNeighborListSize();            // Construct the link state packet by concatenating the neighborlist to the payload
 		Neighbor neighbor;      
 		for(i = 0; i < size; i++){
 		    neighbor = call NeighborList.get(i);
