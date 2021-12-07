@@ -244,8 +244,8 @@ implementation{
 			} else if (flag == DATA_ACK_FLAG){
 				dbg(TRANSPORT_CHANNEL, "RECEIVED DATA ACK, LAST ACKED: %d\n", myMsg->lastACKed);
 				mySocket = getSocket(destPort, srcPort);
-				dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
 				if(mySocket.dest.port && mySocket.CONN == ESTABLISHED){
+					dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
 					if(myMsg->advertisedWindow != 0 && myMsg->lastACKed != mySocket.transfer){
 						dbg(TRANSPORT_CHANNEL, "SENDING NEXT DATA\n");
 						
