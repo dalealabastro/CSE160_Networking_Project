@@ -238,6 +238,7 @@ implementation{
 				myTCPPack->flag = DATA_ACK_FLAG;
 				dbg(TRANSPORT_CHANNEL, "SENDING DATA ACK FLAG\n");
 				call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0 , myTCPPack, 6);
+				dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_FLAG LOCATION: %i\n", mySocket.dest.location);
 				call Sender.send(myNewMsg, mySocket.dest.location);
 				}
 			} else if (flag == DATA_ACK_FLAG){
@@ -268,7 +269,7 @@ implementation{
 						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						
 						call beaconTimer.startOneShot(140000);
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE LOCATION: %i\n", mySocket.dest.location);
+						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION: %i\n", mySocket.dest.location);
 						call Sender.send(myNewMsg, mySocket.dest.location);
 					}else{
 						dbg(TRANSPORT_CHANNEL, "ALL DATA SENT, CLOSING CONNECTION\n");
