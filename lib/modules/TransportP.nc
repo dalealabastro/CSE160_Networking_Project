@@ -31,7 +31,7 @@ implementation{
 	       tcpPacket* t = (tcpPacket*)(p.payload);
 	       socket_t mySocket = getSocket(t->srcPort, t->destPort);
 	       //dbg(TRANSPORT_CHANNEL, "IS THERE A SOCKET: %i\n", mySocket.src.port);
-	       if(mySocket.dest.port){
+	       if(mySocket.dest.port && t->flag != FIN_ACK){
 		  dbg(TRANSPORT_CHANNEL, "PACKET DROPPED, RETRANSMITTING PACKET\n");
 		  call SocketList.pushfront(mySocket);
 		  call Transport.makePack(&p, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, t, 6);
