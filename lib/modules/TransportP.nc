@@ -250,9 +250,10 @@ implementation{
 						dbg(TRANSPORT_CHANNEL, "SENDING NEXT DATA\n");
 						
 						myTCPPack = (tcpPacket*)(myNewMsg.payload);
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
+						
 						i = myMsg->lastACKed + 1;
 						j = 0;
+						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
 						while(j < myMsg->advertisedWindow && j < 6 && i <= mySocket.transfer){
 							dbg(TRANSPORT_CHANNEL, "Writing to Payload: %d\n", i);
 							myTCPPack->payload[j] = i;
