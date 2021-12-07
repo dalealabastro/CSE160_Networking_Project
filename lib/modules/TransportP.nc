@@ -264,22 +264,22 @@ implementation{
 						}
 					
 						call SocketList.pushfront(mySocket);
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 1: %i\n", mySocket.dest.location);
+						
 						myTCPPack->flag = DATA_FLAG;
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 2: %i\n", mySocket.dest.location);
+						
 						myTCPPack->destPort = mySocket.dest.port;
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 3: %i\n", mySocket.dest.location);
+						
 						myTCPPack->srcPort = mySocket.src.port;
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 4: %i\n", mySocket.dest.location);
+						
 						myTCPPack->ACK = (i - 1) - myMsg->lastACKed;
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 5: %i\n", mySocket.dest.location);
+						
 						myTCPPack->seq = ACKnum;
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 6: %i\n", mySocket.dest.location);
+						
 						call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 7: %i\n", mySocket.dest.location);
+						
 						
 						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 8: %i\n", mySocket.dest.location);
+						
 						
 						call beaconTimer.startOneShot(140000);
 						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION AFTER: %i\n", mySocket.dest.location);
