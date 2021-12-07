@@ -62,7 +62,7 @@ implementation{
 			}
 			nextHop = call RoutingTable.getNextHop(myMsg->dest);
 			if(nextHop < 1 || nextHop >= 999){
-				dbg(ROUTING_CHANNEL, "Dropping Packet");
+				dbg(ROUTING_CHANNEL, "Dropping Packet\n");
 					return msg;
 			}
 			call ForwardSender.send(*myMsg, nextHop);
