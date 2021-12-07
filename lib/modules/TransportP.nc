@@ -330,7 +330,7 @@ implementation{
 				}
 			}
 			if(flag == FIN_ACK){
-				dbg(TRANSPORT_CHANNEL, "GOT FIN ACK \n");
+				dbg(TRANSPORT_CHANNEL, "GOT FIN ACK, CONNECTION IS CLOSED, GAME OVER\n");
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.dest.port)
 					mySocket.CONN = CLOSED;
