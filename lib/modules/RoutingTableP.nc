@@ -11,7 +11,7 @@ module RoutingTableP{
 	uses interface Timer<TMilli> as PeriodicTimer;
 	uses interface SimpleSend as Sender;
 	uses interface Receive as Receive;
-	uses interface Hashmap<uint16_t> as RoutingTable;
+	uses interface Hashmap<uint16_t> as RoutingMap;
 	uses interface NeighborDiscovery;
 	
 	provides interface RoutingTable;	
@@ -128,18 +128,18 @@ implementation {
 			temp = parent[temp];
 		    }
 		    if(parent[temp] != myID){
-			call RoutingTable.insert(i + 1, 0);
+			call RoutingMap.insert(i + 1, 0);
 		    }
 		    else
-			call RoutingTable.insert(i + 1, temp + 1);
+			call RoutingMap.insert(i + 1, temp + 1);
 		}
 	}
 
 	command void printRoutingTable(){
 
-		uint16_t size = call RoutingTable.size(), i, output;
+		uint16_t size = call RoutingMap.size(), i, output;
 		for(i = 0; i < size; i++){
-		    output = call RoutingTable.get((uint32_t) i);
+		    output = call RoutingMap.get((uint32_t) i);
 		    dbg(ROUTING_CHANNEL, "Key: %d\t Next Hop: %d\n", i, output);
 		}
 
