@@ -268,7 +268,7 @@ implementation{
 						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						
 						call beaconTimer.startOneShot(140000);
-						
+						dbg(TRANSPORT_CHANNEL, "WHAT IS THE LOCATION: %i\n", mySocket.dest.location);
 						call Sender.send(myNewMsg, mySocket.dest.location);
 					}else{
 						dbg(TRANSPORT_CHANNEL, "ALL DATA SENT, CLOSING CONNECTION\n");
