@@ -246,10 +246,11 @@ implementation{
 				mySocket = getSocket(destPort, srcPort);
 				if(mySocket.dest.port && mySocket.CONN == ESTABLISHED){
 					if(myMsg->advertisedWindow != 0 && myMsg->lastACKed != mySocket.transfer){
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
+						
 						dbg(TRANSPORT_CHANNEL, "SENDING NEXT DATA\n");
 						
 						myTCPPack = (tcpPacket*)(myNewMsg.payload);
+						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
 						i = myMsg->lastACKed + 1;
 						j = 0;
 						while(j < myMsg->advertisedWindow && j < 6 && i <= mySocket.transfer){
