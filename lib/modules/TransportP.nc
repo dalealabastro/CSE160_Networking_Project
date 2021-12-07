@@ -255,13 +255,16 @@ implementation{
 						j = 0;
 						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
 						while(j < myMsg->advertisedWindow && j < 6 && i <= mySocket.transfer){
+							dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 2: %i\n", mySocket.dest.location);
 							dbg(TRANSPORT_CHANNEL, "Writing to Payload: %d\n", i);
 							myTCPPack->payload[j] = i;
 							i++;
 							j++;
+							dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 3: %i\n", mySocket.dest.location);
 						}
 					
 						call SocketList.pushfront(mySocket);
+						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 4: %i\n", mySocket.dest.location);
 						myTCPPack->flag = DATA_FLAG;
 						myTCPPack->destPort = mySocket.dest.port;
 						myTCPPack->srcPort = mySocket.src.port;
