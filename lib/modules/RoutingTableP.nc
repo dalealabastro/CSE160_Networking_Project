@@ -1,10 +1,7 @@
 #include "../../includes/channels.h"
 #include "../../includes/protocol.h"
 #include "../../includes/packet.h"
-#include "../../includes/listInfo.h"
-#define TIMEOUT_MAX 10
-#define INFINITY 9999
-#define MAX 20
+
 
 module RoutingTableP{
 
