@@ -15,7 +15,6 @@ module RoutingTableP{
 }
 
 implementation {
-	/*
 	//just use an array to do it
 	routingTableS RoutingTableS[255];
 	//keeps track of number of items in the array
