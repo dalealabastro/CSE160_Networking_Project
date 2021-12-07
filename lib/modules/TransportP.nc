@@ -275,7 +275,7 @@ implementation{
 						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 5: %i\n", mySocket.dest.location);
 						myTCPPack->seq = ACKnum;
 						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 6: %i\n", mySocket.dest.location);
-						call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
+						call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE 7: %i\n", mySocket.dest.location);
 						
 						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
