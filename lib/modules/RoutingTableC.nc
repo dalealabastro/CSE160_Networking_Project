@@ -12,7 +12,7 @@ implementation{
 	components new AMReceiverC(AM_ROUTING);
 	
 	components new HashmapC(uint16_t, 64) as RoutingTableC;
-    	RoutingTableP.RoutingTable -> RoutingTableC;
+    	RoutingTableP.RoutingMap -> RoutingTableC;
 
 	components NeighborDiscoveryC;
 	RoutingTableP.NeighborDiscovery -> NeighborDiscoveryC;
