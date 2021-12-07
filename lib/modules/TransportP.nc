@@ -270,7 +270,7 @@ implementation{
 						
 						call beaconTimer.startOneShot(140000);
 						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION: %i\n", mySocket.dest.location);
-						call Sender.send(myNewMsg, 2);
+						call Sender.send(myNewMsg, mySocket.dest.location);
 					}else{
 						dbg(TRANSPORT_CHANNEL, "ALL DATA SENT, CLOSING CONNECTION\n");
 						mySocket.CONN = FIN_WAIT1;
