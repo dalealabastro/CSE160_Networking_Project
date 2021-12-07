@@ -10,9 +10,6 @@ implementation{
 	components new TimerMilliC() as PeriodicTimer;
 	components new SimpleSendC(AM_ROUTING);
 	components new AMReceiverC(AM_ROUTING);
-	
-	components new HashmapC(uint16_t, 64) as RoutingTableC;
-    	RoutingTableP.RoutingMap -> RoutingTableC;
 
 	components NeighborDiscoveryC;
 	RoutingTableP.NeighborDiscovery -> NeighborDiscoveryC;
