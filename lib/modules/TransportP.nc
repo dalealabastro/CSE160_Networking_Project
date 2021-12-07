@@ -267,9 +267,9 @@ implementation{
 						call Transport.makePack(&myMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 						
 						call Transport.makePack(&inFlight, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
-						
+						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION BEFORE: %i\n", mySocket.dest.location);
 						call beaconTimer.startOneShot(140000);
-						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION: %i\n", mySocket.dest.location);
+						dbg(TRANSPORT_CHANNEL, "WHAT IS THE DATA_ACK_FLAG LOCATION AFTER: %i\n", mySocket.dest.location);
 						call Sender.send(myNewMsg, mySocket.dest.location);
 					}else{
 						dbg(TRANSPORT_CHANNEL, "ALL DATA SENT, CLOSING CONNECTION\n");
