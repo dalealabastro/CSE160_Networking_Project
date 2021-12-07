@@ -316,6 +316,14 @@ implementation{
 					myTCPPack->seq = 1;
 					myTCPPack->ACK = seq + 1;
 					myTCPPack->flag = FIN_ACK;
+					
+					dbg(TRANSPORT_CHANNEL, "CONNECTION CLOSING, DATA RECEIVED: \n");
+
+			                for(i = 0; i <= mySocket.lastRCVD; i++){
+				             dbg(TRANSPORT_CHANNEL, "%d\n", mySocket.rcvdBuffer[i]);
+			                }
+
+			                makePack(&p, TOS_NODE_ID, mySocket.dest.location, MAX_TTL, PROTOCOL_TCP, 0, t, PACKET_MAX_PAYLOAD_SIZE);
 
 					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 					call Sender.send(myNewMsg, mySocket.dest.location);
