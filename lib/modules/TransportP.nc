@@ -30,6 +30,7 @@ implementation{
 	       pack p = inFlight;
 	       tcpPacket* t = (tcpPacket*)(p.payload);
 	       socket_t mySocket = getSocket(t->srcPort, t->destPort);
+	       //dbg(TRANSPORT_CHANNEL, "IS THERE A SOCKET: %i\n", mySocket.src.port);
 	       if(mySocket.dest.port){
 		  dbg(TRANSPORT_CHANNEL, "PACKET DROPPED, RETRANSMITTING PACKET\n");
 		  call SocketList.pushfront(mySocket);
