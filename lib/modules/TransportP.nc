@@ -323,8 +323,6 @@ implementation{
 				             dbg(TRANSPORT_CHANNEL, "%d\n", mySocket.rcvdBuffer[i]);
 			                }
 
-			                makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, MAX_TTL, PROTOCOL_TCP, 0, myTCPPack, PACKET_MAX_PAYLOAD_SIZE);
-
 					call Transport.makePack(&myNewMsg, TOS_NODE_ID, mySocket.dest.location, 15, 4, 0, myTCPPack, 6);
 					call Sender.send(myNewMsg, mySocket.dest.location);
 				}
