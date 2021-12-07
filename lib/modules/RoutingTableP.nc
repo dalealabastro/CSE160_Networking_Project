@@ -15,16 +15,15 @@ module RoutingTableP{
 }
 
 implementation {
-
+	/*
+	//just use an array to do it
 	routingTableS RoutingTableS[255];
 	//keeps track of number of items in the array
 	uint16_t counter; 
 
-
 	pack myMsg;
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length);
 	
-
 	command void RoutingTable.start(){		
 		dbg(ROUTING_CHANNEL, "Starting Routing\n");
 		call NeighborDiscovery.start();
@@ -52,7 +51,6 @@ implementation {
 		return 999;
 	}
 	
-
 	void addToRoutingTable(uint16_t dest, uint16_t cost, uint16_t nextHop){
 		
 		if (counter >= 255 || dest == TOS_NODE_ID) {
@@ -113,16 +111,13 @@ implementation {
 		
 		
 		//remove values
-
 		for (i = 0; i < counter; i++){			
 			if (RoutingTableS[i].cost == 999){
 				RoutingTableS[i].nextHop = 999;
 				RoutingTableS[i].cost = 999;
 			}
 		}
-
 		//finds and sends neighbors only, Neighbors nexthop and dest are the same
-
 		for (i = 0; i < counter; i++){
 			if(RoutingTableS[i].dest == RoutingTableS[i].nextHop && RoutingTableS[i].nextHop != 999){
 				tempRoutingTable[j].dest = RoutingTableS[i].dest;
@@ -136,15 +131,14 @@ implementation {
 		}
 	}
 	
-
 	event void PeriodicTimer.fired(){
+		
 		getNeighbors();
 		sendRoutingTable();
+		
 	}
-
 	
 	event message_t* Receive.receive(message_t* raw_msg, void* payload, uint8_t len){
-
 		routingTableS tempRoutingTable[1];
 		uint16_t i = 0;
 		uint32_t j = 0;
@@ -152,16 +146,13 @@ implementation {
 		pack *msg = (pack *) payload;	
 		memcpy(tempRoutingTable, msg->payload, sizeof(routingTableS)*1);
 		j = findEntry(tempRoutingTable[i].dest);	
-
 		//if I am neighbor, remove just in case, only draw neighbors from my own pool
 		if (tempRoutingTable[i].nextHop == TOS_NODE_ID){
 			tempRoutingTable[i].cost = 999;
 		
 		}
-
 		//if it is in the list
 		if (j != 999) {
-
 			if (RoutingTableS[j].nextHop == msg->src) {
 				//update the cost 
 				if (tempRoutingTable[i].cost < 999){
@@ -175,12 +166,10 @@ implementation {
 				
 		} else {
 			addToRoutingTable(tempRoutingTable[i].dest, tempRoutingTable[i].cost, msg->src);
-
 		}
 		
 		return raw_msg;
 	}
-
 	
 	command void RoutingTable.print(){
 		uint32_t i = 0;
@@ -194,7 +183,10 @@ implementation {
 			}
 		}
 	}
-
+	
+	
+	
+	
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length){
 	      Package->src = src;
 	      Package->dest = dest;
@@ -202,6 +194,6 @@ implementation {
 	      Package->seq = seq;
 	      Package->protocol = protocol;
 	      memcpy(Package->payload, payload, length);
-   	}
+   	}	
 }
 
