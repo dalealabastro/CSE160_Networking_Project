@@ -130,7 +130,14 @@ class TestSim:
 	
     def testServer(self, destination):
         self.sendCMD(self.CMD_TEST_SERVER, destination, "server");
-
+        
+    #Adding in chat client
+    def appServer(self, source, port):
+        self.sendCMD(self.CMD_APP_SERVER, source,"{0}".format(chr(port)));
+    
+    def appClient(self, source, srcPort, destination, destPort, msg):
+        self.sendCMD(self.CMD_APP_CLIENT, source, "{0}{1}{2}{3}".format(chr(srcPort),chr(destination),chr(destPort),msg));
+        
     def addChannel(self, channelName, out=sys.stdout):
         print 'Adding Channel', channelName;
         self.t.addChannel(channelName, out);
@@ -146,11 +153,13 @@ def main():
     s.addChannel(s.ROUTING_CHANNEL);
     s.addChannel(s.TRANSPORT_CHANNEL);
     s.runTime(250);
-    s.testServer(1);
+    #s.testServer(1);
     # s.ping(1, 2, "Hello, World");
+    s.appServer(1) #================================== Proj 4
     s.runTime(60);
     # s.ping(1, 3, "Hi!");
-    s.testClient(4);
+    #s.testClient(4);
+    s.appClient;   #=================================== Proj 4
     s.runTime(1);
     s.runTime(400);
 
