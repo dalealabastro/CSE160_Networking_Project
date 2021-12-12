@@ -47,6 +47,7 @@ implementation{
    pack sendPackage;
 	uint16_t nodeSeq = 0;
 
+   socket_t sockets [10];
    // Prototypes
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 
@@ -122,19 +123,29 @@ implementation{
 
    event void CommandHandler.printDistanceVector(){}
 
-   event void CommandHandler.setTestServer(){
+   event void CommandHandler.setTestServer(uint8_t src, uint8_t port){
 	dbg(GENERAL_CHANNEL, "SETTING TEST SERVER \n");
 	call Transport.setTestServer();
 }
 
-   event void CommandHandler.setTestClient(){
+   event void CommandHandler.setTestClient(uint8_t src, uint8_t srcPort, uint8_t dest, uint8_t destPort){
 	dbg(GENERAL_CHANNEL, "SETTING TEST CLIENT \n");
-	call Transport.setTestClient();
+	call Transport.setTestClient(src, srcPort, dest, destPort);
 }
+   //Project 4 ================================================================================================D
+   event void CommandHandler.setAppServer(uint8_t src, uint8_t port){
+      signal CommandHandler.setTestClient(src, port)
+   }
 
-   event void CommandHandler.setAppServer(){}
+   event void CommandHandler.setAppClient(uint8_t src, uint8_t srcPort, uint8_t dest, uint8_t destPort, uint8_t *msg){
+      char *res = msg;
+      char *delimiter = " \n";
+      char *res1 = strtok(res, delimiter);
 
-   event void CommandHandler.setAppClient(){}
+      if(strcmp(res1, "hello") == 0){
+         signal CommandHandler.setTestClient(src, srcPort, dest, destPort);
+      }
+   }
 
 
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length){
