@@ -334,13 +334,14 @@ implementation{
 		}
 }
 
-	command void Transport.setTestServer(){
+	command void Transport.setTestServer(uint8_t src, uint8_t srcPort){
 
 		socket_t mySocket;
 		socket_addr_t myAddr;
 
-		myAddr.location = TOS_NODE_ID;
-		myAddr.port = 4;
+		myAddr.location = src; //Previously TOS_NOD_ID
+
+		myAddr.port = srcPort; //Changed to srcPort from 4 originally for project 4
 
 		mySocket.src = myAddr;
 
@@ -350,17 +351,17 @@ implementation{
 
 		call SocketList.pushfront(mySocket);
 	}
-	command void Transport.setTestClient(){
+	command void Transport.setTestClient(uint8_t src, uint8_t srcPort, uint8_t dest, uint8_t destPort){
 		//Set test client and undergoe 3 way connection. Goes to transport.connect
 		socket_t mySocket;
 		socket_addr_t myAddr;
 
-		uint8_t dest = 2;
-		uint8_t srcPort = 1;
-		uint8_t destPort = 4;
-		uint8_t transfer = 78;
+		uint8_t dest = dest;
+		uint8_t srcPort = srcPort;
+		uint8_t destPort = destPort;
+		uint8_t transfer = 4000;
 
-		myAddr.location = TOS_NODE_ID;
+		myAddr.location = src;
 		myAddr.port = srcPort;
 
 		mySocket.dest.port = destPort;
