@@ -91,16 +91,20 @@ implementation{
 	command t List.get(uint16_t position){
 		return container[position];
 	}
-
-	command t List.remove(uint16_t position){
-		t hold;
-		uint16_t i = 0;
-		hold = container[position];
-		for(i = 0; i < position; i++){
-			container[i + 1] = container[i];
+	command void List.pop(uint16_t position){
+		uint16_t i;
+		if(size>0){
+			// Move everything to the left.
+			for(i = position; i<size-1; i++){
+				container[i] = container[i+1];
+			}
+			size--;
 		}
-		container[0] = hold;
-		hold = call List.popfront();
-		return hold;
+	}
+	command bool List.isFull() {
+		if (size == MAX_SIZE)
+			return TRUE;
+		else
+			return FALSE;
 	}
 }
