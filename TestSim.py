@@ -8,12 +8,16 @@ from TOSSIM import *
 from CommandMsg import *
 
 class TestSim:
+    moteids=[]
     # COMMAND TYPES
     CMD_PING = 0
     CMD_NEIGHBOR_DUMP = 1
     CMD_ROUTE_DUMP=3
-    CMD_TEST_CLIENT = 4
-    CMD_TEST_SERVER = 5
+    CMD_TEST_SERVER=5
+    CMD_TEST_CLIENT=4
+    CMD_TEST_CLIENT_CLOSE=7
+    CMD_SET_APP_SERVER = 11
+    CMD_SET_APP_CLIENT = 10
 
     # CHANNELS - see includes/channels.h
     COMMAND_CHANNEL="command";
@@ -57,6 +61,10 @@ class TestSim:
             if s:
                 print " ", s[0], " ", s[1], " ", s[2];
                 self.r.add(int(s[0]), int(s[1]), float(s[2]))
+                if not int(s[0]) in self.moteids:
+                    self.moteids=self.moteids+[int(s[0])]
+                if not int(s[1]) in self.moteids:
+                    self.moteids=self.moteids+[int(s[1])]
 
     # Load a noise file and apply it.
     def loadNoise(self, noiseFile):
@@ -71,10 +79,10 @@ class TestSim:
             str1 = line.strip()
             if str1:
                 val = int(str1)
-            for i in range(1, self.numMote+1):
+            for i in self.moteids:
                 self.t.getNode(i).addNoiseTraceReading(val)
 
-        for i in range(1, self.numMote+1):
+        for i in self.moteids:
             print "Creating noise model for ",i;
             self.t.getNode(i).createNoiseModel()
 
@@ -86,7 +94,7 @@ class TestSim:
 
     def bootAll(self):
         i=0;
-        for i in range(1, self.numMote+1):
+        for i in self.moteids:
             self.bootNode(i);
 
     def moteOff(self, nodeID):
@@ -113,55 +121,57 @@ class TestSim:
         self.pkt.setDestination(dest)
         self.pkt.deliver(dest, self.t.time()+5)
 
-    def ping(self, source, dest, msg):
-        self.sendCMD(self.CMD_PING, source, "{0}{1}".format(chr(dest),msg));
+    def ping(self, source, msg):
+        self.sendCMD(self.CMD_PING, source, "{0}{1}".format(chr(1),msg));
 
     def neighborDMP(self, destination):
         self.sendCMD(self.CMD_NEIGHBOR_DUMP, destination, "neighbor command");
 
     def routeDMP(self, destination):
         self.sendCMD(self.CMD_ROUTE_DUMP, destination, "routing command");
-   
-    def routeDMP(self, destination):
-        self.sendCMD(self.CMD_ROUTE_DUMP, destination, "routing command");
 
-    def testClient(self, destination):
-        self.sendCMD(self.CMD_TEST_CLIENT, destination, "client");
-	
-    def testServer(self, destination):
-        self.sendCMD(self.CMD_TEST_SERVER, destination, "server");
-        
-    #Adding in chat client
-    def appServer(self, source, port):
-        self.sendCMD(self.CMD_APP_SERVER, source,"{0}".format(chr(port)));
-    
-    def appClient(self, source, srcPort, destination, destPort, msg):
-        self.sendCMD(self.CMD_APP_CLIENT, source, "{0}{1}{2}{3}".format(chr(srcPort),chr(destination),chr(destPort),msg));
-        
     def addChannel(self, channelName, out=sys.stdout):
         print 'Adding Channel', channelName;
         self.t.addChannel(channelName, out);
 
+    def testServer(self, dest, port):
+        self.sendCMD(self.CMD_TEST_SERVER, dest, "{0}".format(chr(port)));
+
+    def testClient(self, src, dest, srcPort, destPort, transfer):
+        self.sendCMD(self.CMD_TEST_CLIENT, src, "{0}{1}{2}{3}".format(chr(srcPort),chr(dest),chr(destPort),chr(transfer)));
+
+    def testClientClose(self, src, dest, destPort, srcPort):
+        self.sendCMD(self.CMD_TEST_CLIENT_CLOSE, src, "{0}{1}{2}{3}".format(chr(src), chr(dest),chr(destPort),chr(srcPort)));
+    
+    def setClient(self, client, msg):
+        self.sendCMD(self.CMD_SET_APP_CLIENT, client, "{0}{1}".format(chr(client),msg));
+    
+    def setServer(self, server, port):
+        self.sendCMD(self.CMD_SET_APP_SERVER, server, "{0}{1}".format(chr(server),chr(port)));
+
 def main():
     s = TestSim();
-    s.runTime(1);
-    s.loadTopo("long_line.topo");
-    s.loadNoise("no_noise.txt");
+    s.runTime(10);
+    s.loadTopo("test.topo");
+    s.loadNoise("meyer-heavy.txt");
     s.bootAll();
     s.addChannel(s.COMMAND_CHANNEL);
     s.addChannel(s.GENERAL_CHANNEL);
+    s.addChannel(s.NEIGHBOR_CHANNEL);
+    s.addChannel(s.FLOODING_CHANNEL);
     s.addChannel(s.ROUTING_CHANNEL);
-    s.addChannel(s.TRANSPORT_CHANNEL);
-    s.runTime(250);
-    #s.testServer(1);
-    # s.ping(1, 2, "Hello, World");
-    s.appServer(1) #================================== Proj 4
-    s.runTime(60);
-    # s.ping(1, 3, "Hi!");
-    #s.testClient(4);
-    s.appClient;   #=================================== Proj 4
-    s.runTime(1);
-    s.runTime(400);
+
+    s.runTime(200);
+    s.runTime(200);
+    #s.ping(19, 5, "Hello 5 from 19");
+    #s.runTime(200);
+    #s.ping(1, 6, "Hello 1 from 6");
+    #s.runTime(200);
+    #s.ping(15, 13, "Hello 13 from 15");
+    #s.runTime(200);
+    #s.runTime(200);
+    #s.ping(5, 13, "Hello 13 from 5");
+    #s.runTime(200);
 
 if __name__ == '__main__':
     main()
