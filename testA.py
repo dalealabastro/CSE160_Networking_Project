@@ -60,4 +60,4 @@ def main():
     #s.runTime(280);
     """
 if __name__ == '__main__':
-    main(
+    main()
