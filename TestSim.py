@@ -143,10 +143,10 @@ class TestSim:
     def testClientClose(self, src, dest, destPort, srcPort):
         self.sendCMD(self.CMD_TEST_CLIENT_CLOSE, src, "{0}{1}{2}{3}".format(chr(src), chr(dest),chr(destPort),chr(srcPort)));
     
-    def setClient(self, client, msg):
+    def setAppClient(self, client, msg):
         self.sendCMD(self.CMD_SET_APP_CLIENT, client, "{0}{1}".format(chr(client),msg));
     
-    def setServer(self, server, port):
+    def setAppServer(self, server, port):
         self.sendCMD(self.CMD_SET_APP_SERVER, server, "{0}{1}".format(chr(server),chr(port)));
 
 def main():
@@ -163,15 +163,6 @@ def main():
 
     s.runTime(200);
     s.runTime(200);
-    #s.ping(19, 5, "Hello 5 from 19");
-    #s.runTime(200);
-    #s.ping(1, 6, "Hello 1 from 6");
-    #s.runTime(200);
-    #s.ping(15, 13, "Hello 13 from 15");
-    #s.runTime(200);
-    #s.runTime(200);
-    #s.ping(5, 13, "Hello 13 from 5");
-    #s.runTime(200);
 
 if __name__ == '__main__':
     main()
